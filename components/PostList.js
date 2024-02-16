@@ -1,4 +1,4 @@
-/*import axios from 'axios';
+import axios from 'axios';
 import useSWR from 'swr';
 
 const fetcher = async (url) => {
@@ -28,8 +28,8 @@ const PostList = () => {
 };
 
 export default PostList;
-*/
-import axios from 'axios';
+
+/*import axios from 'axios';
 import useSWR from 'swr';
 
 const fetcher = async (url) => {
@@ -52,3 +52,4 @@ const PostList = () => {
 };
 
 export default PostList;
+*/
