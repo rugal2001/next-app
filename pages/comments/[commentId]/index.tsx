@@ -19,10 +19,8 @@ const Home = () => {
   );
   return (
     <div className="container p-4 mx-auto">
-      <h1 className="mb-8 text-4xl font-bold ">
-        Comment with the id = {commentId}
-      </h1>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      
+      <div className="grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {selectedComment && (
           <CommentCard key={selectedComment.id} comment={selectedComment} />
         )}
