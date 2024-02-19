@@ -1,5 +1,6 @@
 import axios from 'axios';
 import useSWR from 'swr';
+import { useState } from 'react';
 
 const fetcher = async (url) => {
   const response = await axios.get(url);
@@ -14,9 +15,9 @@ const PostList = () => {
   if (!posts) return <div>Loading...</div>;
    
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {posts.map(post => (
-        <div key={post.id} className="bg-gray-100 p-4 rounded-lg">
+        <div key={post.id} className="p-4 bg-gray-100 rounded-lg">
           <h2 className="text-lg font-bold">{post.title}</h2>
           <p className="text-gray-600">{post.body}</p>
         </div>
@@ -29,27 +30,3 @@ const PostList = () => {
 
 export default PostList;
 
-/*import axios from 'axios';
-import useSWR from 'swr';
-
-const fetcher = async (url) => {
-  const response = await axios.get(url);
-  return response.data;
-};
-
-const PostList = () => {
-  const { data: post, error } = useSWR('https://jsonplaceholder.typicode.com/posts/1', fetcher);
-
-  if (error) return <div>Error loading post...</div>;
-  if (!post) return <div>Loading...</div>;
-
-  return (
-    <div className="bg-blue-100 p-4 rounded-lg ">
-      <h2 className="text-lg font-bold">{post.title}</h2>
-      <p className="text-black-100">{post.body}</p>
-    </div>
-  );
-};
-
-export default PostList;
-*/
