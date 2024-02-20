@@ -16,9 +16,10 @@ const Home = () => {
   if (!posts) return <div>there is no such post</div>;
 
   return (
-    <div className="container p-4 mx-auto">
-      <h1 className="mb-8 text-4xl font-bold">Les Derniere Posts</h1>
-      <div className="grid grid-cols-1 gap-20 bg-blue-200 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+    <section className="text-gray-600 body-font">
+    <div className="flex flex-wrap p-4 m-2">
+      <h2 className="mb-4 text-2xl font-medium text-gray-900 sm:text-3xl title-font">Les Derniere Posts</h2>
+      <div className="grid gap-4 bg-clip-content lg:grid-cols-2">
         {posts.map((post) => (
           <PostCard
             key={post?.id}
@@ -30,6 +31,7 @@ const Home = () => {
         ))}
       </div>
     </div>
+    </section>
   );
 };
 export default Home;
