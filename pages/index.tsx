@@ -8,7 +8,7 @@ export default function Hello() {
         <div className="flex flex-wrap -mx-4">
           <div className="p-4 mb-6 md:w-1/2 md:mb-0">
             <h1 className="mb-4 text-4xl font-bold text-gray-900" >Welcome</h1>
-            <p>Welcome to my humble first home page i made 😅</p>
+            <p>Welcome to my humble first home page i have made 😅</p>
           </div>
           <div className="w-1/2 p-4 sm:w-1/4">
             <h2 className="mb-8 text-3xl font-medium text-gray-900 title-font">Comments</h2>
