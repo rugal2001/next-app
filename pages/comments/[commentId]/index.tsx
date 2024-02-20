@@ -12,15 +12,13 @@ const Home = () => {
   } = useSWR("https://jsonplaceholder.typicode.com/comments", fetcher);
   if (isLoading) return <div>Loading ...</div>;
   if (error) return <div>Error loading comments</div>;
-  if(!comments) return <div>There is no such comment</div>;
+  if (!comments) return <div>There is no such comment</div>;
 
   const selectedComment = comments.find(
-    (comment) => comment.id === parseInt(commentId)
+    (comment) => comment.id === parseInt(commentId as string)
   );
   return (
-    
     <div className="container p-4 mx-auto">
-      
       <div className="grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {selectedComment && (
           <CommentCard key={selectedComment.id} comment={selectedComment} />
