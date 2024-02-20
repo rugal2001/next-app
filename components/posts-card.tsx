@@ -6,7 +6,7 @@ interface PostsCardI {
 const PostCard = ({ post, onClick = () => {} }: PostsCardI) => {
   return (
     <div
-      className="p-6 border border-2 border-gray-200 rounded-lg" //border border-gray-200 p-6 rounded-lg
+      className="p-6 border border-gray-200 rounded-lg cursor-pointer hover:shadow" //border border-gray-200 p-6 rounded-lg
       onClick={() => {
         onClick();
       }}
