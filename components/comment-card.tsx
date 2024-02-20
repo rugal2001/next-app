@@ -10,7 +10,7 @@ const CommentCard = ({ comment, onClick = () => {} }: CommentCardI) => {
   return (
     <div
       className="p-4 bg-gray-100 rounded-lg"
-      onClick={(e) => {
+      onClick={() => {
         onClick();
       }}
     >

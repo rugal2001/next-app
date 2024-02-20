@@ -4,7 +4,7 @@ import fetcher from "../../lib/fetcher";
 import { useRouter } from "next/router";
 
 const Home = () => {
-  const router = useRouter()
+  const router = useRouter();
   const {
     data: comments,
     error,
@@ -21,7 +21,7 @@ const Home = () => {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {comments.map((comment) => (
           <CommentCard key={comment?.id} comment={comment} onClick={()=> {
-            router.push(`/comments/${comment.id}`)
+            router.push(`/comments/${comment.id}`) //equal to send redirect in java 
           }}/>
         ))}
       </div>
