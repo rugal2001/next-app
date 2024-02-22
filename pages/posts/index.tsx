@@ -3,10 +3,10 @@ import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
 import PostCard from "../../components/posts-card";
 import Layout from "../../layouts/main-layout";
-import Pagination from "../../layouts/pagination-bar";
 import { useState } from "react";
+import PaginationL from "../../components/pagination-bar";
 
-const PAGE_SIZE = 10; // Number of posts per page
+const PAGE_SIZE = 10;
 
 const Home = () => {
   const router = useRouter();
@@ -28,11 +28,7 @@ const Home = () => {
   if (!posts) return <div>There are no posts</div>;
 
   const totalCount = posts.length;
-  console.log("next ==== " + totalCount);
-  console.log("this is all posts ==> " + totalCount);
   const totalPages = totalCount;
-  console.log("this is the total pages = " + totalCount / PAGE_SIZE);
-  console.log(totalPages);
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage((prev) => prev + 1);
@@ -46,7 +42,6 @@ const Home = () => {
   };
 
   return (
-    <Pagination>
     <Layout>
       <section className="text-gray-600 body-font">
         <div className="flex flex-wrap justify-center p-4 m-2">
@@ -64,27 +59,16 @@ const Home = () => {
               />
             ))}
           </div>
-          <div className="flex items-center justify-center gap-3 mt-4">
-            <button
-              onClick={handlePreviousPage}
-              disabled={currentPage === 1}
-              className="px-3 py-1 mr-2 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 focus:outline-none"
-            >
-              Previous
-            </button>
-            {currentPage}/{totalPages}
-            <button
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 focus:outline-none"
-            >
-              Next
-            </button>
-          </div>
         </div>
       </section>
+      <PaginationL
+        Map={posts}
+        current={currentPage}
+        pageSize={PAGE_SIZE}
+        handleNextPage={handleNextPage}
+        handlePreviousPage={handlePreviousPage}
+      ></PaginationL>
     </Layout>
-    </Pagination>
   );
 };
 
