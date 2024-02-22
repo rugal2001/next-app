@@ -20,7 +20,7 @@ const Home = () => {
     <Layout>
     <div className="container p-4 mx-auto">
       
-      <h1 className="mb-8 text-4xl font-bold ">Latest Comments</h1>
+      <h1 className="mb-8 text-4xl font-bold">Latest Comments</h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {comments.map((comment) => (
           <CommentCard
