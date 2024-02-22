@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import PostCard from "../../../components/posts-card";
+import Layout from "../../../layouts/one-post-layout";
 
 const Home = () => {
   const router = useRouter();
@@ -17,10 +18,14 @@ const Home = () => {
   );
   console.log("this is the seleceted post " + selectedPost);
   return (
+    <div className="grid w-auto grid-cols-1">
+      <Layout>
     <div className="container p-4 mx-auto">
-      <div className="grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="">
         {selectedPost && <PostCard key={selectedPost.id} post={selectedPost} />}
       </div>
+    </div>
+    </Layout>
     </div>
   );
 };
