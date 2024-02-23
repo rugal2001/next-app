@@ -3,6 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Button } from "@mantine/core";
 import { IconStar } from "@tabler/icons-react";
 import { useRouter } from "next/router";
+import App from "next/app";
 
 export function Demo() {
   const [opened, { toggle }] = useDisclosure();
@@ -64,6 +65,9 @@ export function Demo() {
           </div>
         </section>
       </AppShell.Main>
+      <AppShell.Footer>
+        <div className="text-3xl font-extrabold text-black">Hi every one</div>
+      </AppShell.Footer>
     </AppShell>
   );
 }
