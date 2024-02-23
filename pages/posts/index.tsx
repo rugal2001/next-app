@@ -5,6 +5,7 @@ import PostCard from "../../components/posts-card";
 import Layout from "../../layouts/main-layout";
 import { useState } from "react";
 import PaginationL from "../../components/pagination-bar";
+import { Demo } from "../../layouts/application-cantainer";
 
 const PAGE_SIZE = 10;
 
@@ -42,7 +43,8 @@ const Home = () => {
   };
 
   return (
-    <Layout>
+    
+      <Demo>
       <section className="text-gray-600 body-font">
         <div className="flex flex-wrap justify-center p-4 m-2">
           <h2 className="mb-4 text-2xl font-medium text-gray-900 sm:text-3xl title-font">
@@ -67,10 +69,13 @@ const Home = () => {
         pageSize={PAGE_SIZE}
         handleNextPage={handleNextPage}
         handlePreviousPage={handlePreviousPage}
-        
       ></PaginationL>
-    </Layout>
+        
+      </Demo>
+    
   );
 };
+
+function newHome() {}
 
 export default Home;

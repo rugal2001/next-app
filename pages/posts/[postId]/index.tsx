@@ -5,6 +5,7 @@ import PostCard from "../../../components/posts-card";
 import Layout from "../../../layouts/one-post-layout";
 import CommentCard from "../../../components/comment-card";
 import { FaRegComment } from "react-icons/fa";
+import { Demo } from "../../../layouts/application-cantainer";
 
 const Home = () => {
   const router = useRouter();
@@ -25,9 +26,9 @@ const Home = () => {
   console.log("this is the seleceted post " + selectedPost);
   return (
     <div className="grid w-auto grid-cols-1">
-           <Layout>
+           <Demo>
         <div className="container p-4 mx-auto">
-          <div className="mt-10 cursor-pointer">
+          <div className="cursor-pointer">
             {selectedPost && (
               <PostCard key={selectedPost.id} post={selectedPost} />
             )}
@@ -36,7 +37,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </Layout>
+      </Demo>
     </div>
   );
 };

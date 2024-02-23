@@ -3,6 +3,7 @@ import CommentCard from "../../components/comment-card";
 import fetcher from "../../lib/fetcher";
 import { useRouter } from "next/router";
 import Layout from "../../layouts/main-layout";
+import { Demo } from "../../layouts/application-cantainer";
 
 const Home = () => {
   const router = useRouter();
@@ -17,8 +18,11 @@ const Home = () => {
   if (!comments) return <div>No Comments...</div>;
 
   return (
-    <Layout>
-    <div className="container p-4 mx-auto">
+    
+    
+    
+    <Demo>
+      <div className="container p-4 mx-auto">
       
       <h1 className="mb-8 text-4xl font-bold">Latest Comments</h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -32,8 +36,9 @@ const Home = () => {
           />
         ))}
       </div>
-    </div>
-    </Layout>
+      </div>
+    </Demo> 
+    
   );
 };
 
