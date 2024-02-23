@@ -11,7 +11,9 @@
   "dependencies": {
     "@mantine/core": "^7.5.3",
     "@mantine/hooks": "^7.5.3",
+    "@mantine/next": "^6.0.21",
     "@mantine/tiptap": "^7.5.3",
+    "@tabler/icons-react": "^2.47.0",
     "@tiptap/extension-link": "^2.2.3",
     "@tiptap/pm": "^2.2.3",
     "@tiptap/react": "^2.2.3",

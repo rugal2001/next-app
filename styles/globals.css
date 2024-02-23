@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .btn {
-  @apply flex items-center justify-center w-32 p-2 mx-5 mt-2 text-lg text-center text-gray-700 border-2 border-gray-500 rounded-md cursor-pointer hover:shadow-lg hover:bg-gray-500 hover:text-white;
+  @apply flex items-center justify-center w-32 h-16 p-2 mx-5 mt-2 text-lg text-center text-gray-700 border-2 border-gray-500 rounded-md cursor-pointer hover:shadow-lg hover:bg-gray-500 hover:text-white;
 }
 
 html,

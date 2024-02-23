@@ -67,6 +67,7 @@ const Home = () => {
         pageSize={PAGE_SIZE}
         handleNextPage={handleNextPage}
         handlePreviousPage={handlePreviousPage}
+        
       ></PaginationL>
     </Layout>
   );

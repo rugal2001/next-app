@@ -21,7 +21,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pages/comments/[commentId]/index.js", "components/Comments.jsx"  ],
+, "pages/comments/[commentId]/index.js", "components/Comments.jsx", "components/ApplicationContainer.tsx"  ],
   "exclude": [
     "node_modules"
   ]
