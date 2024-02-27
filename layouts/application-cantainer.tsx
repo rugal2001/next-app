@@ -5,7 +5,7 @@ import { IconStar } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import App from "next/app";
 
-export function Demo({children}) {
+export function Layout({children}) {
   const [opened, { toggle }] = useDisclosure();
   const router = useRouter();
   return (
@@ -58,8 +58,8 @@ export function Demo({children}) {
         </div>
       </AppShell.Navbar>
 
-      <AppShell.Main
-        // style={{
+      <AppShell.Main 
+        //  style={{
         //   backgroundImage: "url('../image/colors-white-blue.png')",
         //   backgroundSize: "cover",
         // }}

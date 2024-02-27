@@ -2,11 +2,13 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import PostCard from "../../../components/posts-card";
-import Layout from "../../../layouts/one-post-layout";
+//import Layout from "../../../layouts/one-post-layout";
 import CommentCard from "../../../components/comment-card";
 import { FaRegComment } from "react-icons/fa";
-import { Demo } from "../../../layouts/application-cantainer";
-
+import Demo from "../../../layouts/Header";
+import Header from "../../../layouts/Header";
+import Main from "../../../layouts/Main";
+import { AppShell, Burger, Avatar } from "@mantine/core";
 const Home = () => {
   const router = useRouter();
   const { postId } = router.query;
@@ -26,19 +28,35 @@ const Home = () => {
   console.log("this is the seleceted post " + selectedPost);
   return (
     <div className="grid w-auto grid-cols-1">
-           <Demo>
-        <div className="container p-4 mx-auto">
-          <div className="cursor-pointer">
-            {selectedPost && (
-              <PostCard key={selectedPost.id} post={selectedPost} />
-            )}
-            <div className="flex items-center justify-end gap-3 ml-24">
-              { <FaRegComment className="w-5 text-gray-600 h-7 hover:shadow-sm " /> } Comment
-            </div>
-          </div>
+      <div className="container py-2 mx-auto px-60">
+        <div className="cursor-pointer">
+          {selectedPost && (
+            <PostCard
+              key={selectedPost.id}
+              post={selectedPost}
+              onClick={() => {
+                router.push("/posts");
+              }}
+            />
+          )}
         </div>
-      </Demo>
+      </div>
     </div>
+  );
+};
+
+Home.getLayout = function getLayout(Home) {
+  return (
+    <>
+      <Header />
+      <div className="flex justify-center">
+        <div className=""></div>
+        <div className="grid items-center w-full h-full bg-gray-200">
+          <Main>{Home}</Main>
+        </div>
+        <div></div>
+      </div>
+    </>
   );
 };
 export default Home;

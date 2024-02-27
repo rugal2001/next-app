@@ -1,12 +1,11 @@
 import "../styles/globals.css";
 import "@mantine/core/styles.css";
-
-import type { AppProps } from "next/app";
 import { createTheme, MantineProvider } from "@mantine/core";
 
 const theme = createTheme({});
 function MyApp({ Component, pageProps }) {
-  return (
+  const getLayout = Component.getLayout ?? ((page) => page);
+  return getLayout(
     <MantineProvider theme={theme}>
       <Component {...pageProps} />
     </MantineProvider>
@@ -14,3 +13,4 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+
