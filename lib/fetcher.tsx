@@ -16,4 +16,4 @@ const fetcher2 = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(error.response?.status || 500).json({ message: error.message });
   }
 };
-export default fetcher2;
+export default fetcher;
