@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import PostCard from "../../../components/posts-card";
-//import Layout from "../../../layouts/one-post-layout";
 import CommentCard from "../../../components/comment-card";
 import { FaRegComment } from "react-icons/fa";
 import Demo from "../../../layouts/Header";
@@ -16,21 +15,22 @@ const Home = () => {
     data: posts,
     error,
     isLoading,
-  } = useSWR("https://jsonplaceholder.typicode.com/posts", fetcher);
-
+  } = useSWR("http://localhost:4000/posts/:id", fetcher);
+  console.log('this is posts ' , posts)
   if (isLoading) return <div>Loading ...</div>;
   if (error) return <div>Error loading posts</div>;
   if (!posts) return <div>there is no such a post</div>;
 
-  const selectedPost = posts.find(
-    (post) => post.id === parseInt(postId as string)
-  );
-  console.log("this is the seleceted post " + selectedPost);
+  console.log("posts:", posts);
+  console.log("typeof posts:", typeof posts);
+  const Post= posts.data
+ 
+  
   return (
     <div className="grid w-auto grid-cols-1">
       <div className="container py-2 mx-auto px-60">
         <div className="cursor-pointer">
-          {selectedPost && (
+          
             <PostCard
               key={selectedPost.id}
               post={selectedPost}
@@ -38,7 +38,7 @@ const Home = () => {
                 router.push("/posts");
               }}
             />
-          )}
+          )
         </div>
       </div>
     </div>
@@ -50,13 +50,12 @@ Home.getLayout = function getLayout(Home) {
     <>
       <Header />
       <div className="flex justify-center">
-        <div className=""></div>
         <div className="grid items-center w-full h-full bg-gray-200">
           <Main>{Home}</Main>
         </div>
-        <div></div>
       </div>
     </>
   );
 };
+
 export default Home;

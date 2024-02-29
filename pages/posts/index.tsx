@@ -10,21 +10,22 @@ import Clayout from "../../layouts/Header";
 import Header from "../../layouts/Header";
 import Main from "../../layouts/Main";
 import { AppShell, Burger, Avatar } from "@mantine/core";
+
+
 const PAGE_SIZE = 10;
 
 function Home() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
+  
 
   const {
     data: posts,
     error,
     isValidating,
-  } = useSWR(
-    `https://jsonplaceholder.typicode.com/posts?_page=${currentPage}&_limit=${PAGE_SIZE}`,
-    fetcher
-  );
+  } = useSWR(`http://localhost:4000/posts?_page=${currentPage}&_limit=${PAGE_SIZE}`, fetcher);
 
+  // https://jsonplaceholder.typicode.com/posts?_page=${currentPage}&_limit=${PAGE_SIZE}
   const isLoading = !posts && !error;
 
   if (isLoading) return <div>Loading ...</div>;
@@ -45,24 +46,23 @@ function Home() {
     }
   };
   return (
-    <section className="text-black body-font ">
-      <div className="p-4 bg-gray-200 max-sm:max-w-sm lg:max-w-screen-md">
+    <section className="grid justify-center w-full text-black body-font">
+      <div className="p-4 bg-gray-200 max-sm:max-w-sm lg:max-w-screen-lg">
         <h2 className="my-5 mb-4 text-2xl font-medium text-center text-gray-900 sm:text-3xl title-font">
           Les Derniere Posts
         </h2>
 
-        <div className="flex flex-col items-center gap-4 ">
-          {posts.map((post) => (
+        <div className="flex flex-col items-center gap-12 ">
+          {posts.data.map((post) => (
             <PostCard
               key={post.id}
               post={post}
               onClick={() => {
-                router.push(`/posts/${post.id}`);
+                router.push(`/posts/${post._id}`);
               }}
             />
           ))}
         </div>
-      </div>
       <PaginationL
         Map={posts}
         current={currentPage}
@@ -70,6 +70,7 @@ function Home() {
         handleNextPage={handleNextPage}
         handlePreviousPage={handlePreviousPage}
       ></PaginationL>
+      </div>
     </section>
   );
 }
@@ -78,10 +79,8 @@ Home.getLayout = function getLayout(Home) {
   return (
     <>
       <Header />
-      <div className="flex justify-center">
-        <div className=""></div>
+      <div className="">
         <Main>{Home}</Main>
-        <div></div>
       </div>
     </>
   );

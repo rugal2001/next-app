@@ -1,6 +1,6 @@
 const MainL = ({children})=>{
     return (
-        <div className="">{children}</div>
+        <div className="flex justify-center w-full">{children}</div>
     );
 }
 
