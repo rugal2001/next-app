@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import CommentCard from "../../../components/comment-card";
 import fetcher from "../../../lib/fetcher";
 import useSWR from "swr";
-import Layout from "../../../layouts/one-comment-layout";
-import { Demo } from "../../../layouts/application-cantainer";
+//import Layout from "../../../layouts/one-comment-layout";
+//import { Demo } from "../../../layouts/application-cantainer";
 const Home = () => {
   const router = useRouter();
   const { commentId } = router.query;
@@ -20,7 +20,7 @@ const Home = () => {
     (comment) => comment.id === parseInt(commentId as string)
   );
   return (
-    <Demo>
+    
     <div className="container p-4 mx-auto">
       <div className="grid grid-cols-1 gap-4">
         {selectedComment && (
@@ -28,7 +28,7 @@ const Home = () => {
         )}
       </div>
     </div>
-    </Demo>
+    
   );
 };
 
