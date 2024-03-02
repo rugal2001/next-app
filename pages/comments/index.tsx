@@ -2,8 +2,8 @@ import useSWR from "swr";
 import CommentCard from "../../components/comment-card";
 import fetcher from "../../lib/fetcher";
 import { useRouter } from "next/router";
-import Layout from "../../layouts/main-layout";
-import { Demo } from "../../layouts/application-cantainer";
+//import Layout from "../../layouts/main-layout";
+//import { Demo } from "../../layouts/application-cantainer";
 
 const Home = () => {
   const router = useRouter();
@@ -21,7 +21,7 @@ const Home = () => {
     
     
     
-    <Demo>
+    
       <div className="container p-4 mx-auto">
       
       <h1 className="mb-8 text-4xl font-bold">Latest Comments</h1>
@@ -37,7 +37,7 @@ const Home = () => {
         ))}
       </div>
       </div>
-    </Demo> 
+    
     
   );
 };
