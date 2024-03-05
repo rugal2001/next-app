@@ -23,10 +23,6 @@ const Demo2 = ({ children }) => {
           <div>About</div>
         </div>
       </AppShell.Header>
-      {/* <AppShell.Navbar>
-        
-        <div>NavBar</div>
-      </AppShell.Navbar> */}
       <AppShell.Main>
         <div>Main</div>
       </AppShell.Main>
