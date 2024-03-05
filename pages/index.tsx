@@ -6,26 +6,6 @@ import Header from "../layouts/Header";
 import Main from "../layouts/Main";
 import Left from "../layouts/LeftSide-layout";
 
-// function nextHome() {
-//   return (
-//     <div>
-//       <Layout>
-//         <section className="flex justify-center mt-44 ">
-//           <div className="grid items-center justify-evenly gap-28">
-//             <div className="text-center text-black">
-//               <div className="mb-6 font-serif font-extrabold cursor-default lg:text-7xl hover:text-gray-700 max-sm:3xl">
-//                 Welcome
-//               </div>
-//               <div className="text-3xl cursor-default hover:text-gray-700 ">
-//                 Welcome to my first Home page
-//               </div>
-//             </div>
-//           </div>
-//         </section>
-//       </Layout>
-//     </div>
-//   );
-// }
 
 function Home() {
   return (
