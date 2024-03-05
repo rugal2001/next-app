@@ -6,12 +6,14 @@ import { IoSend } from "react-icons/io5";
 import axios from "axios";
 
 function Home() {
+  const [name, setName] = useState("ibrahim");
+  const [contenue, setContenue] = useState("");
   const [image, setImage] = useState(
     "https://www.shutterstock.com/image-vector/no-image-available-icon-template-600nw-1036735678.jpg"
   );
-  console.log("this is imagge ==============================> ", image);
-  const [name, setName] = useState("ibrahim");
-  const [contenue, setContenue] = useState("");
+  const [image2, setImage2] = useState(
+    "https://www.shutterstock.com/image-vector/no-image-available-icon-template-600nw-1036735678.jpg"
+  );
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -20,6 +22,8 @@ function Home() {
     reader.onload = function () {
       if (typeof reader.result === "string") {
         setImage(e.target.files[0]);
+        setImage2(reader.result);
+        const imageOnBoard = reader.result;
       } else {
         console.error("Failed to read image as string");
       }
@@ -28,6 +32,7 @@ function Home() {
     if (file) {
       reader.readAsDataURL(file);
     }
+    return reader.result;
   };
 
   const handleSubmit = () => {
@@ -59,33 +64,38 @@ function Home() {
           .catch((error) => console.error("Error:", error));
       })
       .catch((error) => {
-        console.error("Error jjjjjjjjjjjjjjjj:", error);
+        console.error("Error:", error);
       });
   };
 
   return (
     <div className="flex justify-center w-[80%] bg-gray-200 h-full ">
-      <div className="h-full w-[50%]">
+      <div className="h-full w-[70%]">
         <div className="grid items-center justify-center gap-5 ">
           <div className="flex justify-center mt-4 text-5xl font-semibold">
             Add Post
           </div>
-          <div className="w-[100%] ">
-            <div className="w-full p-2 mb-3 bg-white rounded-md ">
-              <img
-                src={image}
-                alt="Uploaded"
-                className="w-[100%] rounded-md"
-              ></img>
+          <div className="w-[100%] flex justify-center  max-x-lg">
+            <div className="w-[100%] p-2 mb-3 bg-white rounded-md max-x-lg ">
+              <div className="w-full max-x-lg" style={{background : 'cover'}}>
+                <img
+                  src={image2}
+                  alt="Uploaded"
+                  className="rounded-md w-96 h-96"
+                  
+                ></img>
+              </div>
+
               <div className="">
+                
                 <div
-                  className="flex items-center gap-3 w-[30%] cursor-pointer"
+                  className="flex items-center gap-3 cursor-pointer w-[50%]"
                   onClick={() => document.getElementById("fileInput").click()}
                 >
-                  <div className="w-12 h-12 ">
-                    <CiImageOn className="w-full h-full text-lime-500" />
+                  <div className="w-10 ">
+                    <CiImageOn className="w-full h-full text-lime-600" />
                   </div>
-                  <div className="font-bold">Upload Image</div>
+                  <div className="w-full font-bold ">Upload Image</div>
                   <input
                     id="fileInput"
                     type="file"
