@@ -1,10 +1,8 @@
 import axios from "axios";
+import httpClientReq from "./httpClientReq";
 
-const fetcher = async (url) => {
-  const response = await axios.get(url);
-  //console.log(response);
-  return response.data;
-};
+const fetcher = (url: string) =>
+  httpClientReq(url).then((response) => response.data);
 
 export default fetcher;
 
