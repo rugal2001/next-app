@@ -34,8 +34,9 @@ const PostNewCard = ({ post, onClick = () => {} }: PostsCardI) => {
       </div>
       <div className="flex p-1 bg-gray-200 rounded-md">
         <div className="flex justify-evenly">
-          <div className=" w-[60%]">
-            <img src={post.image} className="rounded-l-lg "></img>
+          
+          <div className=" w-[60%] max-x-lg" style={{background : 'cover'}}>
+            <img src={post.image} className="rounded-l-lg w-96 h-96"></img>
           </div>
 
           <div className="w-[40%] p-3 bg-white rounded-r-lg">
