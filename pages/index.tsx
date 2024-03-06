@@ -1,11 +1,7 @@
-import { BackgroundImage, Center, Text, Box } from "@mantine/core";
 import { useRouter } from "next/router";
-import { ColorSchemeScript } from "@mantine/core";
-import { Layout } from "../layouts/application-cantainer";
 import Header from "../layouts/Header";
 import Main from "../layouts/Main";
-import Left from "../layouts/LeftSide-layout";
-
+import { useEffect } from "react";
 
 function Home() {
   return (
@@ -20,13 +16,23 @@ function Home() {
   );
 }
 Home.getLayout = function getLayout(Home) {
+  const router = useRouter();
+
+  useEffect(()=>{
+    const token = process.browser && localStorage.getItem("access_token");
+    if (!token) {
+      router.push('/auth');
+      
+    }
+
+  },[router]);
+
+
   return (
     <>
       <Header />
       <div className="flex justify-between">
-        <div className="">
-          {/* <Left></Left> */}
-        </div>
+        <div className="">{/* <Left></Left> */}</div>
         <div className="w-full h-screen bg-gray-200">
           <Main>{Home}</Main>
         </div>
