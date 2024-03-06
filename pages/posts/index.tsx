@@ -3,7 +3,7 @@ import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
 import PostCard from "../../components/posts-card";
 //import Layout from "../../layouts/main-layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaginationL from "../../components/pagination-bar";
 //import { Demo } from "../../layouts/application-cantainer";
 import Clayout from "../../layouts/Header";
@@ -76,6 +76,15 @@ function Home() {
 }
 
 Home.getLayout = function getLayout(Home) {
+  const router = useRouter();
+  useEffect(()=>{
+    const token =process.browser && localStorage.getItem('access_token');
+    if(!token){
+      router.push('/auth');
+    }
+  },[router])
+
+
   return (
     <>
       <Header />
