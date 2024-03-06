@@ -9,7 +9,8 @@ function logIn() {
 
   const fetcher = (url: string) => httpClientReq(url).then((r) => r.data);
   const { data, isLoading, error } = useSWR("/", fetcher);
-  console.log("this is fetcher ==> ", fetcher);
+  console.log("data ==========> ",data)
+  
 
   const [token, setToken] = useState("");
 
@@ -35,7 +36,7 @@ function logIn() {
         setToken(accessToken); // Update the token state
         if (accessToken) {
           localStorage.setItem("access_token", accessToken);
-          router.push("/posts");
+          router.push("/");
         }
       } else {
         console.log("this is a big mistake hhhh");
