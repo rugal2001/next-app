@@ -5,6 +5,7 @@ import Header from "../../../layouts/Header";
 import Main from "../../../layouts/Main";
 import { Avatar } from "@mantine/core";
 import CommentCard from "../../../components/comment-card";
+import { useEffect } from "react";
 
 function Post() {
   const router = useRouter();
@@ -18,18 +19,15 @@ function Post() {
     isValidating,
   } = useSWR(`http://localhost:4000/posts/${postId}`, fetcher);
 
-
   const {
     data: comments,
-    
+
     isLoading,
   } = useSWR("https://jsonplaceholder.typicode.com/comments", fetcher);
 
   if (isLoading) return <div>Loading ...</div>;
   if (error) return <div>Error loading comments</div>;
   if (!comments) return <div>No Comments...</div>;
-
-
 
   console.log("Post data:", post);
   console.log("Error:", error);
@@ -43,23 +41,24 @@ function Post() {
 
   return (
     <div className="w-[60%] grid justify-center items-center mt-3">
-      <div className="p-1 bg-white border border-gray-200 rounded-t-lg lg:w-auto">
-        <div className="p-3 bg-white rounded-t-lg ">
-          <div className="flex items-center gap-3 text-xl font-semibold">
+      <div className="p-1 bg-white border border-gray-200 rounded-t-lg lg:w-full">
+        <div className="w-full p-3 bg-white rounded-t-lg">
+          <div className="flex items-center w-full gap-3 text-xl font-semibold">
             <Avatar src="../image/9440461.jpg" alt="it's me" />
             {post.data.name}
           </div>
         </div>
-        <div className="flex p-1 bg-gray-200 rounded-md">
+        <div className="flex w-full p-1 bg-gray-200 rounded-md">
           <div className="flex justify-evenly">
             <div className=" w-[60%]">
-              <img src={post.data.image} className="rounded-l-lg w-96 h-96"></img>
+              <img
+                src={post.data.image}
+                className="w-full rounded-l-lg"
+              ></img>
             </div>
 
-            <div className="w-[40%] p-3 bg-white rounded-r-lg">
-              <h2 className="mb-2 text-lg font-medium sm:text-xl title-font">
-                {post.data.name}
-              </h2>
+            <div className="w-[40%] flex-grow p-3 bg-white rounded-r-lg">
+              
               <p className="mb-4 text-base leading-relaxed">
                 {post.data.contenue}
               </p>
@@ -68,16 +67,16 @@ function Post() {
         </div>
       </div>
       <div className="grid justify-center w-auto gap-6 bg-gray-200 rounded-b-lg">
-        <div className="flex flex-col w-full gap-5 mt-3 "> 
-        {comments.map((comment) => (
-          <CommentCard
-            key={comment?.id}
-            comment={comment}
-            onClick={() => {
-              router.push(`/comments/${comment.id}`); //equal to send redirect in java
-            }}
-          />
-        ))}
+        <div className="flex flex-col w-full gap-5 mt-3 ">
+          {comments.map((comment) => (
+            <CommentCard
+              key={comment?.id}
+              comment={comment}
+              onClick={() => {
+                router.push(`/comments/${comment.id}`); //equal to send redirect in java
+              }}
+            />
+          ))}
         </div>
       </div>
     </div>
@@ -85,6 +84,14 @@ function Post() {
 }
 
 Post.getLayout = function getLayout(Home) {
+  const router = useRouter();
+  useEffect(() => {
+    const token = process.browser && localStorage.getItem("access_token");
+    if (!token) {
+      router.push('/auth');
+    }
+  }, [router]);
+
   return (
     <>
       <Header />
