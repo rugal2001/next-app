@@ -1,11 +1,13 @@
 import Header from "../../../layouts/Header";
 import Main from "../../../layouts/Main";
 import { CiImageOn } from "react-icons/ci";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoSend } from "react-icons/io5";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 function Home() {
+  const router = useRouter();
   const [name, setName] = useState("ibrahim");
   const [contenue, setContenue] = useState("");
   const [image, setImage] = useState(
@@ -38,13 +40,14 @@ function Home() {
   const handleSubmit = () => {
     const formData = new FormData();
     formData.append("image", image);
-
     axios
       .post("http://localhost:4000/upload-img", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          
         },
-      }) //localhost:4000/upload-img
+      })
       .then((response) => {
         console.log(response.data);
 
@@ -52,6 +55,7 @@ function Home() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
           body: JSON.stringify({
             name: name,
@@ -61,6 +65,7 @@ function Home() {
         })
           .then((response) => response.json())
           .then((data) => console.log(data))
+          .then(() => router.push('/posts'))
           .catch((error) => console.error("Error:", error));
       })
       .catch((error) => {
@@ -133,6 +138,13 @@ function Home() {
 }
 
 Home.getLayout = function getLayout(Home) {
+  const router = useRouter();
+  useEffect(()=>{
+    const token = process.browser && localStorage.getItem('access_token');
+    if(!token){
+      router.push('/auth');
+    }
+  },[router])
   return (
     <>
       <Header hideAddButton={true} />
