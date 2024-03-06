@@ -22,7 +22,7 @@ function signIn() {
       });
       const data = await response.json();
       if (response.ok) {
-        router.push("/");
+        router.push("/auth/logIn");
       } else {
         console.log("this is a big mistake hhhh");
       }
