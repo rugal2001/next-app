@@ -1,14 +1,18 @@
-import Header from "../../../layouts/Header";
-import Main from "../../../layouts/Main";
+import Header from "../../../layouts/main-layout/header";
+import Main from "../../../layouts/main-layout";
 import { CiImageOn } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import { IoSend } from "react-icons/io5";
 import axios from "axios";
 import { useRouter } from "next/router";
+import useSWR from "swr";
+import fetcher from "../../../lib/fetcher";
 
 function Home() {
+  const {data,isLoading,error} = useSWR('/me',fetcher);
   const router = useRouter();
-  const [name, setName] = useState("ibrahim");
+  console.log("this is data in add Post => ",data)
+  const [name, setName] = useState(data?.firstName+' '+data?.lastName);
   const [contenue, setContenue] = useState("");
   const [image, setImage] = useState(
     "https://www.shutterstock.com/image-vector/no-image-available-icon-template-600nw-1036735678.jpg"
@@ -26,6 +30,7 @@ function Home() {
         setImage(e.target.files[0]);
         setImage2(reader.result);
         const imageOnBoard = reader.result;
+        
       } else {
         console.error("Failed to read image as string");
       }
@@ -45,11 +50,14 @@ function Home() {
         headers: {
           "Content-Type": "multipart/form-data",
           authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          
         },
       })
       .then((response) => {
-        console.log(response.data);
+        
+        console.log("name=>",name);
+        console.log("contenue=>",contenue);
+        console.log("response.data=>",response.data);
+        console.log("data=>",data._id);
 
         fetch("http://localhost:4000/posts", {
           method: "POST",
@@ -61,6 +69,7 @@ function Home() {
             name: name,
             contenue: contenue,
             image: response.data,
+            user : data._id
           }),
         })
           .then((response) => response.json())
@@ -86,7 +95,7 @@ function Home() {
                 <img
                   src={image2}
                   alt="Uploaded"
-                  className="rounded-md w-96 h-96"
+                  className="w-full rounded-md"
                   
                 ></img>
               </div>
