@@ -5,12 +5,11 @@ import { createTheme, MantineProvider } from "@mantine/core";
 const theme = createTheme({});
 function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout ?? ((page) => page);
-  return getLayout(
+  return (
     <MantineProvider theme={theme}>
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
     </MantineProvider>
   );
 }
 
 export default MyApp;
-
