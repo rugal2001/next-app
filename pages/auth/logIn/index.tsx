@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
-import httpClientReq from "../../../lib/httpClientReq";
+import httpClientReq from "../../../lib/http-client-req";
 import useSWR from "swr";
 
 function logIn() {
@@ -9,8 +9,7 @@ function logIn() {
 
   const fetcher = (url: string) => httpClientReq(url).then((r) => r.data);
   const { data, isLoading, error } = useSWR("/", fetcher);
-  console.log("data ==========> ",data)
-  
+  console.log("data ==========> ", data);
 
   const [token, setToken] = useState("");
 
@@ -18,14 +17,14 @@ function logIn() {
 
   async function handleSubmitSignin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-   
+
     try {
       console.log("im in try ");
       const response = await fetch("http://localhost:4000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
         body: JSON.stringify({ email, password }),
       });
@@ -36,6 +35,8 @@ function logIn() {
         setToken(accessToken); // Update the token state
         if (accessToken) {
           localStorage.setItem("access_token", accessToken);
+          
+        
           router.push("/");
         }
       } else {
