@@ -2,14 +2,12 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
 import PostCard from "../../components/posts-card";
-//import Layout from "../../layouts/main-layout";
+
 import { useEffect, useState } from "react";
 import PaginationL from "../../components/pagination-bar";
-//import { Demo } from "../../layouts/application-cantainer";
-import Clayout from "../../layouts/main-layout/header";
+
 import Header from "../../layouts/main-layout/header";
 import Main from "../../layouts/main-layout";
-import { AppShell, Burger, Avatar } from "@mantine/core";
 
 const PAGE_SIZE = 10;
 
@@ -27,7 +25,7 @@ function Home() {
     fetcher
   );
 
-  // const isLoading = !posts && !error;
+ 
 
   if (isLoading) return <div>Loading ...</div>;
   if (error) return <div>Error Loading Posts</div>;
@@ -58,6 +56,7 @@ function Home() {
         <div className="flex flex-col items-center gap-12 ">
           {reversedPosts.map((post) => (
             <PostCard
+              onUpdate={()=>mutatePosts()}
               key={post.id}
               post={post}
               onClick={() => {
