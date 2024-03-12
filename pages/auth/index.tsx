@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { AuthHeader } from "../../layouts/AuthHeader";
+import { AuthHeader } from "../../layouts/main-layout/auth-header";
 function auth() {
     const router = useRouter();
   return (
