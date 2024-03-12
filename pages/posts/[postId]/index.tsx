@@ -1,17 +1,19 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
-import Header from "../../../layouts/Header";
-import Main from "../../../layouts/Main";
+import Header from "../../../layouts/main-layout/header";
+import Main from "../../../layouts/main-layout";
 import { Avatar } from "@mantine/core";
 import CommentCard from "../../../components/comment-card";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { HiMiniEllipsisVertical } from "react-icons/hi2";
 
 function Post() {
   const router = useRouter();
   const { postId } = router.query; // Assuming the parameter name in the router is 'id'
 
-  console.log("postId from router:", postId);
+  
+    
 
   const {
     data: post,
@@ -29,36 +31,33 @@ function Post() {
   if (error) return <div>Error loading comments</div>;
   if (!comments) return <div>No Comments...</div>;
 
-  console.log("Post data:", post);
-  console.log("Error:", error);
+  
 
   if (error) return <div>Error Loading Post</div>;
   if (!post) return <div>Post not found</div>;
   if (isValidating) return <div>Loading ...</div>;
 
-  console.log("this is post name ===> ", post.data.name);
-  console.log("this is post contenue ===> ", post.data.contenue);
+  
 
   return (
+    <>
     <div className="w-[60%] grid justify-center items-center mt-3">
       <div className="p-1 bg-white border border-gray-200 rounded-t-lg lg:w-full">
-        <div className="w-full p-3 bg-white rounded-t-lg">
-          <div className="flex items-center w-full gap-3 text-xl font-semibold">
+        <div className="flex items-center justify-between w-full gap-3 p-3 text-xl font-semibold bg-white rounded-t-lg">
+          <div className="flex items-center gap-3">
             <Avatar src="../image/9440461.jpg" alt="it's me" />
             {post.data.name}
           </div>
+
+          <div className="flex items-center pr-2"><HiMiniEllipsisVertical className="text-3xl cursor-pointer" onClick={()=>{console.log("show the card")}}/></div>
         </div>
-        <div className="flex w-full p-1 bg-gray-200 rounded-md">
+        <div className="flex w-full p-1 bg-gray-200 rounded-lg">
           <div className="flex justify-evenly">
             <div className=" w-[60%]">
-              <img
-                src={post.data.image}
-                className="w-full rounded-l-lg"
-              ></img>
+              <img src={post.data.image} className="w-full rounded-l-lg"></img>
             </div>
 
             <div className="w-[40%] flex-grow p-3 bg-white rounded-r-lg">
-              
               <p className="mb-4 text-base leading-relaxed">
                 {post.data.contenue}
               </p>
@@ -80,6 +79,8 @@ function Post() {
         </div>
       </div>
     </div>
+    
+    </>
   );
 }
 
@@ -88,7 +89,7 @@ Post.getLayout = function getLayout(Home) {
   useEffect(() => {
     const token = process.browser && localStorage.getItem("access_token");
     if (!token) {
-      router.push('/auth');
+      router.push("/auth");
     }
   }, [router]);
 
