@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import Header from "../layouts/Header";
-import Main from "../layouts/Main";
+import Header from "../layouts/main-layout/header";
+import Main from "../layouts/main-layout";
 import { useEffect } from "react";
 
 function Home() {
@@ -18,25 +18,19 @@ function Home() {
 Home.getLayout = function getLayout(Home) {
   const router = useRouter();
 
-  useEffect(()=>{
+  useEffect(() => {
     const token = process.browser && localStorage.getItem("access_token");
     if (!token) {
-      router.push('/auth');
-      
+      router.push("/auth");
     }
-
-  },[router]);
-
+  }, [router]);
 
   return (
     <>
       <Header />
-      <div className="flex justify-between">
-        <div className="">{/* <Left></Left> */}</div>
-        <div className="w-full h-screen bg-gray-200">
-          <Main>{Home}</Main>
-        </div>
-        <div></div>
+
+      <div className="flex justify-between w-full h-screen bg-gray-200">
+        <Main>{Home}</Main>
       </div>
     </>
   );
