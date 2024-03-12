@@ -41,7 +41,8 @@ function Post() {
 
   return (
     <>
-    <div className="w-[60%] grid justify-center items-center mt-3">
+    <div className="flex justify-center w-full bg-red-500">
+      <div className="w-[60%] grid justify-center items-center mt-3 ">
       <div className="p-1 bg-white border border-gray-200 rounded-t-lg lg:w-full">
         <div className="flex items-center justify-between w-full gap-3 p-3 text-xl font-semibold bg-white rounded-t-lg">
           <div className="flex items-center gap-3">
@@ -79,6 +80,8 @@ function Post() {
         </div>
       </div>
     </div>
+    </div>
+    
     
     </>
   );
