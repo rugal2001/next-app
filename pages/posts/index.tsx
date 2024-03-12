@@ -6,27 +6,28 @@ import PostCard from "../../components/posts-card";
 import { useEffect, useState } from "react";
 import PaginationL from "../../components/pagination-bar";
 //import { Demo } from "../../layouts/application-cantainer";
-import Clayout from "../../layouts/Header";
-import Header from "../../layouts/Header";
-import Main from "../../layouts/Main";
+import Clayout from "../../layouts/main-layout/header";
+import Header from "../../layouts/main-layout/header";
+import Main from "../../layouts/main-layout";
 import { AppShell, Burger, Avatar } from "@mantine/core";
-
 
 const PAGE_SIZE = 10;
 
 function Home() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  
 
   const {
     data: posts,
     error,
-    isValidating,
-  } = useSWR(`http://localhost:4000/posts?_page=${currentPage}&_limit=${PAGE_SIZE}`, fetcher);
+    isLoading,
+    mutate: mutatePosts,
+  } = useSWR(
+    `http://localhost:4000/posts?_page=${currentPage}&_limit=${PAGE_SIZE}`,
+    fetcher
+  );
 
-  // https://jsonplaceholder.typicode.com/posts?_page=${currentPage}&_limit=${PAGE_SIZE}
-  const isLoading = !posts && !error;
+  // const isLoading = !posts && !error;
 
   if (isLoading) return <div>Loading ...</div>;
   if (error) return <div>Error Loading Posts</div>;
@@ -45,6 +46,8 @@ function Home() {
       setCurrentPage((prev) => prev - 1);
     }
   };
+
+  const reversedPosts = [...posts.data].reverse();
   return (
     <section className="grid justify-center w-full text-black body-font">
       <div className="p-4 bg-gray-200 max-sm:max-w-sm lg:max-w-screen-lg">
@@ -53,7 +56,7 @@ function Home() {
         </h2>
 
         <div className="flex flex-col items-center gap-12 ">
-          {posts.data.map((post) => (
+          {reversedPosts.map((post) => (
             <PostCard
               key={post.id}
               post={post}
@@ -63,13 +66,13 @@ function Home() {
             />
           ))}
         </div>
-      <PaginationL
-        Map={posts}
-        current={currentPage}
-        pageSize={PAGE_SIZE}
-        handleNextPage={handleNextPage}
-        handlePreviousPage={handlePreviousPage}
-      ></PaginationL>
+        <PaginationL
+          Map={posts}
+          current={currentPage}
+          pageSize={PAGE_SIZE}
+          handleNextPage={handleNextPage}
+          handlePreviousPage={handlePreviousPage}
+        ></PaginationL>
       </div>
     </section>
   );
@@ -77,13 +80,12 @@ function Home() {
 
 Home.getLayout = function getLayout(Home) {
   const router = useRouter();
-  useEffect(()=>{
-    const token =process.browser && localStorage.getItem('access_token');
-    if(!token){
-      router.push('/auth');
+  useEffect(() => {
+    const token = process.browser && localStorage.getItem("access_token");
+    if (!token) {
+      router.push("/auth");
     }
-  },[router])
-
+  }, [router]);
 
   return (
     <>
