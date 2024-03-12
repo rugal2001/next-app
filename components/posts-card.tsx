@@ -29,9 +29,11 @@ interface PostsCardI {
     user: Record<string, any>;
   };
   onClick?: () => any;
+  onUpdate  :any
 }
 
-const PostNewCard = ({ post, onClick = () => {} }: PostsCardI) => {
+const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
+  const { data, isLoading, error } = useSWR("/me", fetcher);
   const icon = <IconInfoCircle />;
   const [uContenue, setUContenue] = useState(post.contenue);
   const [expanded, setExpanded] = useState(false);
@@ -69,6 +71,7 @@ const PostNewCard = ({ post, onClick = () => {} }: PostsCardI) => {
     } catch (error) {
       console.error("Error deleting Post ", error);
     }
+    onUpdate();
     setShowConfirmation(false);
   };
 
@@ -99,7 +102,10 @@ const PostNewCard = ({ post, onClick = () => {} }: PostsCardI) => {
     } catch (error) {
       console.error("handle Update post ", error);
     }
+    onUpdate();
   };
+
+  console.log("this is post.user => ", post?.user._id);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
@@ -109,6 +115,7 @@ const PostNewCard = ({ post, onClick = () => {} }: PostsCardI) => {
           opened={true}
           onClose={() => {
             setShowConfirmation(false);
+            
           }}
           withCloseButton={false}
           size="lg"
@@ -219,20 +226,24 @@ const PostNewCard = ({ post, onClick = () => {} }: PostsCardI) => {
                 <DropdownMenuContent className="w-48 h-auto bg-white">
                   {/* <DropdownMenuLabel>Outils</DropdownMenuLabel> */}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="font-bold cursor-pointer hover:bg-gray-100"
-                    onClick={() => setOpened(true)}
-                  >
-                    <div>Edit</div>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="font-bold cursor-pointer hover:bg-gray-100"
-                    onClick={() => {
-                      setShowConfirmation(true);
-                    }}
-                  >
-                    Delete
-                  </DropdownMenuItem>
+                  {post?.user._id === data?._id ? (
+                    <DropdownMenuItem
+                      className="font-bold cursor-pointer hover:bg-gray-100"
+                      onClick={() => setOpened(true)}
+                    >
+                      <div>Edit</div>
+                    </DropdownMenuItem>
+                  ) : null}
+                  {post?.user._id === data?._id ? (
+                    <DropdownMenuItem
+                      className="font-bold cursor-pointer hover:bg-gray-100"
+                      onClick={() => {
+                        setShowConfirmation(true);
+                      }}
+                    >
+                      Delete
+                    </DropdownMenuItem>
+                  ) : null}
                   <DropdownMenuItem className="font-bold cursor-pointer hover:bg-gray-100">
                     Info
                   </DropdownMenuItem>
