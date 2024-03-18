@@ -25,8 +25,6 @@ function Home() {
     fetcher
   );
 
- 
-
   if (isLoading) return <div>Loading ...</div>;
   if (error) return <div>Error Loading Posts</div>;
   if (!posts) return <div>There are no posts</div>;
@@ -56,7 +54,7 @@ function Home() {
         <div className="flex flex-col items-center gap-12 ">
           {reversedPosts.map((post) => (
             <PostCard
-              onUpdate={()=>mutatePosts()}
+              onUpdate={() => mutatePosts()}  
               key={post.id}
               post={post}
               onClick={() => {
@@ -65,13 +63,13 @@ function Home() {
             />
           ))}
         </div>
-        <PaginationL
+        {/* <PaginationL
           Map={posts}
           current={currentPage}
           pageSize={PAGE_SIZE}
           handleNextPage={handleNextPage}
           handlePreviousPage={handlePreviousPage}
-        ></PaginationL>
+        ></PaginationL> */}
       </div>
     </section>
   );
