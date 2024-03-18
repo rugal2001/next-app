@@ -22,12 +22,7 @@ function Post() {
   const [opened, setOpened] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [uContenue, setUContenue] = useState("");
-  const {
-    data: postComments,
-    isLoading: commentLoading,
-    error: commentError,
-    mutate: commentMutate,
-  } = useSWR("/comments", fetcher);
+
   const {
     data: meData,
     isLoading: meLoading,
@@ -35,6 +30,13 @@ function Post() {
   } = useSWR("/me", fetcher);
   const router = useRouter();
   const { postId } = router.query;
+
+  const {
+    data: postComments,
+    isLoading: commentLoading,
+    error: commentError,
+    mutate: commentMutate,
+  } = useSWR(`/posts/${postId}/comments`, fetcher);
 
   const {
     data: post,
@@ -219,7 +221,7 @@ function Post() {
               <div
                 className="text-6xl absolute top-0 m-3 rounded-full  text-white cursor-pointer"
                 onClick={() => {
-                  router.push("/posts");
+                  router.back();
                 }}
               >
                 <IoCloseOutline />
@@ -240,22 +242,24 @@ function Post() {
                       <HiMiniEllipsisVertical className="text-3xl rounded-full cursor-pointer hover:bg-gray-100" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-48 h-auto bg-white">
-                      {post?.data?.user._id === meData?._id || meData?.role=='admin' && (
-                        <DropdownMenuItem
-                          className="font-bold cursor-pointer hover:bg-gray-100"
-                          onClick={() => setOpened(true)}
-                        >
-                          Edit
-                        </DropdownMenuItem>
-                      )}
-                      {post?.data?.user._id === meData?._id || meData?.role=='admin' &&  (
-                        <DropdownMenuItem
-                          className="font-bold cursor-pointer hover:bg-gray-100"
-                          onClick={() => setShowConfirmation(true)}
-                        >
-                          Delete
-                        </DropdownMenuItem>
-                      )}
+                      {post?.data?.user._id === meData?._id ||
+                        (meData?.role == "admin" && (
+                          <DropdownMenuItem
+                            className="font-bold cursor-pointer hover:bg-gray-100"
+                            onClick={() => setOpened(true)}
+                          >
+                            Edit
+                          </DropdownMenuItem>
+                        ))}
+                      {post?.data?.user._id === meData?._id ||
+                        (meData?.role == "admin" && (
+                          <DropdownMenuItem
+                            className="font-bold cursor-pointer hover:bg-gray-100"
+                            onClick={() => setShowConfirmation(true)}
+                          >
+                            Delete
+                          </DropdownMenuItem>
+                        ))}
                       <DropdownMenuItem
                         className="font-bold cursor-pointer hover:bg-gray-100"
                         onClick={() =>
@@ -274,19 +278,22 @@ function Post() {
               </div>
               <div className="py-2 ">
                 <div className="grid gap-2">
-                  {reversedComments.map((comment) => {
-                    if (post.data._id === comment.post) {
-                      return (
-                        <CommentCard
-                          key={comment._id}
-                          onUpdate={() => {
-                            commentMutate();
-                          }}
-                          comment={comment}
-                        />
-                      );
-                    }
-                  })}
+                  {reversedComments.map((comment) => (
+                    <CommentCard
+                      key={comment._id}
+                      onUpdate={() => {
+                        commentMutate();
+                      }}
+                      comment={comment}
+                      nasted={{
+                        _id: "",
+                        contenue: "",
+                        distinataire: "",
+                        user: undefined,
+                        comment: undefined,
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
               <div className=" bg-white p-2  sticky bottom-0">
