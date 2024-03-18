@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Header from "../../layouts/main-layout/header";
 import Main from "../../layouts/main-layout";
-import { CiImageOn } from "react-icons/ci";
 import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
 import axios from "axios";
@@ -11,42 +10,33 @@ import PostCard from "../../components/posts-card";
 
 function profile() {
   const { data: myData, isLoading: meLoading, error } = useSWR("/me", fetcher);
+  const router = useRouter();
 
   const [firstName, setFirstName] = useState(myData?.firstName);
   const [lastName, setLastName] = useState(myData?.lastName);
   const [email, setEmail] = useState(myData?.email);
   const [role, setRole] = useState(myData?.role);
   const [image, setImage] = useState(
-    myData?.image ? myData.image : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+    myData?.image
+      ? myData.image
+      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
   );
   const [image2, setImage2] = useState(
-    myData?.image ? myData.image : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+    myData?.image
+      ? myData.image
+      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
   );
 
-  const router = useRouter();
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+  const {
+    data: posts,
+    error: postError,
+    isLoading,
+    mutate: mutatePosts,
+  } = useSWR(`http://localhost:4000/user/${myData?._id}/posts`, fetcher);
+  if (isLoading) return <div>Loading ...</div>;
+  if (postError) return <div>Error Loading Posts</div>;
+  if (!posts) return <div>There are no posts</div>;
 
-    reader.onload = function () {
-      if (typeof reader.result === "string") {
-        setImage(e.target.files[0]);
-        setImage2(reader.result);
-        const imageOnBoard = reader.result;
-        console.log("this is e.target.result[0] => ", e.target?.result[0]);
-        console.log("imageOnBoard => ", imageOnBoard);
-      } else {
-        console.error("Failed to read image as string");
-      }
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-    return reader.result;
-  };
-
-  // console.log("this is the id => ", data?._id);
 
   const handleSubmit = () => {
     const formData = new FormData();
@@ -88,15 +78,7 @@ function profile() {
         console.error("Error:", error);
       });
   };
-  const {
-    data: posts,
-    error: postError,
-    isLoading,
-    mutate: mutatePosts,
-  } = useSWR(`http://localhost:4000/posts`, fetcher);
-  if (isLoading) return <div>Loading ...</div>;
-  if (postError) return <div>Error Loading Posts</div>;
-  if (!posts) return <div>There are no posts</div>;
+  
 
   const reversedPosts = [...posts.data].reverse();
   return (
@@ -130,22 +112,16 @@ function profile() {
             </div>
           </div>
           <div className="grid grid-cols-3 p-3 mt-4 bg-white rounded-md">
-            {reversedPosts.map((post) => {
-              if (post?.user?._id == myData?._id) {
-                return (
-                  <PostCard
-                    onUpdate={() => mutatePosts()}
-                    key={post.id}
-                    post={post}
-                    onClick={() => {
-                      router.push(`/posts/${post._id}`);
-                    }}
-                  />
-                );
-              } else {
-                return null;
-              }
-            })}
+            {reversedPosts.map((post) => (
+              <PostCard
+                onUpdate={() => mutatePosts()}
+                key={post._id}
+                post={post}
+                onClick={() => {
+                  router.push(`/posts/${post._id}`);
+                }}
+              />
+            ))}
           </div>
         </div>
       </section>
