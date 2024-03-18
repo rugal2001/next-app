@@ -118,7 +118,7 @@ export const NastedCommentCard = ({ onUpdate,myData, comment }: NastedCommentI) 
                       overflowY: "scroll",
                       scrollbarWidth: "none",
                     }}
-                    defaultValue={`à(${comment.user.firstName} ${comment.user.lastName})`}
+                    defaultValue={`à (${comment.user.firstName} ${comment.user.lastName})`}
                     // onChange={(e) => setNastedComment(e.target.value)}
                   ></textarea>
                 </div>
