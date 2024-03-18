@@ -1,6 +1,6 @@
 const MainL = ({children})=>{
     return (
-        <div className=" w-full">{children}</div>
+        <div className="w-full">{children}</div>
     );
 }
 
