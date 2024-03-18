@@ -17,7 +17,13 @@ import { FaReply } from "react-icons/fa";
 
 interface CommentCardI {
   comment: { _id: string; contenue: string; user: any };
-
+  nasted: {
+    _id: string;
+    contenue: string;
+    distinataire: string;
+    user: any;
+    comment: any;
+  };
   onUpdate: any;
 }
 
@@ -37,11 +43,11 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
     isLoading: nastedCommentLoading,
     error: nastedCommentError,
     mutate: nastedCommentMutate,
-  } = useSWR("/nasted-comments", fetcher);
+  } = useSWR(`/comments/${comment._id}/nasted-comments`, fetcher);
 
   // if(!nastedComments) return <div className="">Error in fetching nasted comments</div>
-  console.log("nastedComments => ", nastedComments);
-  console.log("data => ", myData);
+  // console.log("Comments => ", comment);
+  // console.log("Nasted Comments=== => ", nastedComments);
 
   const handleUpdate = async () => {
     try {
@@ -87,7 +93,7 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
   };
 
   const handleAddNastedComment = async () => {
-    console.log("im inside handleAddNastedComment");
+    
     try {
       const token = localStorage.getItem("access_token");
       const config = {
@@ -96,6 +102,8 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
         },
       };
       const insertedData = {
+        distinataire_firstName: comment.user.firstName,
+        distinataire_lastName: comment.user.lastName,
         contenue: nastedComment,
         user: myData._id,
         comment: comment._id,
@@ -111,8 +119,7 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
     }
   };
 
-  console.log("comment", comment.user._id);
-  console.log("myData", myData._id);
+  //comment._id === nastedComment._id
 
   return (
     <>
@@ -267,17 +274,24 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
           </div>
         </div>
 
-        <div className="mt-2 " >
-          <div className="grid gap-2  ml-24 mr-2">
+        <div className="mt-2 ">
+          <div className="grid gap-2  ml-16 mr-2">
             {nastedComments?.data.map((nastedComment) => (
-              <NastedCommentCard onUpdate={()=>{nastedCommentMutate()}} myData={myData} comment={nastedComment} />
-             
+              <NastedCommentCard
+               key={nastedComment._id}
+                onUpdate={() => {
+                  nastedCommentMutate();
+                }}
+                myData={myData}
+                comment={comment}
+                nasted={nastedComment}
+              />
             ))}
           </div>
         </div>
         {showAddComment ? (
           <div className="flex justify-end pr-2 w-full">
-            <div className="bg-gray-200 w-[79%] h-24  rounded-lg mt-2 flex gap-3  p-3">
+            <div className="bg-gray-200 w-[86%] h-24  rounded-lg mt-2 flex gap-3  p-3">
               <div className="">
                 <Avatar
                   src={myData.image}
