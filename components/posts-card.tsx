@@ -29,10 +29,10 @@ interface PostsCardI {
     user: Record<string, any>;
   };
   onClick?: () => any;
-  onUpdate  :any
+  onUpdate: any;
 }
 
-const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
+const PostNewCard = ({ onUpdate, post, onClick = () => {} }: PostsCardI) => {
   const { data, isLoading, error } = useSWR("/me", fetcher);
   const icon = <IconInfoCircle />;
   const [uContenue, setUContenue] = useState(post.contenue);
@@ -55,6 +55,7 @@ const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
     return null;
   }
 
+  
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const handleDeletePost = async () => {
     try {
@@ -79,7 +80,6 @@ const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const handleUpdatePost = async () => {
     try {
-      await axios.put;
       const token = localStorage.getItem("access_token");
 
       const config = {
@@ -96,16 +96,15 @@ const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
         updatedData,
         config
       );
-      console.log("Post updated succeffully !!");
+      console.log("Post updated successfully !!");
       setOpened(false);
-      mutate(`http://localhost:4000/posts/${post._id}`, updatedData, true);
     } catch (error) {
       console.error("handle Update post ", error);
     }
     onUpdate();
+    console.log('onUpdate();',onUpdate())
   };
 
-  console.log("this is post.user => ", post?.user._id);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
@@ -115,11 +114,9 @@ const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
           opened={true}
           onClose={() => {
             setShowConfirmation(false);
-            
           }}
           withCloseButton={false}
           size="lg"
-          className=""
         >
           <div className="grid justify-center w-full ">
             <div className="flex items-center justify-between gap-40">
@@ -187,8 +184,12 @@ const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
               </div>
             </div>
             <textarea
-              style={{ outline: "none", overflowY: "hidden" }}
-              className="w-full px-2 mb-3 rounded-lg"
+              style={{
+                outline: "none",
+                overflowY: "scroll",
+                scrollbarWidth: "none",
+              }}
+              className="w-full h-24 px-2 mb-3 rounded-lg scrollbar-none"
               defaultValue={uContenue}
               onChange={(e) => setUContenue(e.target.value)}
             />
@@ -225,8 +226,8 @@ const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-48 h-auto bg-white">
                   {/* <DropdownMenuLabel>Outils</DropdownMenuLabel> */}
-                  <DropdownMenuSeparator />
-                  {post?.user._id === data?._id ? (
+                  {/* <DropdownMenuSeparator /> */}
+                  {post?.user._id === data?._id || data?.role==='admin' ? (
                     <DropdownMenuItem
                       className="font-bold cursor-pointer hover:bg-gray-100"
                       onClick={() => setOpened(true)}
@@ -234,7 +235,7 @@ const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
                       <div>Edit</div>
                     </DropdownMenuItem>
                   ) : null}
-                  {post?.user._id === data?._id ? (
+                  {post?.user._id === data?._id || data?.role==='admin' ? (
                     <DropdownMenuItem
                       className="font-bold cursor-pointer hover:bg-gray-100"
                       onClick={() => {
@@ -253,8 +254,8 @@ const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
           </div>
         </div>
         <div className="flex rounded-md">
-          <div className="grid w-full">
-            <div className="w-full p-3 bg-white rounded-r-lg">
+          <div className="grid ">
+            <div className=" p-3 bg-white rounded-r-lg">
               <p className="text-base leading-relaxed ">
                 {displayContent}
                 {words.length > maxWords && (
@@ -268,10 +269,10 @@ const PostNewCard = ({ onUpdate ,post, onClick = () => {} }: PostsCardI) => {
               </p>
             </div>
 
-            <div className="w-full max-x-lg" style={{ background: "cover" }}>
+            <div className="w-full max-x-lg" >
               <img
                 src={post.image}
-                className="w-full rounded-lg cursor-pointer"
+                className=" rounded-lg cursor-pointer"
                 // style={{ height: "15cm" }}
                 onClick={() => {
                   onClick();
