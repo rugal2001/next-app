@@ -147,7 +147,7 @@ function profile() {
                         type="text"
                         id="hero-field"
                         name="hero-field"
-                        value={email}
+                        value={data?.email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-indigo-200 focus:bg-transparent focus:border-indigo-500"
                       ></input>
@@ -160,7 +160,7 @@ function profile() {
                         type="text"
                         id="hero-field"
                         name="hero-field"
-                        defaultValue={data?.role}
+                        value={data?.role}
                         // value={}
                         className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-indigo-200 focus:bg-transparent focus:border-indigo-500"
                       ></input>
