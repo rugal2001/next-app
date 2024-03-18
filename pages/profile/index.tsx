@@ -7,28 +7,20 @@ import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
 import axios from "axios";
 import { FiEdit } from "react-icons/fi";
+import PostCard from "../../components/posts-card";
 
 function profile() {
-  const { data, isLoading, error } = useSWR("/me", fetcher);
+  const { data: myData, isLoading: meLoading, error } = useSWR("/me", fetcher);
 
-  const {
-    data: postsData,
-    error: postError,
-    isValidating,
-  } = useSWR(`http://localhost:4000/posts`, fetcher);
-  const [firstName, setFirstName] = useState(data?.firstName);
-  const [lastName, setLastName] = useState(data?.lastName);
-  const [email, setEmail] = useState(data?.email);
-  const [role, setRole] = useState(data?.role);
+  const [firstName, setFirstName] = useState(myData?.firstName);
+  const [lastName, setLastName] = useState(myData?.lastName);
+  const [email, setEmail] = useState(myData?.email);
+  const [role, setRole] = useState(myData?.role);
   const [image, setImage] = useState(
-    data?.image
-      ? data.image
-      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+    myData?.image ? myData.image : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
   );
   const [image2, setImage2] = useState(
-    data?.image
-      ? data.image
-      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+    myData?.image ? myData.image : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
   );
 
   const router = useRouter();
@@ -96,7 +88,17 @@ function profile() {
         console.error("Error:", error);
       });
   };
+  const {
+    data: posts,
+    error: postError,
+    isLoading,
+    mutate: mutatePosts,
+  } = useSWR(`http://localhost:4000/posts`, fetcher);
+  if (isLoading) return <div>Loading ...</div>;
+  if (postError) return <div>Error Loading Posts</div>;
+  if (!posts) return <div>There are no posts</div>;
 
+  const reversedPosts = [...posts.data].reverse();
   return (
     <>
       <section className="text-gray-600 body-font">
@@ -108,18 +110,18 @@ function profile() {
             <img
               className="object-cover object-center rounded-full w-6/6 "
               alt="hero"
-              src={data?.image}
+              src={myData?.image}
             ></img>
           </div>
 
           <div className="grid gap-3">
             <div className="text-3xl font-bold text-black">
               <h1>
-                {data?.firstName} {data?.lastName}
+                {myData?.firstName} {myData?.lastName}
               </h1>
             </div>
             <div
-              className="text-2xl font-semibold flex gap-2 bg-blue-600 p-2 rounded-lg text-white cursor-pointer hover:bg-blue-500"
+              className="flex gap-2 p-2 text-2xl font-semibold text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-500"
               onClick={() => {
                 router.push("/profile/edit-profile");
               }}
@@ -127,19 +129,23 @@ function profile() {
               <FiEdit className="w-8 h-8" /> Modifier Profile
             </div>
           </div>
-          <div className="grid grid-cols-3 bg-white p-3 rounded-md mt-4 gap-2">
-            <div className="h-80 w-80">
-              <img src="https://i.le360.ma/le360sport/sites/default/files/styles/img_738_520/public/assets/images/2022/12-reda/whatsapp_image_2022-12-10_at_17.05.40.jpeg"></img>
-            </div>
-            <div className="h-80 w-80">
-              <img src="https://imgresizer.eurosport.com/unsafe/725x408/filters:format(jpeg):focal(1196x583:1198x581)/origin-imgresizer.eurosport.com/2024/03/09/3926213-79757028-2560-1440.jpg"></img>
-            </div>
-            <div className="h-80 w-80">
-              <img src="https://i.le360.ma/le360sport/sites/default/files/styles/img_738_520/public/assets/images/2024/03-reda/sans_titre-1_1.jpg"></img>
-            </div>
-            <div className="h-80 w-80">
-              <img src="https://media.lesechos.com/api/v1/images/view/65828b1fa24b7145f61f483b/1280x720/01001156921778-web-tete.jpg"></img>
-            </div>
+          <div className="grid grid-cols-3 p-3 mt-4 bg-white rounded-md">
+            {reversedPosts.map((post) => {
+              if (post?.user?._id == myData?._id) {
+                return (
+                  <PostCard
+                    onUpdate={() => mutatePosts()}
+                    key={post.id}
+                    post={post}
+                    onClick={() => {
+                      router.push(`/posts/${post._id}`);
+                    }}
+                  />
+                );
+              } else {
+                return null;
+              }
+            })}
           </div>
         </div>
       </section>
