@@ -41,16 +41,29 @@ const Header = ({ hideAddButton = false }) => {
   return (
     <header className="sticky top-0 z-10 w-full py-5 font-semibold bg-white shadow-md">
       <div className="flex items-center justify-between mx-3">
-        <div className="flex gap-3 text-2xl font-bold cursor-pointer" onClick={()=>{
+        <div className="flex items-center gap-3 text-2xl font-bold cursor-pointer" onClick={()=>{
           router.push('/profile')
         }}>
-          <div className="">
+          { data?.role==='admin' ? (
+            <div className="p-1 bg-orange-400 rounded-full">
+            <div className="p-1 bg-white rounded-full">
             <Avatar src={data?.image} className="cursor-pointer" color="cyan" radius="xl" onClick={()=>{
               router.push('/profile')
             }}>
               {data?.firstName.toUpperCase().charAt(0)}{data?.lastName.toUpperCase().charAt(0)}
             </Avatar>
           </div>
+          </div>
+          ) : (
+            <div className="p-1 rounded-full ">
+            <Avatar src={data?.image} className="cursor-pointer" color="cyan" radius="xl" onClick={()=>{
+              router.push('/profile')
+            }}>
+              {data?.firstName.toUpperCase().charAt(0)}{data?.lastName.toUpperCase().charAt(0)}
+            </Avatar>
+          </div>
+          )}
+          
           <div className="">{data?.firstName} {data?.lastName}</div>
         </div>
         <div className="text-2xl font-bold"></div>
