@@ -47,15 +47,13 @@ function Home() {
   return (
     <section className="grid justify-center w-full text-black body-font">
       <div className="p-4 bg-gray-200 max-sm:max-w-sm lg:max-w-screen-lg">
-        <h2 className="my-5 mb-4 text-2xl font-medium text-center text-gray-900 sm:text-3xl title-font">
-          Les Derniere Posts
-        </h2>
+       
 
         <div className="flex flex-col items-center gap-12 ">
           {reversedPosts.map((post) => (
             <PostCard
               onUpdate={() => mutatePosts()}  
-              key={post.id}
+              key={post._id}
               post={post}
               onClick={() => {
                 router.push(`/posts/${post._id}`);
