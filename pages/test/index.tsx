@@ -1,44 +1,24 @@
+"use client";
+
 import { useRouter } from "next/router";
-import Header from "../../layouts/main-layout/header";
-
 import { useEffect } from "react";
-import MainL from "../../layouts/main-layout/index";
+import Header from "../../layouts/main-layout/header";
+import MainL from "../../layouts/main-layout";
 
-////////////////////////////////////////////////////////
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../../components/action-popup";
-import { HiMiniEllipsisVertical } from "react-icons/hi2";
+import PostNewCard from "../../components/post-new-card"
 
-import { useState } from "react";
-import { Portal, Modal } from "@mantine/core";
-////////////////////////////////////////////////////////
-
-function test() {
-  const [opened, setOpened] = useState(false);
-
-  console.log("this is opened => ",opened)
+function ThreeDCardDemo() {
   return (
-    <main style={{ position: "relative", zIndex: 1 }}>
-      {opened && (
-        <Modal opened={true} onClose={()=>{setOpened(false)}}>
-          <div>this is my modal content</div>
-        </Modal>
-      )}
+    <>
 
-      <div className="text-white bg-gray-700 cursor-pointer" onClick={() => setOpened(true)}>
-        Open modal
-      </div>
-    </main>
+    </>
   );
 }
-test.getLayout = function getLayout(test) {
+
+ThreeDCardDemo.getLayout = function getLayout(ThreeDCardDemo) {
   const router = useRouter();
+
+  console.log();
 
   useEffect(() => {
     const token = process.browser && localStorage.getItem("access_token");
@@ -50,12 +30,12 @@ test.getLayout = function getLayout(test) {
   return (
     <>
       <Header />
-
+      <PostNewCard onUpdate={undefined} post={undefined}/>
       <div className="flex justify-between w-full h-screen bg-gray-200">
-        <MainL>{test}</MainL>
+        <MainL>{ThreeDCardDemo}</MainL>
       </div>
     </>
   );
 };
 
-export default test;
+export default ThreeDCardDemo;
