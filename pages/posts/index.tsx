@@ -46,7 +46,7 @@ function Home() {
   const reversedPosts = [...posts.data].reverse();
   return (
     <section className="grid justify-center w-full text-black body-font">
-      <div className="p-4 bg-gray-200 max-sm:max-w-sm lg:max-w-screen-lg">
+      <div className="p-4 bg-white max-sm:max-w-sm lg:max-w-screen-lg">
        
 
         <div className="flex flex-col items-center gap-12 ">
