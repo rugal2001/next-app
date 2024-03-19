@@ -8,6 +8,7 @@ import { Avatar } from "@mantine/core";
 import { IconStar } from "@tabler/icons-react";
 import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
+import { useState } from "react";
 const Demo2 = async ({ children }) => {
   return (
     <AppShell
@@ -37,34 +38,58 @@ const Demo2 = async ({ children }) => {
 const Header = ({ hideAddButton = false }) => {
   const router = useRouter();
   const { data, isLoading, error } = useSWR("/me", fetcher);
-  // console.log("hello this is data ==> ",data);
+  const [activeLink, setActiveLink] = useState(""); // State to track active link
+
+  const handleLinkClick = (link) => {
+    setActiveLink(link); // Update active link state when a link is clicked
+    router.push(link); // Navigate to the clicked link
+  };
   return (
-    <header className="sticky top-0 z-10 w-full py-5 font-semibold bg-white shadow-md">
+    <header className="sticky top-0 z-10 w-full py-5 font-semibold bg-white ">
       <div className="flex items-center justify-between mx-3">
-        <div className="flex items-center gap-3 text-2xl font-bold cursor-pointer" onClick={()=>{
-          router.push('/profile')
-        }}>
-          { data?.role==='admin' ? (
+        <div
+          className="flex items-center gap-3 text-2xl font-bold cursor-pointer"
+          onClick={() => {
+            router.push("/profile");
+          }}
+        >
+          {data?.role === "admin" ? (
             <div className="p-1 bg-orange-400 rounded-full">
-            <div className="p-1 bg-white rounded-full">
-            <Avatar src={data?.image} className="cursor-pointer" color="cyan" radius="xl" onClick={()=>{
-              router.push('/profile')
-            }}>
-              {data?.firstName.toUpperCase().charAt(0)}{data?.lastName.toUpperCase().charAt(0)}
-            </Avatar>
-          </div>
-          </div>
+              <div className="p-1 bg-white rounded-full">
+                <Avatar
+                  src={data?.image}
+                  className="cursor-pointer"
+                  color="cyan"
+                  radius="xl"
+                  onClick={() => {
+                    router.push("/profile");
+                  }}
+                >
+                  {data?.firstName.toUpperCase().charAt(0)}
+                  {data?.lastName.toUpperCase().charAt(0)}
+                </Avatar>
+              </div>
+            </div>
           ) : (
             <div className="p-1 rounded-full ">
-            <Avatar src={data?.image} className="cursor-pointer" color="cyan" radius="xl" onClick={()=>{
-              router.push('/profile')
-            }}>
-              {data?.firstName.toUpperCase().charAt(0)}{data?.lastName.toUpperCase().charAt(0)}
-            </Avatar>
-          </div>
+              <Avatar
+                src={data?.image}
+                className="cursor-pointer"
+                color="cyan"
+                radius="xl"
+                onClick={() => {
+                  router.push("/profile");
+                }}
+              >
+                {data?.firstName.toUpperCase().charAt(0)}
+                {data?.lastName.toUpperCase().charAt(0)}
+              </Avatar>
+            </div>
           )}
-          
-          <div className="">{data?.firstName} {data?.lastName}</div>
+
+          <div className="">
+            {data?.firstName} {data?.lastName}
+          </div>
         </div>
         <div className="text-2xl font-bold"></div>
         <div className="text-2xl font-bold"></div>
@@ -73,10 +98,10 @@ const Header = ({ hideAddButton = false }) => {
             <ul className="flex items-center justify-center text-xl gap-11">
               <li>
                 <div
-                  className="flex items-center justify-center cursor-pointer hover:text-blue-600"
-                  onClick={() => {
-                    router.push("/");
-                  }}
+                  className={`flex items-center justify-center cursor-pointer hover:text-blue-600 ${
+                    activeLink === "/" ? "text-blue-600" : ""
+                  }`}
+                  onClick={() => handleLinkClick("/")}
                 >
                   <div className="grid items-center">
                     <div className="flex justify-evenly">
@@ -89,10 +114,10 @@ const Header = ({ hideAddButton = false }) => {
               <li>
                 <a
                   href="#"
-                  className="hover:text-blue-600"
-                  onClick={() => {
-                    router.push("/posts");
-                  }}
+                  className={`hover:text-blue-600 ${
+                    activeLink === "/posts" ? "text-blue-600" : ""
+                  }`}
+                  onClick={() => handleLinkClick("/posts")}
                 >
                   <div className="grid items-center">
                     <div className="flex justify-evenly">
@@ -105,10 +130,10 @@ const Header = ({ hideAddButton = false }) => {
               <li>
                 <a
                   href="#"
-                  className="hover:text-blue-600"
-                  onClick={() => {
-                    router.push("/comments");
-                  }}
+                  className={`hover:text-blue-600 ${
+                    activeLink === "/comments" ? "text-blue-600" : ""
+                  }`}
+                  onClick={() => handleLinkClick("/comments")}
                 >
                   <div className="grid items-center">
                     <div className="flex justify-evenly">
@@ -121,10 +146,10 @@ const Header = ({ hideAddButton = false }) => {
               <li>
                 <a
                   href="#"
-                  className="hover:text-blue-600"
-                  onClick={() => {
-                    router.push("/");
-                  }}
+                  className={`hover:text-blue-600 ${
+                    activeLink === "/about" ? "text-blue-600" : ""
+                  }`}
+                  onClick={() => handleLinkClick("/about")}
                 >
                   <div className="grid items-center">
                     <div className="flex justify-evenly">
@@ -160,7 +185,5 @@ const Header = ({ hideAddButton = false }) => {
     </header>
   );
 };
-
-
 
 export default Header;
