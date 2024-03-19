@@ -27,7 +27,7 @@
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.0",
-    "framer-motion": "^11.0.8",
+    "framer-motion": "^11.0.14",
     "maintain": "^0.0.0",
     "next": "12.2.5",
     "paginate": "^0.2.0",
@@ -37,7 +37,7 @@
     "react-paginate": "^8.2.0",
     "react-responsive": "^9.0.2",
     "swr": "^2.2.5",
-    "tailwind-merge": "^2.2.1"
+    "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",
