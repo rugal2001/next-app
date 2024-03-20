@@ -129,7 +129,7 @@ function Profile() {
   );
 }
 
-Profile.getLayout = function getLayout(Profile) {
+Profile.GetLayout = function GetLayout(Profile) {
   const router = useRouter();
 
   useEffect(() => {

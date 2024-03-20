@@ -15,7 +15,7 @@ function Home() {
     </div>
   );
 }
-Home.getLayout = function getLayout(Home) {
+Home.GetLayout = function GetLayout(Home) {
   const router = useRouter();
 
   useEffect(() => {

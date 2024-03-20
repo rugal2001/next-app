@@ -19,7 +19,7 @@ function Auth() {
   );
 }
 
-Auth.getLayout = function getLayout(Auth) {
+Auth.GetLayout = function GetLayout(Auth) {
   return (
     <>
       <AuthHeader />

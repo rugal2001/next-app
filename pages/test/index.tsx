@@ -67,7 +67,7 @@ function ThreeDCardDemo() {
   );
 }
 
-ThreeDCardDemo.getLayout = function getLayout(ThreeDCardDemo) {
+ThreeDCardDemo.GetLayout = function GetLayout(ThreeDCardDemo) {
   const router = useRouter();
 
   console.log();

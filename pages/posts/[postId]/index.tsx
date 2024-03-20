@@ -326,7 +326,7 @@ function Post() {
   );
 }
 
-Post.getLayout = function getLayout(Home) {
+Post.GetLayout = function GetLayout(Home) {
   const router = useRouter();
   useEffect(() => {
     const token = process.browser && localStorage.getItem("access_token");

@@ -73,7 +73,7 @@ function Home() {
   );
 }
 
-Home.getLayout = function getLayout(Home) {
+Home.GetLayout = function GetLayout(Home) {
   const router = useRouter();
   useEffect(() => {
     const token = process.browser && localStorage.getItem("access_token");
