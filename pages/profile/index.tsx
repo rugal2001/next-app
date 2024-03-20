@@ -9,6 +9,7 @@ import { FiEdit } from "react-icons/fi";
 import PostCard from "../../components/posts-card";
 
 function Profile() {
+  const router = useRouter();
   const { data: myData, isLoading: meLoading, error } = useSWR("/me", fetcher);
   
   const [firstName, setFirstName] = useState(myData?.firstName);
@@ -36,7 +37,6 @@ function Profile() {
   if (postError) return <div>Error Loading Posts</div>;
   if (!posts) return <div>There are no posts</div>;
   
-  const router = useRouter();
 
   const handleSubmit = () => {
     const formData = new FormData();
@@ -131,7 +131,6 @@ function Profile() {
 
 Profile.GetLayout = function GetLayout(Profile) {
   const router = useRouter();
-
   useEffect(() => {
     const token = process.browser && localStorage.getItem("access_token");
     if (!token) {
