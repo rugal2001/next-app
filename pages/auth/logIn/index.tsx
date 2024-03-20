@@ -93,13 +93,18 @@ function LogIn() {
                 ></input>
               </div>
 
-              <button
+              <div className="flex gap-3 items-center">
+                <button
                 type="submit"
                 className="px-8 py-2 text-lg text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
               >
                 Log In
               </button>
+              <div className="ml-3 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>{router.push('/auth/signIn')}}>I don't have account</div>
+              </div>
+              
             </form>
+            
           </div>
         </div>
       </section>

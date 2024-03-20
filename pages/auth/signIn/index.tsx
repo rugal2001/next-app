@@ -27,7 +27,7 @@ function SignIn() {
         console.log("this is a big mistake hhhh");
       }
     } catch (error) {
-      console.error({message : 'ERRROR'})
+      console.error({ message: "ERRROR" });
     }
   }
 
@@ -52,9 +52,7 @@ function SignIn() {
                 Sign Up
               </h2>
               <div className="relative mb-4">
-                <label className="leading-7 text-gray-600 ">
-                  First Name
-                </label>
+                <label className="leading-7 text-gray-600 ">First Name</label>
                 <input
                   type="text"
                   id="first-name"
@@ -65,9 +63,7 @@ function SignIn() {
                 ></input>
               </div>
               <div className="relative mb-4">
-                <label className="leading-7 text-gray-600 ">
-                  Last Name
-                </label>
+                <label className="leading-7 text-gray-600 ">Last Name</label>
                 <input
                   type="text"
                   id="last-name"
@@ -89,9 +85,7 @@ function SignIn() {
                 ></input>
               </div>
               <div className="relative mb-4">
-                <label className="leading-7 text-gray-600 ">
-                  Password
-                </label>
+                <label className="leading-7 text-gray-600 ">Password</label>
                 <input
                   type="password"
                   id="password"
@@ -115,12 +109,22 @@ function SignIn() {
               <p className="mt-3 mb-8 text-xs text-gray-500">
                 Literally you probably haven t heard of them jean shorts.
               </p>
-              <button
-                type="submit"
-                className="px-8 py-2 text-lg text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
-              >
-                Sign In
-              </button>
+              <div className="flex gap-3 items-center">
+                <button
+                  type="submit"
+                  className="px-8 py-2 text-lg text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
+                >
+                  Sign up
+                </button>
+                <div
+                  className="ml-3 hover:underline hover:text-blue-600 cursor-pointer"
+                  onClick={() => {
+                    router.push("/auth/logIn");
+                  }}
+                >
+                  I do have account
+                </div>
+              </div>
             </form>
           </div>
         </div>
