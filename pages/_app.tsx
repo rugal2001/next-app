@@ -4,10 +4,10 @@ import { createTheme, MantineProvider } from "@mantine/core";
 
 const theme = createTheme({});
 function MyApp({ Component, pageProps }) {
-  const getLayout = Component.getLayout ?? ((page) => page);
+  const GetLayout = Component.getLayout ?? ((page) => page);
   return (
     <MantineProvider theme={theme}>
-      {getLayout(<Component {...pageProps} />)}
+      {GetLayout(<Component {...pageProps} />)}
     </MantineProvider>
   );
 }
