@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { AuthHeader } from "../../layouts/main-layout/auth-header";
-function auth() {
+
+function Auth() {
     const router = useRouter();
   return (
     <>
@@ -18,17 +19,17 @@ function auth() {
   );
 }
 
-auth.getLayout = function getLayout(auth) {
+Auth.getLayout = function getLayout(Auth) {
   return (
     <>
       <AuthHeader />
       <div className="flex justify-between">
         <div className="">{/* <Left></Left> */}</div>
-        <div className="w-full h-screen bg-gray-200">{auth}</div>
+        <div className="w-full h-screen bg-gray-200">{Auth}</div>
         <div></div>
       </div>
     </>
   );
 };
 
-export default auth;
+export default Auth;
