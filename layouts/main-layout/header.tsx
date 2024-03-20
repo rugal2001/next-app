@@ -166,7 +166,7 @@ const Header = ({ hideAddButton = false }) => {
         <div className="flex gap-1  w-[20%] justify-end">
           {hideAddButton === false ? (
             <div
-              className="p-2 text-blue-600 bg-white border-[1px] border-blue-600 rounded-lg cursor-pointer hover:text-white hover:bg-blue-600 w-[40%] text-sm text-center"
+              className="p-2 text-blue-600 bg-white border-[1px] border-blue-600 rounded-lg cursor-pointer hover:text-white hover:bg-blue-600 w-[40%] text-sm text-center "
               onClick={() => {
                 router.push("/posts/addPost");
               }}

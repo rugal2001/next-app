@@ -24,7 +24,7 @@ function Post() {
   const [uContenue, setUContenue] = useState("");
 
   const {
-    data: meData,
+    data: myData,
     isLoading: meLoading,
     error: meError,
   } = useSWR("/me", fetcher);
@@ -55,7 +55,7 @@ function Post() {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const insertedComment = {
         contenue: comment,
-        user: meData._id,
+        user: myData._id,
         post: post.data._id,
       };
       await axios.post(
@@ -106,6 +106,11 @@ function Post() {
     }
     postMutate();
   };
+
+  //post?.data?.user._id === myData?._id
+  console.log("post?.data?.user._id => ", post?.data?.user._id);
+  console.log("myData?._id => ", myData?._id);
+  console.log("myData?.role => ", myData?.role);
 
   return (
     <>
@@ -242,8 +247,8 @@ function Post() {
                       <HiMiniEllipsisVertical className="text-3xl rounded-full cursor-pointer hover:bg-gray-100" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-48 h-auto bg-white">
-                      {post?.data?.user._id === meData?._id ||
-                        (meData?.role == "admin" && (
+                      {post?.data?.user._id === myData?._id ||
+                        (myData?.role === "admin" && (
                           <DropdownMenuItem
                             className="font-bold cursor-pointer hover:bg-gray-100"
                             onClick={() => setOpened(true)}
@@ -251,8 +256,8 @@ function Post() {
                             Edit
                           </DropdownMenuItem>
                         ))}
-                      {post?.data?.user._id === meData?._id ||
-                        (meData?.role == "admin" && (
+                      {post?.data?.user._id === myData?._id ||
+                        (myData?.role === "admin" && (
                           <DropdownMenuItem
                             className="font-bold cursor-pointer hover:bg-gray-100"
                             onClick={() => setShowConfirmation(true)}
@@ -299,9 +304,9 @@ function Post() {
               <div className=" bg-white p-2  sticky bottom-0">
                 <div className="grid gap-2 mb-2">
                   <div className="flex items-center gap-3 px-3 mt-2 text-xl font-semibold">
-                    <Avatar src={meData?.image} color="cyan" radius="xl" />
+                    <Avatar src={myData?.image} color="cyan" radius="xl" />
                     <div>
-                      {meData?.firstName} {meData?.lastName}
+                      {myData?.firstName} {myData?.lastName}
                     </div>
                   </div>
                   <div className="flex justify-between w-full gap-3">
