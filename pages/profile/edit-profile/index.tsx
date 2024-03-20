@@ -7,7 +7,7 @@ import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import axios from "axios";
 
-function profile() {
+function Profile() {
     const router = useRouter();
   const { data, isLoading, error } = useSWR("/me", fetcher);
   const [firstName, setFirstName] = useState(data?.firstName);
@@ -182,7 +182,7 @@ function profile() {
   );
 }
 
-profile.getLayout = function getLayout(profile) {
+Profile.getLayout = function getLayout(Profile) {
   const router = useRouter();
 
   useEffect(() => {
@@ -198,7 +198,7 @@ profile.getLayout = function getLayout(profile) {
       <div className="flex justify-between">
         <div className="">{/* <Left></Left> */}</div>
         <div className="w-full h-screen bg-gray-200">
-          <Main>{profile}</Main>
+          <Main>{Profile}</Main>
         </div>
         <div></div>
       </div>
@@ -206,4 +206,4 @@ profile.getLayout = function getLayout(profile) {
   );
 };
 
-export default profile;
+export default Profile;

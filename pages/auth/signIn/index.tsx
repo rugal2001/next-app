@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 
-function signIn() {
+function SignIn() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -129,4 +129,4 @@ function signIn() {
   );
 }
 
-export default signIn;
+export default SignIn;

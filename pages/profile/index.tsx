@@ -8,7 +8,7 @@ import axios from "axios";
 import { FiEdit } from "react-icons/fi";
 import PostCard from "../../components/posts-card";
 
-function profile() {
+function Profile() {
   const { data: myData, isLoading: meLoading, error } = useSWR("/me", fetcher);
   
   const [firstName, setFirstName] = useState(myData?.firstName);
@@ -129,7 +129,7 @@ function profile() {
   );
 }
 
-profile.getLayout = function getLayout(profile) {
+Profile.getLayout = function getLayout(Profile) {
   const router = useRouter();
 
   useEffect(() => {
@@ -145,7 +145,7 @@ profile.getLayout = function getLayout(profile) {
       <div className="flex justify-between">
         <div className="">{/* <Left></Left> */}</div>
         <div className="w-full h-screen bg-gray-200">
-          <Main>{profile}</Main>
+          <Main>{Profile}</Main>
         </div>
         <div></div>
       </div>
@@ -153,4 +153,4 @@ profile.getLayout = function getLayout(profile) {
   );
 };
 
-export default profile;
+export default Profile;

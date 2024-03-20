@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import httpClientReq from "../../../lib/http-client-req";
 import useSWR from "swr";
 
-function logIn() {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -107,4 +107,4 @@ function logIn() {
   );
 }
 
-export default logIn;
+export default Login;
