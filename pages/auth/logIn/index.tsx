@@ -62,14 +62,14 @@ function LogIn() {
               starts here. Sign in now and let the adventure begin!
             </p>
           </div>
-          <div className="flex flex-col w-full p-8 mt-10 bg-gray-100 rounded-lg lg:w-2/6 md:w-1/2 md:ml-auto md:mt-0">
+          <div className="flex flex-col text-sm w-full p-8 mt-10 bg-gray-100 rounded-lg lg:w-2/6 md:w-1/2 md:ml-auto md:mt-0">
             <form onSubmit={handleSubmitSignin}>
               <h2 className="mb-5 text-lg font-medium text-gray-900 title-font">
                 Log In
               </h2>
 
               <div className="relative mb-4">
-                <label className="text-sm leading-7 text-gray-600">Email</label>
+                <label className=" leading-7 text-gray-600">Email</label>
                 <input
                   type="email"
                   id="email"
@@ -80,7 +80,7 @@ function LogIn() {
                 ></input>
               </div>
               <div className="relative mb-4">
-                <label className="text-sm leading-7 text-gray-600">
+                <label className=" leading-7 text-gray-600">
                   Password
                 </label>
                 <input
@@ -96,7 +96,7 @@ function LogIn() {
               <div className="flex gap-3 items-center">
                 <button
                 type="submit"
-                className="px-8 py-2 text-lg text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
+                className="px-8 py-2 text-sm text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
               >
                 Log In
               </button>

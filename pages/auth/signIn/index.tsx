@@ -34,7 +34,7 @@ function SignIn() {
   return (
     <>
       <section className="text-gray-600 body-font">
-        <div className="container flex flex-wrap items-center px-5 py-24 mx-auto">
+        <div className="container flex flex-wrap items-center px-5 py-14 mx-auto">
           <div className="pr-0 lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0">
             <h1 className="text-3xl font-medium text-gray-900 title-font">
               WELCOME to Futur
@@ -46,7 +46,7 @@ function SignIn() {
               starts here. Sign in now and let the adventure begin!
             </p>
           </div>
-          <div className="flex flex-col w-full p-8 mt-10 text-xl bg-gray-100 rounded-lg lg:w-2/6 md:w-1/2 md:ml-auto md:mt-0">
+          <div className="flex flex-col w-full p-8 mt-10 text-sm bg-gray-100 rounded-lg lg:w-2/6 md:w-1/2 md:ml-auto md:mt-0">
             <form onSubmit={handleSubmitSignin}>
               <h2 className="mb-5 text-lg font-medium text-gray-900 title-font">
                 Sign Up
@@ -112,7 +112,7 @@ function SignIn() {
               <div className="flex gap-3 items-center">
                 <button
                   type="submit"
-                  className="px-8 py-2 text-lg text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
+                  className="px-8 py-2 text-sm text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
                 >
                   Sign up
                 </button>
