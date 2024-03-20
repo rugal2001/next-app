@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { cn } from "../../pages/utils/cn";
+import { cn } from "../../utils/cn";
 
 
 import { useRouter } from "next/router";
