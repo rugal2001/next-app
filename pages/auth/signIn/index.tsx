@@ -113,7 +113,7 @@ function SignIn() {
                 ></input>
               </div>
               <p className="mt-3 mb-8 text-xs text-gray-500">
-                Literally you probably haven't heard of them jean shorts.
+                Literally you probably haven t heard of them jean shorts.
               </p>
               <button
                 type="submit"
