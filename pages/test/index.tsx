@@ -81,7 +81,7 @@ ThreeDCardDemo.getLayout = function getLayout(ThreeDCardDemo) {
 
   return (
     <>
-      <NavigationMenuLayout />
+      <Header />
       <div className="">
         <Main>{ThreeDCardDemo}</Main>
        
