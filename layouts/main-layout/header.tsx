@@ -45,22 +45,23 @@ const Header = ({ hideAddButton = false }) => {
     router.push(link); // Navigate to the clicked link
   };
   return (
-    <header className="sticky top-0 z-10 w-full py-5 font-semibold bg-white ">
+    <header className="sticky top-0 z-10 w-full h-full py-3 font-semibold bg-white shadow-md">
       <div className="flex items-center justify-between mx-3">
         <div
-          className="flex items-center gap-3 text-2xl font-bold cursor-pointer"
+          className="flex items-center gap-3 text-sm font-bold cursor-pointer"
           onClick={() => {
             router.push("/profile");
           }}
         >
           {data?.role === "admin" ? (
-            <div className="p-1 bg-orange-400 rounded-full">
+            <div className="p-[0.08rem] bg-orange-400 rounded-full">
               <div className="p-1 bg-white rounded-full">
                 <Avatar
                   src={data?.image}
                   className="cursor-pointer"
                   color="cyan"
                   radius="xl"
+                  size="sm"
                   onClick={() => {
                     router.push("/profile");
                   }}
@@ -91,11 +92,10 @@ const Header = ({ hideAddButton = false }) => {
             {data?.firstName} {data?.lastName}
           </div>
         </div>
-        <div className="text-2xl font-bold"></div>
-        <div className="text-2xl font-bold"></div>
-        <nav className="w-[60%]  grid justify-end mr-12">
+
+        <nav className="w-[60%]  grid justify-center ">
           <div className="">
-            <ul className="flex items-center justify-center text-xl gap-11">
+            <ul className="flex items-center justify-center text-sm gap-11">
               <li>
                 <div
                   className={`flex items-center justify-center cursor-pointer hover:text-blue-600 ${
@@ -162,24 +162,27 @@ const Header = ({ hideAddButton = false }) => {
             </ul>
           </div>
         </nav>
-        {hideAddButton === false ? (
+
+        <div className="flex gap-1  w-[20%] justify-end">
+          {hideAddButton === false ? (
+            <div
+              className="p-2 text-blue-600 bg-white border-[1px] border-blue-600 rounded-lg cursor-pointer hover:text-white hover:bg-blue-600 w-[40%] text-sm text-center"
+              onClick={() => {
+                router.push("/posts/addPost");
+              }}
+            >
+              Add post
+            </div>
+          ) : null}
           <div
-            className="p-4 text-blue-600 bg-white border-2 border-blue-600 rounded-lg cursor-pointer hover:text-white hover:bg-blue-600 w-[10%] text-xl text-center"
+            className="p-2 text-red-500 bg-white border-[1px] border-red-500 rounded-lg cursor-pointer hover:text-white hover:bg-red-500 w-[40%] text-sm text-center"
             onClick={() => {
-              router.push("/posts/addPost");
+              localStorage.removeItem("access_token");
+              router.push("/auth");
             }}
           >
-            Add post
+            Logout
           </div>
-        ) : null}
-        <div
-          className="p-4 text-red-500 bg-white border-2 border-red-500 rounded-lg cursor-pointer hover:text-white hover:bg-red-500 w-[10%] text-xl text-center"
-          onClick={() => {
-            localStorage.removeItem("access_token");
-            router.push("/auth");
-          }}
-        >
-          Logout
         </div>
       </div>
     </header>
