@@ -100,7 +100,7 @@ function LogIn() {
               >
                 Log In
               </button>
-              <div className="ml-3 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>{router.push('/auth/signIn')}}>I don't have account</div>
+              <div className="ml-3 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>{router.push('/auth/signIn')}}>I don t have account</div>
               </div>
               
             </form>
