@@ -10,18 +10,17 @@ import PostCard from "../../components/posts-card";
 
 function profile() {
   const { data: myData, isLoading: meLoading, error } = useSWR("/me", fetcher);
-  const router = useRouter();
-
+  
   const [firstName, setFirstName] = useState(myData?.firstName);
   const [lastName, setLastName] = useState(myData?.lastName);
   const [email, setEmail] = useState(myData?.email);
   const [role, setRole] = useState(myData?.role);
   const [image, setImage] = useState(
     myData?.image
-      ? myData.image
-      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
-  );
-  const [image2, setImage2] = useState(
+    ? myData.image
+    : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+    );
+    const [image2, setImage2] = useState(
     myData?.image
       ? myData.image
       : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
@@ -36,11 +35,12 @@ function profile() {
   if (isLoading) return <div>Loading ...</div>;
   if (postError) return <div>Error Loading Posts</div>;
   if (!posts) return <div>There are no posts</div>;
-
+  
+  const router = useRouter();
 
   const handleSubmit = () => {
     const formData = new FormData();
-    console.log("im in hundle submit in profile ligne 48 ");
+    
     formData.append("image", image);
     axios
       .post("http://localhost:4000/upload-img", formData, {
@@ -55,7 +55,7 @@ function profile() {
           response.data
         );
 
-        fetch(`http://localhost:4000/user/${data?._id}`, {
+        fetch(`http://localhost:4000/user/${myData?._id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
