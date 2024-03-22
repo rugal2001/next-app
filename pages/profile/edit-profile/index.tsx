@@ -6,29 +6,39 @@ import { CiImageOn } from "react-icons/ci";
 import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import axios from "axios";
+import AuthLayout from "@/layouts/auth-layout";
 
 function Profile() {
-    const router = useRouter();
+  const router = useRouter();
   const { data, isLoading, error } = useSWR("/me", fetcher);
   const [firstName, setFirstName] = useState(data?.firstName);
   const [lastName, setLastName] = useState(data?.lastName);
   const [email, setEmail] = useState(data?.email);
   const [role, setRole] = useState(data?.role);
-  const [image, setImage] = useState(data?.image ? data.image : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg");
-  const [image2, setImage2] = useState(data?.image ? data.image : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg");
+  const [image, setImage] = useState(
+    data?.image
+      ? data.image
+      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+  );
+  const [image2, setImage2] = useState(
+    data?.image
+      ? data.image
+      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+  );
+
+    
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-   
 
     reader.onload = function () {
       if (typeof reader.result === "string") {
         setImage(e.target.files[0]);
         setImage2(reader.result);
         const imageOnBoard = reader.result;
-        console.log("this is e.target.result[0] => ",e.target?.result[0])
-        console.log("imageOnBoard => ",imageOnBoard)
+        console.log("this is e.target.result[0] => ", e.target?.result[0]);
+        console.log("imageOnBoard => ", imageOnBoard);
       } else {
         console.error("Failed to read image as string");
       }
@@ -71,7 +81,9 @@ function Profile() {
         })
           .then((response) => response.json())
           .then((response) => console.log("response data in 75", response.data))
-          .then(()=>{router.push('/profile')})
+          .then(() => {
+            router.push("/profile");
+          })
           .catch((error) => console.error("Error:", error));
       })
       .catch((error) => {
@@ -84,7 +96,7 @@ function Profile() {
       <section className="text-gray-600 body-font">
         <div className="container flex flex-col items-center justify-center px-5 py-24 mx-auto ">
           <div
-            className="grid p-1 bg-white rounded-md mb-7 w-72"
+            className="grid p-1 bg-white rounded-md shadow-lg mb-7 w-72"
             onClick={() => document.getElementById("fileInput").click()}
           >
             <img
@@ -194,14 +206,9 @@ Profile.GetLayout = function GetLayout(Profile) {
 
   return (
     <>
-      <Header />
-      <div className="flex justify-between">
-        <div className="">{/* <Left></Left> */}</div>
-        <div className="w-full h-screen bg-gray-200">
-          <Main>{Profile}</Main>
-        </div>
-        <div></div>
-      </div>
+      <AuthLayout>
+        <Main>{Profile}</Main>
+      </AuthLayout>
     </>
   );
 };
