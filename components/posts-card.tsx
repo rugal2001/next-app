@@ -7,6 +7,7 @@ import useSWR, { mutate } from "swr";
 import fetcher from "../lib/fetcher";
 import axios from "axios";
 import { IoIosClose } from "react-icons/io";
+import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 interface PostsCardI {
   post: {
     _id: string;
@@ -14,6 +15,7 @@ interface PostsCardI {
     contenue: string;
     image: string;
     user: Record<string, any>;
+    like : number;
   };
   onClick?: () => any;
   onUpdate: any;
@@ -25,6 +27,8 @@ const PostNewCard = ({ onUpdate, post, onClick = () => {} }: PostsCardI) => {
   const [expanded, setExpanded] = useState(false);
   const [opened, setOpened] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [like, setLike] = useState(post.like);
+  const [addLike,setAddLike] = useState(false);
 
   const contenue = post?.contenue;
   const words = contenue?.split(" ");
@@ -72,24 +76,47 @@ const PostNewCard = ({ onUpdate, post, onClick = () => {} }: PostsCardI) => {
         },
       };
       const updatedData = {
-        contenue: uContenue,
+        // contenue: uContenue,
+        like: like,
       };
+      console.log("im inside update like of the post => like : ", like);
 
       await axios.put(
         `http://localhost:4000/posts/${post._id}`,
         updatedData,
         config
       );
+      onUpdate();
+
       console.log("Post updated successfully !!");
       setOpened(false);
     } catch (error) {
       console.error("handle Update post ", error);
     }
-    onUpdate();
     console.log("onUpdate();", onUpdate());
   };
-
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  ///////////////////ADD-LIKE//////////////////////
+  const handleAddLike = async () =>{
+    try {
+      const token = localStorage.getItem("access_token");
+      const config = {
+        headers : {
+          Authorization : `Bearer ${token}`,
+        },
+      };
+      await axios.post(
+        `http://localhost:4000/posts/:id/like`,config
+      );
+    } catch (error) {
+      console.log('error in adding like ',error);
+    }
+  }
+
+
+  /////////////////////////////////////////////////////
 
   return (
     <>
@@ -211,7 +238,6 @@ const PostNewCard = ({ onUpdate, post, onClick = () => {} }: PostsCardI) => {
                 </Avatar>
                 {post?.user?.firstName} {post?.user?.lastName}
               </div>
-              
             </div>
           </CardItem>
           <CardItem
@@ -240,6 +266,31 @@ const PostNewCard = ({ onUpdate, post, onClick = () => {} }: PostsCardI) => {
                 onClick();
               }}
             />
+          </CardItem>
+          <CardItem
+            translateZ="50"
+            className="w-full text-xl font-bold text-neutral-600 dark:text-white"
+          >
+            <div className="flex items-center gap-3 m-2 mt-4 cursor-pointer">
+              <div
+                className=""
+                onClick={() => {
+                  if(!like){
+                    setAddLike(true);
+                    setLike(like+1);
+                  }
+                  else{
+                    setAddLike(false)
+                    setLike(like-1);
+                  }
+                  handleUpdatePost();                             
+                }}
+              >
+                {addLike ? <FcLike />: <FcLikePlaceholder />}
+                
+              </div>
+              <div className="text-sm font-semibold">{like}</div>
+            </div>
           </CardItem>
         </CardBody>
       </CardContainer>
