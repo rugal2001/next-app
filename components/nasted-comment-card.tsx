@@ -80,7 +80,6 @@ export const NastedCommentCard = ({
       console.log(error);
     }
   };
-  
 
   const handleDelete = async () => {
     try {
@@ -90,7 +89,7 @@ export const NastedCommentCard = ({
           Authorization: `Bearer ${token}`,
         },
       };
-      
+
       await axios.delete(
         `http://localhost:4000/nasted-comments/${nasted._id}`,
         config
@@ -104,7 +103,9 @@ export const NastedCommentCard = ({
     onUpdate();
   };
 
-  
+  //                {comment.user._id === myData._id || myData.role === "admin" ? (
+  console.log("nastedComment.user._id => ", nasted.user._id);
+  console.log("myData => ", myData);
 
   return (
     <>
@@ -152,8 +153,8 @@ export const NastedCommentCard = ({
           </div>
         </Modal>
       )}
-      <div className="w-full grid gap-2">
-        <div className="bg-gray-300 w-full  rounded-lg h-auto flex justify-between ">
+      <div className="grid w-full gap-2">
+        <div className="flex justify-between w-full h-auto bg-gray-300 rounded-lg ">
           <div className="grid gap-2">
             <div className="flex">
               <div className="p-3">
@@ -164,7 +165,7 @@ export const NastedCommentCard = ({
                 />
               </div>
               <div className="mt-4">
-                <h4 className="text-lg font-bold mb-2">
+                <h4 className="mb-2 text-lg font-bold">
                   {nasted.user.firstName} {nasted.user.lastName}
                 </h4>
                 <div className="font-bold">
@@ -176,7 +177,7 @@ export const NastedCommentCard = ({
                 )}
                 {showNewComment && (
                   <>
-                    <div className="mt-2 flex gap-3 items-center">
+                    <div className="flex items-center gap-3 mt-2">
                       <textarea
                         className="w-full h-12 pl-3 rounded-md scrollbar-none"
                         defaultValue={uContenue}
@@ -209,43 +210,43 @@ export const NastedCommentCard = ({
               Reply
             </div>
           </div>
-          <div className=" m-2">
+          <div className="m-2 ">
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <HiMiniEllipsisVertical className="text-2xl rounded-full cursor-pointer hover:bg-gray-100" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-48 h-auto bg-white rounded-lg text-sm p-1">
+              <DropdownMenuContent className="w-48 h-auto p-1 text-sm bg-white rounded-lg">
                 {/* <DropdownMenuLabel>Outils</DropdownMenuLabel> */}
                 {/* <DropdownMenuSeparator /> */}
-                {/* {post?.data?.user._id === meData?._id ? ( */}
-                {/* {comment.user._id === myData._id || myData.role === "admin" ? ( */}
-                <DropdownMenuItem
-                  className="font-bold cursor-pointer  hover:bg-gray-100 rounded-lg my-1 h-7 p-2 px-3 mb-3"
-                  // onClick={() => setOpened(true)}
-                  onClick={() => {
-                    setShowOldComment(false);
-                    setShowNewComment(true);
-                  }}
-                >
-                  <div>Edit Comment</div>
-                </DropdownMenuItem>
-                {/* // ) : null} */}
-                {/* ) : null} */}
-                {/* {post?.data?.user._id === meData?._id ? ( */}
-                {/* {comment.user._id === myData._id || myData.role === "admin" ? ( */}
-                <DropdownMenuItem
-                  className="font-bold cursor-pointer hover:bg-gray-100 rounded-lg my-1 h-7 p2 px-3"
-                  onClick={() => {
-                    setShowConfirmation(true);
-                  }}
-                >
-                  Delete Comment
-                </DropdownMenuItem>
-                {/* ) : null} */}
 
-                {/* ) : null} */}
+                {nasted.user._id === myData._id || myData.role === "admin" ? (
+                  <DropdownMenuItem
+                    className="p-2 px-3 my-1 mb-3 font-bold rounded-lg cursor-pointer hover:bg-gray-100 h-7"
+                    // onClick={() => setOpened(true)}
+                    onClick={() => {
+                      setShowOldComment(false);
+                      setShowNewComment(true);
+                    }}
+                  >
+                    <div>Edit Comment</div>
+                  </DropdownMenuItem>
+                ) : null}
+                
+               
+                {nasted.user._id === myData._id || myData.role === "admin" ? (
+                  <DropdownMenuItem
+                    className="px-3 my-1 font-bold rounded-lg cursor-pointer hover:bg-gray-100 h-7 p2"
+                    onClick={() => {
+                      setShowConfirmation(true);
+                    }}
+                  >
+                    Delete Comment
+                  </DropdownMenuItem>
+                ) : null}
+
+                
                 <DropdownMenuItem
-                  className="font-bold cursor-pointer hover:bg-gray-100 rounded-lg my-1 h-7 2 px-3"
+                  className="px-3 my-1 font-bold rounded-lg cursor-pointer hover:bg-gray-100 h-7 2"
                   // onClick={() => {
                   //   console.log("this is the post id => ", post.data._id);
                   // }}
@@ -278,7 +279,7 @@ export const NastedCommentCard = ({
                   <textarea
                     name=""
                     id=""
-                    className="w-full h-10 rounded-lg p-2 scrollbar-none"
+                    className="w-full h-10 p-2 rounded-lg scrollbar-none"
                     style={{
                       outline: "none",
                       overflowY: "scroll",
