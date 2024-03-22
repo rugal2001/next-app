@@ -7,6 +7,9 @@ function MyApp({ Component, pageProps }) {
   const GetLayout = Component.GetLayout ?? ((page) => page);
   return (
     <MantineProvider theme={theme}>
+      {/* <GetLayout>
+      <Component {...pageProps} />
+      </GetLayout> */}
       {GetLayout(<Component {...pageProps} />)}
     </MantineProvider>
   );
