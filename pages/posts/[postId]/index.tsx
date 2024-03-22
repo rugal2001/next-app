@@ -16,13 +16,14 @@ import {
   DropdownMenuTrigger,
 } from "../../../components/action-popup";
 import { IoIosClose } from "react-icons/io";
+import { FcLike } from "react-icons/fc";
 
 function Post() {
   const [comment, setComment] = useState("");
   const [opened, setOpened] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [uContenue, setUContenue] = useState("");
-
+  const [like, setLike] = useState(0);
   const {
     data: myData,
     isLoading: meLoading,
@@ -107,10 +108,26 @@ function Post() {
     postMutate();
   };
 
-  //post?.data?.user._id === myData?._id
-  console.log("post?.data?.user._id => ", post?.data?.user._id);
-  console.log("myData?._id => ", myData?._id);
-  console.log("myData?.role => ", myData?.role);
+    ///////////////////ADD-LIKE//////////////////////
+    const handleAddLike = async () =>{
+      try {
+        const token = localStorage.getItem("access_token");
+        const config = {
+          headers : {
+            Authorization : `Bearer ${token}`,
+          },
+        };
+        await axios.post(
+          `http://localhost:4000/posts/:id/like`,config
+        );
+      } catch (error) {
+        console.log('error in adding like ',error);
+      }
+    }
+  
+  
+    /////////////////////////////////////////////////////
+  
 
   return (
     <>
@@ -216,15 +233,15 @@ function Post() {
 
       <div className="flex justify-center w-full mb-3">
         <div className="flex w-full bg-black">
-          <div className="w-full md:w-3/4 relative">
-            <div className="sticky top-0 bg-black pt-20">
+          <div className="relative w-full md:w-3/4">
+            <div className="sticky top-0 pt-20 bg-black">
               <img
                 src={post.data?.image}
                 alt="Post Image"
                 className="w-full max-h-[80vh] object-contain max-w-[90vw] mx-auto"
               />
               <div
-                className="text-6xl absolute top-0 m-3 rounded-full  text-white cursor-pointer"
+                className="absolute top-0 m-3 text-6xl text-white rounded-full cursor-pointer"
                 onClick={() => {
                   router.back();
                 }}
@@ -234,8 +251,8 @@ function Post() {
             </div>
           </div>
 
-          <div className="w-full md:w-1/4 flex justify-center">
-            <div className="w-full p-1 bg-white">
+          <div className="flex justify-center w-full md:w-1/4">
+            <div className="w-full bg-white">
               <div className="flex items-center justify-between p-3 text-xl font-semibold bg-white rounded-t-lg">
                 <div className="flex items-center gap-3">
                   <Avatar src={post.data?.user?.image} alt="it's me" />
@@ -247,24 +264,26 @@ function Post() {
                       <HiMiniEllipsisVertical className="text-3xl rounded-full cursor-pointer hover:bg-gray-100" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-48 h-auto bg-white">
+                      
                       {post?.data?.user._id === myData?._id ||
-                        (myData?.role === "admin" && (
-                          <DropdownMenuItem
-                            className="font-bold cursor-pointer hover:bg-gray-100"
-                            onClick={() => setOpened(true)}
-                          >
-                            Edit
-                          </DropdownMenuItem>
-                        ))}
+                      myData.role === "admin" ? (
+                        <DropdownMenuItem
+                          className="font-bold cursor-pointer hover:bg-gray-100"
+                          onClick={() => setOpened(true)}
+                        >
+                          Edit
+                        </DropdownMenuItem>
+                      ) : null}
+
                       {post?.data?.user._id === myData?._id ||
-                        (myData?.role === "admin" && (
-                          <DropdownMenuItem
-                            className="font-bold cursor-pointer hover:bg-gray-100"
-                            onClick={() => setShowConfirmation(true)}
-                          >
-                            Delete
-                          </DropdownMenuItem>
-                        ))}
+                      myData.role === "admin" ? (
+                        <DropdownMenuItem
+                          className="font-bold cursor-pointer hover:bg-gray-100"
+                          onClick={() => setShowConfirmation(true)}
+                        >
+                          Delete
+                        </DropdownMenuItem>
+                      ) : null}
                       <DropdownMenuItem
                         className="font-bold cursor-pointer hover:bg-gray-100"
                         onClick={() =>
@@ -277,10 +296,24 @@ function Post() {
                   </DropdownMenu>
                 </div>
               </div>
-              <div className="p-2 bg-gray-200 text-xl font-semibold">
-                {post.data.contenue}
+              <div className="p-2 text-xl font-semibold bg-gray-200">
+                {post?.data?.contenue}
                 {/* <ScrollArea className="" h={230}>{post.data.contenue}</ScrollArea> */}
               </div>
+
+              <div className="flex items-center w-full gap-2 p-2 text-xl bg-white">
+                <div className="">
+                  <FcLike
+                    className="cursor-pointer"
+                    onClick={() => {
+                      
+                      handleAddLike();
+                    }}
+                  />
+                </div>
+                <div className="">{post.data?.like}</div>
+              </div>
+
               <div className="py-2 ">
                 <div className="grid gap-2">
                   {reversedComments.map((comment) => (
@@ -301,7 +334,23 @@ function Post() {
                   ))}
                 </div>
               </div>
-              <div className=" bg-white p-2  sticky bottom-0">
+              <div className="sticky bottom-0 p-2 bg-white ">
+                <div className="grid gap-2 mb-2">
+                  <div className="flex items-center gap-3 px-3 mt-2 text-xl font-semibold text-white">
+                    <div>
+                      {myData?.firstName} {myData?.lastName}
+                    </div>
+                  </div>
+                  <div className="flex justify-between w-full gap-3">
+                    <div className="h-20 text-white">h</div>
+                    <IoSend
+                      className="text-3xl text-white "
+                      onClick={handleAddComment}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="fixed bottom-0 right-0 w-[25%] p-2 bg-white shadow-xl">
                 <div className="grid gap-2 mb-2">
                   <div className="flex items-center gap-3 px-3 mt-2 text-xl font-semibold">
                     <Avatar src={myData?.image} color="cyan" radius="xl" />
@@ -317,7 +366,7 @@ function Post() {
                       onChange={(e) => setComment(e.target.value)}
                     />
                     <IoSend
-                      className="text-blue-600 text-3xl cursor-pointer"
+                      className="text-3xl text-blue-600 cursor-pointer"
                       onClick={handleAddComment}
                     />
                   </div>
