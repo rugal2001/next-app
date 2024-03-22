@@ -7,25 +7,26 @@ import fetcher from "../../lib/fetcher";
 import axios from "axios";
 import { FiEdit } from "react-icons/fi";
 import PostCard from "../../components/posts-card";
+import AuthLayout from "../../layouts/auth-layout";
 
 function Profile() {
   const router = useRouter();
   const { data: myData, isLoading: meLoading, error } = useSWR("/me", fetcher);
-  
+  if(meLoading){
+    return <div>My data is loading</div>
+  }
+
   const [firstName, setFirstName] = useState(myData?.firstName);
   const [lastName, setLastName] = useState(myData?.lastName);
   const [email, setEmail] = useState(myData?.email);
   const [role, setRole] = useState(myData?.role);
+  
   const [image, setImage] = useState(
-    myData?.image
-    ? myData.image
-    : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
-    );
-    const [image2, setImage2] = useState(
-    myData?.image
+    myData.image
       ? myData.image
       : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
   );
+ 
 
   const {
     data: posts,
@@ -36,11 +37,10 @@ function Profile() {
   if (isLoading) return <div>Loading ...</div>;
   if (postError) return <div>Error Loading Posts</div>;
   if (!posts) return <div>There are no posts</div>;
-  
 
   const handleSubmit = () => {
     const formData = new FormData();
-    
+
     formData.append("image", image);
     axios
       .post("http://localhost:4000/upload-img", formData, {
@@ -78,7 +78,6 @@ function Profile() {
         console.error("Error:", error);
       });
   };
-  
 
   const reversedPosts = [...posts.data].reverse();
   return (
@@ -86,13 +85,13 @@ function Profile() {
       <section className="text-gray-600 body-font">
         <div className="container flex flex-col items-center justify-center px-5 py-24 mx-auto">
           <div
-            className="grid p-1 bg-white rounded-full mb-7 w-72"
+            className="grid w-56 p-1 bg-white rounded-full mb-7"
             // onClick={() => document.getElementById("fileInput").click()}
           >
             <img
-              className="object-cover object-center rounded-full w-6/6 "
+              className="object-cover object-center rounded-full shadow-lg w-6/6"
               alt="hero"
-              src={myData?.image}
+              src={image}
             ></img>
           </div>
 
@@ -140,14 +139,9 @@ Profile.GetLayout = function GetLayout(Profile) {
 
   return (
     <>
-      <Header />
-      <div className="flex justify-between">
-        <div className="">{/* <Left></Left> */}</div>
-        <div className="w-full h-screen bg-gray-200">
-          <Main>{Profile}</Main>
-        </div>
-        <div></div>
-      </div>
+      <AuthLayout>
+        <Main>{Profile}</Main>
+      </AuthLayout>
     </>
   );
 };
