@@ -8,6 +8,7 @@ import PaginationL from "../../components/pagination-bar";
 
 import Header from "../../layouts/main-layout/header";
 import Main from "../../layouts/main-layout";
+import AuthLayout from "../../layouts/auth-layout";
 
 const PAGE_SIZE = 10;
 
@@ -29,30 +30,30 @@ function Home() {
   if (error) return <div>Error Loading Posts</div>;
   if (!posts) return <div>There are no posts</div>;
 
-  const totalCount = posts.length;
-  const totalPages = totalCount;
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
+  console.log("posts => ", posts);
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
+  // const totalCount = posts.length;
+  // const totalPages = totalCount;
+  // const handleNextPage = () => {
+  //   if (currentPage < totalPages) {
+  //     setCurrentPage((prev) => prev + 1);
+  //   }
+  // };
+
+  // const handlePreviousPage = () => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage((prev) => prev - 1);
+  //   }
+  // };
 
   const reversedPosts = [...posts.data].reverse();
   return (
     <section className="grid justify-center w-full text-black body-font">
       <div className="p-4 bg-white max-sm:max-w-sm lg:max-w-screen-lg">
-       
-
         <div className="flex flex-col items-center gap-12 ">
           {reversedPosts.map((post) => (
             <PostCard
-              onUpdate={() => mutatePosts()}  
+              onUpdate={() => mutatePosts()}
               key={post._id}
               post={post}
               onClick={() => {
@@ -73,22 +74,11 @@ function Home() {
   );
 }
 
-Home.GetLayout = function GetLayout(Home) {
-  const router = useRouter();
-  useEffect(() => {
-    const token = process.browser && localStorage.getItem("access_token");
-    if (!token) {
-      router.push("/auth");
-    }
-  }, [router]);
-
+Home.GetLayout = function GetLayout(Page) {
   return (
-    <>
-      <Header />
-      <div className="">
-        <Main>{Home}</Main>
-      </div>
-    </>
+    <AuthLayout>
+      <Main>{Page}</Main>
+    </AuthLayout>
   );
 };
 
