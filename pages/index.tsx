@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import Header from "../layouts/main-layout/header";
 import Main from "../layouts/main-layout";
 import { useEffect } from "react";
+import AuthLayout from "../layouts/auth-layout";
 
 function Home() {
   return (
@@ -27,11 +27,9 @@ Home.GetLayout = function GetLayout(Home) {
 
   return (
     <>
-      <Header />
-
-      <div className="flex justify-between w-full h-screen bg-gray-200">
+      <AuthLayout>
         <Main>{Home}</Main>
-      </div>
+      </AuthLayout>
     </>
   );
 };
