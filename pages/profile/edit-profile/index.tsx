@@ -11,86 +11,89 @@ import AuthLayout from "@/layouts/auth-layout";
 function Profile() {
   const router = useRouter();
   const { data, isLoading, error } = useSWR("/me", fetcher);
-  const [firstName, setFirstName] = useState(data?.firstName);
-  const [lastName, setLastName] = useState(data?.lastName);
-  const [email, setEmail] = useState(data?.email);
-  const [role, setRole] = useState(data?.role);
-  const [image, setImage] = useState(
-    data?.image
-      ? data.image
-      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
-  );
-  const [image2, setImage2] = useState(
-    data?.image
-      ? data.image
-      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(
+    "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
   );
 
-    
+  useEffect(() => {
+    if (data) {
+      setFirstName(data.firstName);
+      setLastName(data.lastName);
+      setEmail(data.email);
+      setRole(data.role);
+      setImage(data.image);
+      // setPreviewImage(data.image);
+    }
+  }, [data]);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function () {
-      if (typeof reader.result === "string") {
-        setImage(e.target.files[0]);
-        setImage2(reader.result);
-        const imageOnBoard = reader.result;
-        console.log("this is e.target.result[0] => ", e.target?.result[0]);
-        console.log("imageOnBoard => ", imageOnBoard);
-      } else {
-        console.error("Failed to read image as string");
-      }
-    };
-
     if (file) {
-      reader.readAsDataURL(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewImage(reader.result as string); 
+        setImage(file); 
+      };
+      reader.readAsDataURL(file); 
+
     }
-    return reader.result;
   };
 
-  // console.log("this is the id => ", data?._id);
+  useEffect(() => {
+    console.log('image state after setting:', image);
+  }, [image]);
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-    console.log("im in hundle submit in profile ligne 48 ");
-    formData.append("image", image);
-    axios
-      .post("http://localhost:4000/upload-img", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  const handleSubmit = async () => {
+    try {
+      const formData = new FormData();
+      if (image) {
+        formData.append("image", image);
+        const uploadResponse = await axios.post(
+          "http://localhost:4000/upload-img",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        console.log('uploadResponse.data.filePath => ', uploadResponse.data.filePath);
+      setImage(uploadResponse.data.filePath);
+      console.log('image state after setting:', image);
+      }
+
+      
+      await axios.put(
+        `http://localhost:4000/user/${data?._id}`,
+        {
+          firstName,
+          lastName,
+          email,
+          role,
+          image: image || data.image,
+          // image: "https://res.cloudinary.com/dbwjras14/image/upload/v1711367430/new-folder/zbxal0zoshbmzi5inuy0.png",
         },
-      })
-      .then((response) => {
-        fetch(`http://localhost:4000/user/${data?._id}`, {
-          method: "PUT",
+        {
           headers: {
             "Content-Type": "application/json",
             authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
-          body: JSON.stringify({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
+        }
+      );
 
-            role: role,
-            image: response.data,
-          }),
-        })
-          .then((response) => response.json())
-          .then((response) => console.log("response data in 75", response.data))
-          .then(() => {
-            router.push("/profile");
-          })
-          .catch((error) => console.error("Error:", error));
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      console.log("User profile updated successfully!");
+      router.push("/profile");
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
-
+  console.log('this is image ====> ',image)
   return (
     <>
       <section className="text-gray-600 body-font">
@@ -102,7 +105,7 @@ function Profile() {
             <img
               className="object-cover object-center rounded w-6/6 "
               alt="hero"
-              src={image2}
+              src={previewImage}
             ></img>
             <div className="flex p-2">
               <CiImageOn className="cursor-pointer w-7 h-7 text-lime-600" />
@@ -128,8 +131,6 @@ function Profile() {
                       </label>
                       <input
                         type="text"
-                        id="hero-field"
-                        name="hero-field"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-indigo-200 focus:bg-transparent focus:border-indigo-500"
@@ -141,8 +142,6 @@ function Profile() {
                       </label>
                       <input
                         type="text"
-                        id="hero-field"
-                        name="hero-field"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-indigo-200 focus:bg-transparent focus:border-indigo-500"
@@ -157,9 +156,7 @@ function Profile() {
                       </label>
                       <input
                         type="text"
-                        id="hero-field"
-                        name="hero-field"
-                        value={data?.email}
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-indigo-200 focus:bg-transparent focus:border-indigo-500"
                       ></input>
@@ -170,10 +167,8 @@ function Profile() {
                       </label>
                       <input
                         type="text"
-                        id="hero-field"
-                        name="hero-field"
-                        value={data?.role}
-                        // value={}
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
                         className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-indigo-200 focus:bg-transparent focus:border-indigo-500"
                       ></input>
                     </div>
@@ -195,15 +190,6 @@ function Profile() {
 }
 
 Profile.GetLayout = function GetLayout(Profile) {
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = process.browser && localStorage.getItem("access_token");
-    if (!token) {
-      router.push("/auth");
-    }
-  }, [router]);
-
   return (
     <>
       <AuthLayout>
