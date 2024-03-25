@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
+import { Loader } from "@mantine/core";
 
 export default function AuthLayout({ children }) {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function AuthLayout({ children }) {
   } = useSWR(`http://localhost:4000/me`, fetcher);
 
   if (isLoading) {
-    return <p className="">loading...</p>;
+    return <div className="grid justify-center mt-80"><Loader color="blue" />;</div>;
   }
 
   if (!isAuthenticated) {
