@@ -8,25 +8,32 @@ import axios from "axios";
 import { FiEdit } from "react-icons/fi";
 import PostCard from "../../components/posts-card";
 import AuthLayout from "../../layouts/auth-layout";
+import { Loader } from "@mantine/core";
 
 function Profile() {
   const router = useRouter();
   const { data: myData, isLoading: meLoading, error } = useSWR("/me", fetcher);
-  if(meLoading){
-    return <div>My data is loading</div>
-  }
-
-  const [firstName, setFirstName] = useState(myData?.firstName);
-  const [lastName, setLastName] = useState(myData?.lastName);
-  const [email, setEmail] = useState(myData?.email);
-  const [role, setRole] = useState(myData?.role);
   
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+
   const [image, setImage] = useState(
-    myData.image
-      ? myData.image
-      : "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+    "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
   );
- 
+  useEffect(()=>{
+    if(!meLoading && myData){
+      setFirstName(myData.firstName);
+      setLastName(myData.lastName);
+      setEmail(myData.email);
+      setRole(myData.role);
+      if(myData.image){
+        setImage(myData.image);
+      }
+    }
+  },[meLoading])
 
   const {
     data: posts,
@@ -34,50 +41,10 @@ function Profile() {
     isLoading,
     mutate: mutatePosts,
   } = useSWR(`http://localhost:4000/user/${myData?._id}/posts`, fetcher);
-  if (isLoading) return <div>Loading ...</div>;
+  if (isLoading) return <div className="grid justify-center mt-80"><Loader color="blue" />;</div>;
   if (postError) return <div>Error Loading Posts</div>;
   if (!posts) return <div>There are no posts</div>;
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-
-    formData.append("image", image);
-    axios
-      .post("http://localhost:4000/upload-img", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      })
-      .then((response) => {
-        console.log(
-          "this is response data profile ligne 57 => ",
-          response.data
-        );
-
-        fetch(`http://localhost:4000/user/${myData?._id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-          body: JSON.stringify({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-
-            role: role,
-            image: response.data,
-          }),
-        })
-          .then((response) => response.json())
-          .then((response) => console.log("response data in 75", response.data))
-          .catch((error) => console.error("Error:", error));
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
 
   const reversedPosts = [...posts.data].reverse();
   return (
@@ -102,12 +69,12 @@ function Profile() {
               </h1>
             </div>
             <div
-              className="flex gap-2 p-2 text-2xl font-semibold text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-500"
+              className="flex items-center justify-center gap-2 p-2 text-sm font-semibold text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-500"
               onClick={() => {
                 router.push("/profile/edit-profile");
               }}
             >
-              <FiEdit className="w-8 h-8" /> Modifier Profile
+              <FiEdit className="w-4 h-4" /> Modifier Profile
             </div>
           </div>
           <div className="grid grid-cols-3 p-3 mt-4 bg-white rounded-md">
@@ -129,14 +96,6 @@ function Profile() {
 }
 
 Profile.GetLayout = function GetLayout(Profile) {
-  const router = useRouter();
-  useEffect(() => {
-    const token = process.browser && localStorage.getItem("access_token");
-    if (!token) {
-      router.push("/auth");
-    }
-  }, [router]);
-
   return (
     <>
       <AuthLayout>
