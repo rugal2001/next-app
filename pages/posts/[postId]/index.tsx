@@ -3,7 +3,7 @@ import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import Header from "../../../layouts/main-layout/header";
 import Main from "../../../layouts/main-layout";
-import { Avatar, Modal, ScrollArea } from "@mantine/core";
+import { Avatar, Loader, Modal, ScrollArea } from "@mantine/core";
 import CommentCard from "../../../components/comment-card";
 import { useEffect, useState } from "react";
 import { HiMiniEllipsisVertical } from "react-icons/hi2";
@@ -46,9 +46,9 @@ function Post() {
     mutate: postMutate,
   } = useSWR(`http://localhost:4000/posts/${postId}`, fetcher);
 
+  if (postLoading) return <div className="grid justify-center mt-80"><Loader color="blue" />;</div>;
   if (postError) return <div>Error Loading Post</div>;
   if (!post) return <div>Post not found</div>;
-  if (postLoading) return <div>Loading ...</div>;
 
   const handleAddComment = async () => {
     try {
