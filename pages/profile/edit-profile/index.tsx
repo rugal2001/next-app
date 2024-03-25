@@ -36,16 +36,15 @@ function Profile() {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setPreviewImage(reader.result as string); 
-        setImage(file); 
+        setPreviewImage(reader.result as string);
+        setImage(file);
       };
-      reader.readAsDataURL(file); 
-
+      reader.readAsDataURL(file);
     }
   };
 
   useEffect(() => {
-    console.log('image state after setting:', image);
+    console.log("image state after setting:", image);
   }, [image]);
 
   const handleSubmit = async () => {
@@ -63,12 +62,14 @@ function Profile() {
             },
           }
         );
-        console.log('uploadResponse.data.filePath => ', uploadResponse.data.filePath);
-      setImage(uploadResponse.data.filePath);
-      console.log('image state after setting:', image);
+        console.log(
+          "uploadResponse.data.filePath => ",
+          uploadResponse.data.filePath
+        );
+        setImage(uploadResponse.data.filePath);
+        console.log("image state after setting:", image);
       }
 
-      
       await axios.put(
         `http://localhost:4000/user/${data?._id}`,
         {
@@ -93,7 +94,7 @@ function Profile() {
       console.error("Error:", error);
     }
   };
-  console.log('this is image ====> ',image)
+  console.log("this is image ====> ", image);
   return (
     <>
       <section className="text-gray-600 body-font">
