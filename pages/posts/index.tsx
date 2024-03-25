@@ -9,6 +9,7 @@ import PaginationL from "../../components/pagination-bar";
 import Header from "../../layouts/main-layout/header";
 import Main from "../../layouts/main-layout";
 import AuthLayout from "../../layouts/auth-layout";
+import { Loader } from "@mantine/core";
 
 const PAGE_SIZE = 10;
 
@@ -26,7 +27,7 @@ function Home() {
     fetcher
   );
 
-  if (isLoading) return <div>Loading ...</div>;
+  if (isLoading) return <div className="grid justify-center mt-80"><Loader color="blue" />;</div>;
   if (error) return <div>Error Loading Posts</div>;
   if (!posts) return <div>There are no posts</div>;
 
