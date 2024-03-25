@@ -27,7 +27,7 @@ function Profile() {
       setEmail(data.email);
       setRole(data.role);
       setImage(data.image);
-      // setPreviewImage(data.image);
+      setPreviewImage(data.image);
     }
   }, [data]);
 
@@ -42,34 +42,31 @@ function Profile() {
       reader.readAsDataURL(file);
     }
   };
+  console.log('image ===>p ',image)
+ const uploadImage = async () => {
+  try {
+    const formData = new FormData();
+    if(image){
+      formData.append("image",image);
+      const uploadResponse = await axios.post("http://localhost:4000/upload-img",formData,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      console.log("uploadResponse.data.filePath => ", uploadResponse.data.filePath);
+        setImage(uploadResponse.data.filePath);
+    }
+  } catch (error) {
+    
+  }
+ }
 
-  useEffect(() => {
-    console.log("image state after setting:", image);
-  }, [image]);
+console.log('image ==poir> ',image);
 
   const handleSubmit = async () => {
     try {
-      const formData = new FormData();
-      if (image) {
-        formData.append("image", image);
-        const uploadResponse = await axios.post(
-          "http://localhost:4000/upload-img",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
-        console.log(
-          "uploadResponse.data.filePath => ",
-          uploadResponse.data.filePath
-        );
-        setImage(uploadResponse.data.filePath);
-        console.log("image state after setting:", image);
-      }
-
+      uploadImage();
       await axios.put(
         `http://localhost:4000/user/${data?._id}`,
         {
@@ -78,7 +75,6 @@ function Profile() {
           email,
           role,
           image: image || data.image,
-          // image: "https://res.cloudinary.com/dbwjras14/image/upload/v1711367430/new-folder/zbxal0zoshbmzi5inuy0.png",
         },
         {
           headers: {
@@ -94,7 +90,7 @@ function Profile() {
       console.error("Error:", error);
     }
   };
-  console.log("this is image ====> ", image);
+ 
   return (
     <>
       <section className="text-gray-600 body-font">
