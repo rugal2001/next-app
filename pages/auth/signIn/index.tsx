@@ -23,18 +23,16 @@ function SignIn() {
       const data = await response.json();
       if (response.ok) {
         router.push("/auth/logIn");
-      } else {
-        console.log("this is a big mistake hhhh");
       }
     } catch (error) {
-      console.error({ message: "ERRROR" });
+      console.error({ message: "ERRROR", error });
     }
   }
 
   return (
     <>
       <section className="text-gray-600 body-font">
-        <div className="container flex flex-wrap items-center px-5 py-14 mx-auto">
+        <div className="container flex flex-wrap items-center px-5 mx-auto py-14">
           <div className="pr-0 lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0">
             <h1 className="text-3xl font-medium text-gray-900 title-font">
               WELCOME to Futur
@@ -109,7 +107,7 @@ function SignIn() {
               <p className="mt-3 mb-8 text-xs text-gray-500">
                 Literally you probably haven t heard of them jean shorts.
               </p>
-              <div className="flex gap-3 items-center">
+              <div className="flex items-center gap-3">
                 <button
                   type="submit"
                   className="px-8 py-2 text-sm text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
@@ -117,7 +115,7 @@ function SignIn() {
                   Sign up
                 </button>
                 <div
-                  className="ml-3 hover:underline hover:text-blue-600 cursor-pointer"
+                  className="ml-3 cursor-pointer hover:underline hover:text-blue-600"
                   onClick={() => {
                     router.push("/auth/logIn");
                   }}
