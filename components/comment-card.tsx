@@ -9,7 +9,7 @@ import axios from "axios";
 import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import useSWR from "swr";
 import { useState } from "react";
-import { IoSend } from "react-icons/io5";
+import { IoClose, IoSend } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
 import fetcher from "../lib/fetcher";
 // import { NastedCommentCard } from "./nasted-comment-card";
@@ -148,7 +148,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
       )}
       <div className="mb-3 w-full">
         <div className="grid w-full">
-          <div className="flex justify-between mx-2 bg-gray-200 rounded-lg w-full">
+          <div className="flex justify-between mx-2 bg-white border-gray-400 border-[1px] rounded-lg w-full">
             <div className="flex w-full gap-3 p-4 mx-3 ">
               <div className="">
                 <Avatar
@@ -255,16 +255,23 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
           </div>
         </div>
 
-        <div className="mt-2 ml-4">
+        <div className="mt-2 ml-8">
           {comment.replies?.map((replyComment) => {
             console.log({ replyComment });
-            return <CommentCard key={replyComment._id} comment={replyComment} onUpdate={onUpdate} post={post} />;
+            return (
+              <CommentCard
+                key={replyComment._id}
+                comment={replyComment}
+                onUpdate={onUpdate}
+                post={post}
+              />
+            );
           })}
         </div>
 
         {showAddComment ? (
-          <div className="flex justify-end w-full pr-2">
-            <div className="bg-gray-200 w-[100%] h-24  rounded-lg mt-2 flex gap-3  p-3">
+          <div className="flex justify-end w-full">
+            <div className="bg-gray-200 w-[100%] h-auto rounded-lg mx-2 mt-2 flex gap-3  p-3">
               <div className="">
                 <Avatar
                   src={myData.image}
@@ -291,8 +298,20 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
                   ></textarea>
                 </div>
               </div>
-              <div className="flex items-end pb-3">
-                <div className="">
+              {/**className="absolute top-0 m-3 text-6xl text-white rounded-full cursor-pointer"*/}
+
+              <div className="grid items-start pb-3">
+                <div className="justify-start items-start">
+                  <div
+                    className=" text-xl text-black rounded-full cursor-pointer"
+                    onClick={() => {
+                      setShowAddComment(false);
+                    }}
+                  >
+                    <IoClose />
+                  </div>
+                </div>
+                <div className="flex justify-end ">
                   <IoSend
                     className="text-blue-600 cursor-pointer"
                     onClick={() => {
