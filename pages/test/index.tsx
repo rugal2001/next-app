@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Header from "../../layouts/main-layout/header";
+import Header from "../../layouts/main-layout/new-header";
 import MainL from "../../layouts/main-layout";
 import Main from "../../layouts/main-layout";
 import PostNewCard from "../../components/post-new-card";
 import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
-import { NavigationMenuLayout } from "../../layouts/main-layout/new-header";
+// import { NavigationMenuLayout } from "../../layouts/main-layout/new-header";
 import AuthLayout from "@/layouts/auth-layout";
 import CommentCard from "@/components/comment-card";
 
@@ -52,7 +52,9 @@ Test.GetLayout = function GetLayout(Test) {
   return (
     <>
     <AuthLayout>
-      <Main>{Test}</Main>
+      <Header />
+      {Test}
+      {/* <Main>{Test}</Main> */}
     </AuthLayout>
     </>
   );
