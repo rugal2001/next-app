@@ -16,18 +16,24 @@ function Profile() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [image, setImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(
-    "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
-  );
+  const [previewImage, setPreviewImage] = useState("");
 
   useEffect(() => {
-    if (data) {
+    const hasStateData = firstName || lastName || email || role || image;
+
+    if (!hasStateData && data) {
       setFirstName(data.firstName);
       setLastName(data.lastName);
       setEmail(data.email);
       setRole(data.role);
       setImage(data.image);
-      setPreviewImage(data.image);
+      if (!data.image) {
+        setPreviewImage(
+          "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg"
+        );
+      } else {
+        setPreviewImage(data.image);
+      }
     }
   }, [data]);
 
@@ -42,31 +48,30 @@ function Profile() {
       reader.readAsDataURL(file);
     }
   };
-  console.log('image ===>p ',image)
- const uploadImage = async () => {
-  try {
-    const formData = new FormData();
-    if(image){
-      formData.append("image",image);
-      const uploadResponse = await axios.post("http://localhost:4000/upload-img",formData,{
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      })
-      console.log("uploadResponse.data.filePath => ", uploadResponse.data.filePath);
-        setImage(uploadResponse.data.filePath);
-    }
-  } catch (error) {
-    
-  }
- }
 
-console.log('image ==poir> ',image);
+  const uploadImage = async () => {
+    try {
+      if (image) {
+        const formData = new FormData();
+        formData.append("image", image);
+        const uploadResponse = await axios.post(
+          "http://localhost:4000/upload-img",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        return uploadResponse.data.filePath;
+      }
+    } catch (error) {}
+  };
 
   const handleSubmit = async () => {
     try {
-      uploadImage();
+      const imgUrl = await uploadImage();
       await axios.put(
         `http://localhost:4000/user/${data?._id}`,
         {
@@ -74,7 +79,7 @@ console.log('image ==poir> ',image);
           lastName,
           email,
           role,
-          image: image || data.image,
+          image: imgUrl || data.image,
         },
         {
           headers: {
@@ -90,7 +95,7 @@ console.log('image ==poir> ',image);
       console.error("Error:", error);
     }
   };
- 
+
   return (
     <>
       <section className="text-gray-600 body-font">
