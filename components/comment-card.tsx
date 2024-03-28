@@ -12,42 +12,31 @@ import { useState } from "react";
 import { IoSend } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
 import fetcher from "../lib/fetcher";
-import { NastedCommentCard } from "./nasted-comment-card";
+// import { NastedCommentCard } from "./nasted-comment-card";
 import { FaReply } from "react-icons/fa";
 
 interface CommentCardI {
-  comment: { _id: string; contenue: string; user: any };
-  nasted: {
+  comment: {
+    replies: any;
     _id: string;
     contenue: string;
-    distinataire: string;
     user: any;
-    comment: any;
   };
+
   onUpdate: any;
+  post: any;
 }
 
-const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
+const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
   const [showAddComment, setShowAddComment] = useState(false);
 
   const { data: myData, isLoading, error } = useSWR("/me", fetcher);
   // const Comment = comment.comment;
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [uContenue, setUContenue] = useState(comment?.contenue);
+  const [reply, setReply] = useState("");
   const [showOldComment, setShowOldComment] = useState<boolean>(true);
   const [showNewComment, setShowNewComment] = useState<boolean>(false);
-  const [nastedComment, setNastedComment] = useState("");
-
-  const {
-    data: nastedComments,
-    isLoading: nastedCommentLoading,
-    error: nastedCommentError,
-    mutate: nastedCommentMutate,
-  } = useSWR(`/comments/${comment._id}/nasted-comments`, fetcher);
-
-  // if(!nastedComments) return <div className="">Error in fetching nasted comments</div>
-  // console.log("Comments => ", comment);
-  // console.log("Nasted Comments=== => ", nastedComments);
 
   const handleUpdate = async () => {
     try {
@@ -92,35 +81,26 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
     setShowConfirmation(false);
   };
 
-  const handleAddNastedComment = async () => {
-    
+  const handleAddNestedComment = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const insertedData = {
-        distinataire_firstName: comment.user.firstName,
-        distinataire_lastName: comment.user.lastName,
-        contenue: nastedComment,
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const insertedComment = {
+        contenue: reply,
         user: myData._id,
-        comment: comment._id,
       };
       await axios.post(
-        `http://localhost:4000/nasted-comments`,
-        insertedData,
+        `http://localhost:4000/${comment._id}/reply/${post.data._id}`,
+        insertedComment,
         config
       );
-      nastedCommentMutate();
+      onUpdate();
     } catch (error) {
-      console.log(error);
+      console.log("there is an error in inserted nested comment ");
     }
   };
 
-  //comment._id === nastedComment._id
-
+  // console.log("comment =<> ", comment);
   return (
     <>
       {showConfirmation && (
@@ -172,7 +152,7 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
             <div className="flex w-full gap-3 p-4 mx-3 ">
               <div className="">
                 <Avatar
-                  src={comment.user.image}
+                  src={comment.user?.image}
                   alt="it's me"
                   className="cursor-pointer"
                 />
@@ -180,7 +160,7 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
 
               <div className="grid w-full gap-3">
                 <h4 className="text-lg font-bold">
-                  {comment.user.firstName} {comment.user.lastName}
+                  {comment.user?.firstName} {comment.user?.lastName}
                 </h4>
 
                 {showOldComment && (
@@ -217,6 +197,7 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
                   className=" text-sm w-[5%] font-bold cursor-pointer text-opacity-80 hover:underline"
                   onClick={() => {
                     setShowAddComment(true);
+                    // handleAddNestedComment();
                   }}
                 >
                   Reply
@@ -232,7 +213,7 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
                   {/* <DropdownMenuLabel>Outils</DropdownMenuLabel> */}
                   {/* <DropdownMenuSeparator /> */}
                   {/* {post?.data?.user._id === meData?._id ? ( */}
-                  {comment.user._id === myData._id ||
+                  {comment.user?._id === myData._id ||
                   myData.role === "admin" ? (
                     <DropdownMenuItem
                       className="font-bold cursor-pointer hover:bg-gray-100"
@@ -247,7 +228,7 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
                   ) : null}
                   {/* ) : null} */}
                   {/* {post?.data?.user._id === meData?._id ? ( */}
-                  {comment.user._id === myData._id ||
+                  {comment.user?._id === myData._id ||
                   myData.role === "admin" ? (
                     <DropdownMenuItem
                       className="font-bold cursor-pointer hover:bg-gray-100"
@@ -274,24 +255,16 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
           </div>
         </div>
 
-        <div className="mt-2 ">
-          <div className="grid gap-2  ml-16 mr-2">
-            {nastedComments?.data.map((nastedComment) => (
-              <NastedCommentCard
-               key={nastedComment._id}
-                onUpdate={() => {
-                  nastedCommentMutate();
-                }}
-                myData={myData}
-                comment={comment}
-                nasted={nastedComment}
-              />
-            ))}
-          </div>
+        <div className="mt-2">
+          {comment.replies?.map((replyComment) => {
+            console.log({ replyComment });
+            return <CommentCard key={replyComment._id} comment={replyComment} onUpdate={onUpdate} post={post} />;
+          })}
         </div>
+
         {showAddComment ? (
-          <div className="flex justify-end pr-2 w-full">
-            <div className="bg-gray-200 w-[86%] h-24  rounded-lg mt-2 flex gap-3  p-3">
+          <div className="flex justify-end w-full pr-2">
+            <div className="bg-gray-200 w-[100%] h-24  rounded-lg mt-2 flex gap-3  p-3">
               <div className="">
                 <Avatar
                   src={myData.image}
@@ -307,14 +280,14 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
                   <textarea
                     name=""
                     id=""
-                    className="w-full h-10 rounded-lg p-2 scrollbar-none"
+                    className="w-full h-10 p-2 rounded-lg scrollbar-none"
                     style={{
                       outline: "none",
                       overflowY: "scroll",
                       scrollbarWidth: "none",
                     }}
-                    value={nastedComment}
-                    onChange={(e) => setNastedComment(e.target.value)}
+                    value={reply}
+                    onChange={(e) => setReply(e.target.value)}
                   ></textarea>
                 </div>
               </div>
@@ -323,7 +296,7 @@ const CommentCard = ({ onUpdate, comment }: CommentCardI) => {
                   <IoSend
                     className="text-blue-600 cursor-pointer"
                     onClick={() => {
-                      handleAddNastedComment();
+                      handleAddNestedComment();
                       setShowAddComment(false);
                     }}
                   />
