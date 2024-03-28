@@ -31,7 +31,7 @@ function Home() {
   if (error) return <div>Error Loading Posts</div>;
   if (!posts) return <div>There are no posts</div>;
 
-  console.log("posts => ", posts);
+ 
 
   // const totalCount = posts.length;
   // const totalPages = totalCount;
