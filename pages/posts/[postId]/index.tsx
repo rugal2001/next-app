@@ -46,7 +46,12 @@ function Post() {
     mutate: postMutate,
   } = useSWR(`http://localhost:4000/posts/${postId}`, fetcher);
 
-  if (postLoading) return <div className="grid justify-center mt-80"><Loader color="blue" />;</div>;
+  if (postLoading)
+    return (
+      <div className="grid justify-center mt-80">
+        <Loader color="blue" />;
+      </div>
+    );
   if (postError) return <div>Error Loading Post</div>;
   if (!post) return <div>Post not found</div>;
 
@@ -71,7 +76,11 @@ function Post() {
     }
   };
 
-  const reversedComments = [...postComments?.data]?.reverse();
+  if (commentLoading) {
+    return <div>Loading</div>;
+  }
+
+  // const reversedComments = [...postComments?.data]?.reverse();
 
   const handleDeletePost = async () => {
     try {
@@ -108,26 +117,22 @@ function Post() {
     postMutate();
   };
 
-    ///////////////////ADD-LIKE//////////////////////
-    const handleAddLike = async () =>{
-      try {
-        const token = localStorage.getItem("access_token");
-        const config = {
-          headers : {
-            Authorization : `Bearer ${token}`,
-          },
-        };
-        await axios.post(
-          `http://localhost:4000/posts/:id/like`,config
-        );
-      } catch (error) {
-        console.log('error in adding like ',error);
-      }
+  ///////////////////ADD-LIKE//////////////////////
+  const handleAddLike = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      await axios.post(`http://localhost:4000/posts/:id/like`, config);
+    } catch (error) {
+      console.log("error in adding like ", error);
     }
-  
-  
-    /////////////////////////////////////////////////////
-  
+  };
+
+  /////////////////////////////////////////////////////
 
   return (
     <>
@@ -264,7 +269,6 @@ function Post() {
                       <HiMiniEllipsisVertical className="text-3xl rounded-full cursor-pointer hover:bg-gray-100" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-48 h-auto bg-white">
-                      
                       {post?.data?.user._id === myData?._id ||
                       myData.role === "admin" ? (
                         <DropdownMenuItem
@@ -306,7 +310,6 @@ function Post() {
                   <FcLike
                     className="cursor-pointer"
                     onClick={() => {
-                      
                       handleAddLike();
                     }}
                   />
@@ -316,22 +319,21 @@ function Post() {
 
               <div className="py-2 ">
                 <div className="grid gap-2">
-                  {reversedComments.map((comment) => (
-                    <CommentCard
-                      key={comment._id}
-                      onUpdate={() => {
-                        commentMutate();
-                      }}
-                      comment={comment}
-                      nasted={{
-                        _id: "",
-                        contenue: "",
-                        distinataire: "",
-                        user: undefined,
-                        comment: undefined,
-                      }}
-                    />
-                  ))}
+                  {postComments?.data.map((comment) => {
+                    console.log({ comment });
+                    if (comment.parentComment === null) {
+                      return (
+                        <CommentCard
+                          key={comment._id}
+                          onUpdate={() => {
+                            commentMutate();
+                          }}
+                          comment={comment}
+                          post={post}
+                        />
+                      );
+                    }
+                  })}
                 </div>
               </div>
               <div className="sticky bottom-0 p-2 bg-white ">
