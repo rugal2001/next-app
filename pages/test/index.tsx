@@ -9,86 +9,53 @@ import PostNewCard from "../../components/post-new-card";
 import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
 import { NavigationMenuLayout } from "../../layouts/main-layout/new-header";
+import AuthLayout from "@/layouts/auth-layout";
+import CommentCard from "@/components/comment-card";
 
-
-function ThreeDCardDemo() {
-  const router = useRouter();
-  const [currentPage, setCurrentPage] = useState(1);
-  const PAGE_SIZE = 10;
+function Test() {
+  
   const {
-    data: posts,
-    error,
-    isLoading,
-    mutate: mutatePosts,
-  } = useSWR(
-    `http://localhost:4000/posts`,
-    fetcher
-  );
+    data: postComments,
+    isLoading: commentLoading,
+    error: commentError,
+    mutate: commentMutate,
+  } = useSWR(`/posts/66054dd471fef2f371fee748/comments`, fetcher);
 
-  if (isLoading) return <div>Loading ...</div>;
-  if (error) return <div>Error Loading Posts</div>;
-  if (!posts) return <div>There are no posts</div>;
-
-  const totalCount = posts.length;
-  const totalPages = totalCount;
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
-
-  const reversedPosts = [...posts.data].reverse();
+  
   return (
     <>
-      <section className="grid justify-center w-full text-black body-font">
-        <div className="w-full p-4 bg-white max-sm:max-w-sm lg:max-w-screen-lg">
-          <div className="flex flex-col items-center gap-8 ">
-            {reversedPosts.map((post) => (
-              <PostNewCard
-                onUpdate={() => mutatePosts()}
-                key={post._id}
-                post={post}
-                onClick={() => {
-                  router.push(`/posts/${post._id}`);
-                }}
-              />
-            ))}
-          </div>
-          
-        </div>
-      </section>
+    <div className="mt-2 w-full flex justify-center">
+      <div className="w-[50%]">
+        {postComments?.data.map((comment) => {
+                    console.log({ comment });
+                    if (comment.parentComment === null) {
+                      return (
+                        <CommentCard
+                          key={comment._id}
+                          onUpdate={() => {
+                            commentMutate();
+                          } }
+                          comment={comment} post={undefined}                          
+                        />
+                      );
+                    }
+                  })}
+      </div>
+    
+      
+      </div>
     </>
-  );
+  )
 }
 
-ThreeDCardDemo.GetLayout = function GetLayout(ThreeDCardDemo) {
-  const router = useRouter();
-
-  console.log();
-
-  useEffect(() => {
-    const token = process.browser && localStorage.getItem("access_token");
-    if (!token) {
-      router.push("/auth");
-    }
-  }, [router]);
-
+Test.GetLayout = function GetLayout(Test) {
   return (
     <>
-      <Header />
-      <div className="">
-        <Main>{ThreeDCardDemo}</Main>
-       
-      </div>
+    <AuthLayout>
+      <Main>{Test}</Main>
+    </AuthLayout>
     </>
   );
 };
 
-export default ThreeDCardDemo;
-
+export default Test;
