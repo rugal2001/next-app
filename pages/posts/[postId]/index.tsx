@@ -319,21 +319,16 @@ function Post() {
 
               <div className="py-2 ">
                 <div className="grid gap-2">
-                  {postComments?.data.map((comment) => {
-                    console.log({ comment });
-                    if (comment.parentComment === null) {
-                      return (
-                        <CommentCard
-                          key={comment._id}
-                          onUpdate={() => {
-                            commentMutate();
-                          }}
-                          comment={comment}
-                          post={post}
-                        />
-                      );
-                    }
-                  })}
+                  {postComments?.data.map((comment) => (
+                    <CommentCard
+                      key={comment._id}
+                      onUpdate={() => {
+                        commentMutate();
+                      }}
+                      comment={comment}
+                      post={post}
+                    />
+                  ))}
                 </div>
               </div>
               <div className="sticky bottom-0 p-2 bg-white ">
