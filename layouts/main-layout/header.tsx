@@ -9,6 +9,9 @@ import { IconStar } from "@tabler/icons-react";
 import useSWR from "swr";
 import fetcher from "../../lib/fetcher";
 import { useState } from "react";
+import { TbArrowBigDownLinesFilled } from "react-icons/tb";
+import UserDropDownMenu from "@/components/user-drop-down";
+import { VscDiffAdded } from "react-icons/vsc";
 const Demo2 = async ({ children }) => {
   return (
     <AppShell
@@ -38,62 +41,16 @@ const Demo2 = async ({ children }) => {
 const Header = ({ hideAddButton = false }) => {
   const router = useRouter();
   const { data, isLoading, error } = useSWR("/me", fetcher);
-  const [activeLink, setActiveLink] = useState(""); // State to track active link
+  const [activeLink, setActiveLink] = useState(""); 
 
   const handleLinkClick = (link) => {
-    setActiveLink(link); // Update active link state when a link is clicked
-    router.push(link); // Navigate to the clicked link
+    setActiveLink(link); 
+    router.push(link); 
   };
   return (
-    <header className="sticky top-0 z-10 w-full h-full py-3 font-semibold bg-white shadow-md">
+    <header className="sticky top-0 z-10 w-full h-full py-3 font-semibold bg-white text-gray-700 shadow-md border-l-8 border-blue-600">
       <div className="flex items-center justify-between mx-3">
-        <div
-          className="flex items-center gap-3 text-sm font-bold cursor-pointer"
-          onClick={() => {
-            router.push("/profile");
-          }}
-        >
-          {data?.role === "admin" ? (
-            <div className="p-[0.08rem] bg-orange-400 rounded-full">
-              <div className="p-1 bg-white rounded-full">
-                <Avatar
-                  src={data?.image}
-                  className="cursor-pointer"
-                  color="cyan"
-                  radius="xl"
-                  size="sm"
-                  onClick={() => {
-                    router.push("/profile");
-                  }}
-                >
-                  {data?.firstName.toUpperCase().charAt(0)}
-                  {data?.lastName.toUpperCase().charAt(0)}
-                </Avatar>
-              </div>
-            </div>
-          ) : (
-            <div className="p-1 rounded-full ">
-              <Avatar
-                src={data?.image}
-                className="cursor-pointer"
-                color="cyan"
-                radius="xl"
-                onClick={() => {
-                  router.push("/profile");
-                }}
-              >
-                {data?.firstName.toUpperCase().charAt(0)}
-                {data?.lastName.toUpperCase().charAt(0)}
-              </Avatar>
-            </div>
-          )}
-
-          <div className="">
-            {data?.firstName} {data?.lastName}
-          </div>
-        </div>
-
-        <nav className="w-[60%]  grid justify-center ">
+        <nav className="w-[30%] grid justify-start ml-5  ">
           <div className="">
             <ul className="flex items-center justify-center text-sm gap-11">
               <li>
@@ -104,7 +61,7 @@ const Header = ({ hideAddButton = false }) => {
                   onClick={() => handleLinkClick("/")}
                 >
                   <div className="grid items-center">
-                    <div className="flex justify-evenly">
+                    <div className="flex justify-evenly text-xl">
                       <MdHome />
                     </div>
                     <div className="">Home</div>
@@ -120,7 +77,7 @@ const Header = ({ hideAddButton = false }) => {
                   onClick={() => handleLinkClick("/posts")}
                 >
                   <div className="grid items-center">
-                    <div className="flex justify-evenly">
+                    <div className="flex justify-evenly text-xl">
                       <MdLibraryBooks />
                     </div>
                     <div className="">Posts</div>
@@ -136,7 +93,7 @@ const Header = ({ hideAddButton = false }) => {
                   onClick={() => handleLinkClick("/comments")}
                 >
                   <div className="grid items-center">
-                    <div className="flex justify-evenly">
+                    <div className="flex justify-evenly text-xl">
                       <FaCommentDots />
                     </div>
                     <div className="">Comments</div>
@@ -152,7 +109,7 @@ const Header = ({ hideAddButton = false }) => {
                   onClick={() => handleLinkClick("/about")}
                 >
                   <div className="grid items-center">
-                    <div className="flex justify-evenly">
+                    <div className="flex justify-evenly text-xl">
                       <GrResources />
                     </div>
                     <div className="">About</div>
@@ -163,26 +120,31 @@ const Header = ({ hideAddButton = false }) => {
           </div>
         </nav>
 
-        <div className="flex gap-1  w-[20%] justify-end">
-          {hideAddButton === false ? (
-            <div
-              className="p-2 text-blue-600 bg-white border-[1px] border-blue-600 rounded-lg cursor-pointer hover:text-white hover:bg-blue-600 w-[40%] text-sm text-center "
-              onClick={() => {
-                router.push("/posts/addPost");
-              }}
-            >
-              Add post
+        
+        <div className="flex items-center justify-end gap-3 text-sm font-bold  w-[30%]">
+        {hideAddButton === false ? (
+            <div className="">
+              {/* <div className="flex gap-3 justify-center items-center">
+                <div className="text-xl"><TbArrowBigDownLinesFilled /></div>
+                <div className="">Add post</div>
+              </div> */}
+              <button
+                className="px-4 py-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200"
+                style={{borderRadius: "14px"}}
+                onClick={() => {
+                  router.push("/posts/addPost");
+                }}
+              >
+                <div className="flex gap-3 items-center justify-center">
+                  <div className="text-xl">
+                    <VscDiffAdded />
+                  </div>
+                  <div className="">Add post</div>
+                </div>
+              </button>
             </div>
           ) : null}
-          <div
-            className="p-2 text-red-500 bg-white border-[1px] border-red-500 rounded-lg cursor-pointer hover:text-white hover:bg-red-500 w-[40%] text-sm text-center"
-            onClick={() => {
-              localStorage.removeItem("access_token");
-              router.push("/auth");
-            }}
-          >
-            Logout
-          </div>
+          <UserDropDownMenu />
         </div>
       </div>
     </header>
