@@ -236,7 +236,7 @@ function Post() {
         </Modal>
       )}
 
-      <div className="flex justify-center w-full mb-3">
+      <div className="flex justify-center w-full">
         <div className="flex w-full bg-black">
           <div className="relative w-full md:w-3/4">
             <div className="sticky top-0 pt-20 bg-black">
