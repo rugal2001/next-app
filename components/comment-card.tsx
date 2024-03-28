@@ -146,9 +146,9 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
           </div>
         </Modal>
       )}
-      <div className="mb-3 ">
-        <div className="grid ">
-          <div className="flex justify-between mx-2 bg-gray-200 rounded-lg">
+      <div className="mb-3 w-full">
+        <div className="grid w-full">
+          <div className="flex justify-between mx-2 bg-gray-200 rounded-lg w-full">
             <div className="flex w-full gap-3 p-4 mx-3 ">
               <div className="">
                 <Avatar
@@ -255,7 +255,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
           </div>
         </div>
 
-        <div className="mt-2">
+        <div className="mt-2 ml-4">
           {comment.replies?.map((replyComment) => {
             console.log({ replyComment });
             return <CommentCard key={replyComment._id} comment={replyComment} onUpdate={onUpdate} post={post} />;
