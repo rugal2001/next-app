@@ -17,7 +17,6 @@ function LogIn() {
     event.preventDefault();
 
     try {
-      console.log("im in try ");
       const response = await fetch("http://localhost:4000/login", {
         method: "POST",
         headers: {
@@ -41,6 +40,21 @@ function LogIn() {
       console.error({ message: "ERRROR" });
     }
   }
+
+  // const handleLogin = async () => {
+  //   console.log('im in Login function ')
+  //   try {
+  //     const insertedData = {
+  //       email,
+  //       password
+  //     }
+  //     const response = await httpClientReq.post("/login",insertedData);
+  //     console.log({response});
+  //     // router.push('/');
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   return (
     <>
