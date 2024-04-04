@@ -48,7 +48,7 @@ const Header = ({ hideAddButton = false }) => {
     router.push(link); 
   };
   return (
-    <header className="sticky top-0 z-10 w-full h-full py-3 font-semibold bg-white text-gray-700 shadow-md border-l-8 border-blue-600">
+    <header className="sticky top-0 z-10 w-full h-full py-3 font-semibold text-gray-700 bg-white border-l-8 border-blue-600 shadow-md">
       <div className="flex items-center justify-between mx-3">
         <nav className="w-[30%] grid justify-start ml-5  ">
           <div className="">
@@ -61,7 +61,7 @@ const Header = ({ hideAddButton = false }) => {
                   onClick={() => handleLinkClick("/")}
                 >
                   <div className="grid items-center">
-                    <div className="flex justify-evenly text-xl">
+                    <div className="flex text-xl justify-evenly">
                       <MdHome />
                     </div>
                     <div className="">Home</div>
@@ -77,7 +77,7 @@ const Header = ({ hideAddButton = false }) => {
                   onClick={() => handleLinkClick("/posts")}
                 >
                   <div className="grid items-center">
-                    <div className="flex justify-evenly text-xl">
+                    <div className="flex text-xl justify-evenly">
                       <MdLibraryBooks />
                     </div>
                     <div className="">Posts</div>
@@ -90,10 +90,10 @@ const Header = ({ hideAddButton = false }) => {
                   className={`hover:text-blue-600 ${
                     activeLink === "/comments" ? "text-blue-600" : ""
                   }`}
-                  onClick={() => handleLinkClick("/comments")}
+                  onClick={() => handleLinkClick("/test")}
                 >
                   <div className="grid items-center">
-                    <div className="flex justify-evenly text-xl">
+                    <div className="flex text-xl justify-evenly">
                       <FaCommentDots />
                     </div>
                     <div className="">Comments</div>
@@ -109,7 +109,7 @@ const Header = ({ hideAddButton = false }) => {
                   onClick={() => handleLinkClick("/about")}
                 >
                   <div className="grid items-center">
-                    <div className="flex justify-evenly text-xl">
+                    <div className="flex text-xl justify-evenly">
                       <GrResources />
                     </div>
                     <div className="">About</div>
@@ -124,18 +124,18 @@ const Header = ({ hideAddButton = false }) => {
         <div className="flex items-center justify-end gap-3 text-sm font-bold  w-[30%]">
         {hideAddButton === false ? (
             <div className="">
-              {/* <div className="flex gap-3 justify-center items-center">
+              {/* <div className="flex items-center justify-center gap-3">
                 <div className="text-xl"><TbArrowBigDownLinesFilled /></div>
                 <div className="">Add post</div>
               </div> */}
               <button
-                className="px-4 py-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200"
+                className="px-4 py-2 text-white transition duration-200 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 focus:ring-2 focus:ring-blue-400 hover:shadow-xl"
                 style={{borderRadius: "14px"}}
                 onClick={() => {
                   router.push("/posts/addPost");
                 }}
               >
-                <div className="flex gap-3 items-center justify-center">
+                <div className="flex items-center justify-center gap-3">
                   <div className="text-xl">
                     <VscDiffAdded />
                   </div>
