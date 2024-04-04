@@ -146,9 +146,9 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
           </div>
         </Modal>
       )}
-      <div className="mb-3 w-full">
+      <div className="w-full mb-3">
         <div className="grid w-full">
-          <div className="flex justify-between mx-2 bg-white border-gray-400 border-[1px] rounded-lg w-full">
+          <div className="flex justify-between bg-white border-gray-400 border-[1px] rounded-lg w-full">
             <div className="flex w-full gap-3 p-4 mx-3 ">
               <div className="">
                 <Avatar
@@ -301,9 +301,9 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
               {/**className="absolute top-0 m-3 text-6xl text-white rounded-full cursor-pointer"*/}
 
               <div className="grid items-start pb-3">
-                <div className="justify-start items-start">
+                <div className="items-start justify-start">
                   <div
-                    className=" text-xl text-black rounded-full cursor-pointer"
+                    className="text-xl text-black rounded-full cursor-pointer "
                     onClick={() => {
                       setShowAddComment(false);
                     }}
