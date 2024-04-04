@@ -8,6 +8,9 @@ import CommentCard from "../../../components/comment-card";
 import { useEffect, useState } from "react";
 import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import { IoCloseOutline, IoSend } from "react-icons/io5";
+
+import { useDisclosure } from "@mantine/hooks";
+import { Drawer, Button } from "@mantine/core";
 import axios from "axios";
 import {
   DropdownMenu,
@@ -24,6 +27,8 @@ function Post() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [uContenue, setUContenue] = useState("");
   const [like, setLike] = useState(0);
+  const [openedd, { open, close }] = useDisclosure(false);
+
   const {
     data: myData,
     isLoading: meLoading,
@@ -238,13 +243,14 @@ function Post() {
 
       <div className="flex justify-center w-full">
         <div className="flex w-full bg-black">
-          <div className="relative w-full md:w-3/4">
+          <div className="relative w-full md:w-4/6">
             <div className="sticky top-0 pt-20 bg-black">
-              <img
-                src={post.data?.image}
-                alt="Post Image"
-                className="w-full max-h-[80vh] object-contain max-w-[90vw] mx-auto"
-              />
+            <img
+                  src={post.data?.image}
+                  alt="Post Image"
+                  className="w-full max-h-[80vh] object-contain max-w-[90vw] mx-auto"
+                />
+             
               <div
                 className="absolute top-0 m-3 text-6xl text-white rounded-full cursor-pointer"
                 onClick={() => {
@@ -256,9 +262,9 @@ function Post() {
             </div>
           </div>
 
-          <div className="flex justify-center w-full md:w-1/4">
+          <div className="flex justify-center w-full md:w-2/6">
             <div className="w-full bg-white">
-              <div className="flex items-center justify-between p-3 text-xl font-semibold bg-white rounded-t-lg">
+              <div className="fixed top-0 z-50 flex items-center justify-between w-2/6 p-3 text-xl font-semibold bg-white rounded-t-lg">
                 <div className="flex items-center gap-3">
                   <Avatar src={post.data?.user?.image} alt="it's me" />
                   {post.data?.user.firstName} {post.data?.user.lastName}
@@ -300,7 +306,7 @@ function Post() {
                   </DropdownMenu>
                 </div>
               </div>
-              <div className="p-2 text-xl font-semibold bg-gray-200">
+              <div className="p-2 mt-16 text-sm font-semibold bg-gray-200">
                 {post?.data?.contenue}
                 {/* <ScrollArea className="" h={230}>{post.data.contenue}</ScrollArea> */}
               </div>
@@ -317,7 +323,7 @@ function Post() {
                 <div className="">{post.data?.like}</div>
               </div>
 
-              <div className="py-2 ">
+              <div className="p-2 ">
                 <div className="grid gap-2">
                   {postComments?.data.map((comment) => (
                     <CommentCard
@@ -347,7 +353,7 @@ function Post() {
                   </div>
                 </div>
               </div>
-              <div className="fixed bottom-0 right-0 w-[25%] p-2 bg-white shadow-xl">
+              <div className="fixed bottom-0 right-0 w-2/6 p-2 bg-white shadow-xl">
                 <div className="grid gap-2 mb-2">
                   <div className="flex items-center gap-3 px-3 mt-2 text-xl font-semibold">
                     <Avatar src={myData?.image} color="cyan" radius="xl" />
