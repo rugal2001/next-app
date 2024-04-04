@@ -54,13 +54,13 @@ function Home() {
     }
   };
 
-  
   return (
     <section className="grid justify-center w-full text-black body-font">
       <div className="p-4 bg-white max-sm:max-w-sm lg:max-w-screen-lg">
         <div className="flex flex-col items-center gap-12">
           {posts.data.map((post) => (
             <PostCard
+              key={post._id}
               post={post}
               onClick={() => router.push(`/posts/${post._id}`)}
               onUpdate={undefined}
