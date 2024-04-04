@@ -31,7 +31,7 @@ function UserDropDownMenu() {
             {data?.firstName.toUpperCase().charAt(0)}
             {data?.lastName.toUpperCase().charAt(0)}
           </Avatar>
-          <div className="text-black absolute bottom-2 right-5 rounded-full bg-gray-200 cursor-pointer">
+          <div className="absolute text-black bg-gray-200 rounded-full cursor-pointer bottom-2 right-5">
             <FaAngleDown className="" />
           </div>
         </div>
@@ -44,7 +44,7 @@ function UserDropDownMenu() {
         //     <IconSettings style={{ width: rem(14), height: rem(14) }} />
         //   }
         >
-          <div className="flex gap-3 items-center" onClick={()=>{
+          <div className="flex items-center gap-3" onClick={()=>{
             router.push('/profile')
           }}>
             <div className="">
