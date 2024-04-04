@@ -1,63 +1,40 @@
-"use client";
-
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Header from "../../layouts/main-layout/new-header";
-import MainL from "../../layouts/main-layout";
 import Main from "../../layouts/main-layout";
-import PostNewCard from "../../components/post-new-card";
+import AuthLayout from "../../layouts/auth-layout";
+import { Skeleton } from "@mantine/core";
+
 import useSWR from "swr";
-import fetcher from "../../lib/fetcher";
-// import { NavigationMenuLayout } from "../../layouts/main-layout/new-header";
-import AuthLayout from "@/layouts/auth-layout";
-import CommentCard from "@/components/comment-card";
+import fetcher from "@/lib/fetcher";
 
-function Test() {
-  
-  const {
-    data: postComments,
-    isLoading: commentLoading,
-    error: commentError,
-    mutate: commentMutate,
-  } = useSWR(`/posts/66054dd471fef2f371fee748/comments`, fetcher);
-
-  
+function Home() {
   return (
     <>
-    <div className="mt-2 w-full flex justify-center">
-      <div className="w-[50%]">
-        {postComments?.data.map((comment) => {
-                    console.log({ comment });
-                    if (comment.parentComment === null) {
-                      return (
-                        <CommentCard
-                          key={comment._id}
-                          onUpdate={() => {
-                            commentMutate();
-                          } }
-                          comment={comment} post={undefined}                          
-                        />
-                      );
-                    }
-                  })}
-      </div>
-    
-      
+       <div className="">
+        {/*<div className="flex items-center gap-3 bg-green-400">
+          <div className="bg-blue-400 ">
+            <Skeleton height={50}  circle mb="xl" />
+          </div>
+          <div className="w-full bg-lime-900">
+            <Skeleton height={8} width={150} radius="xl" />
+          </div>
+        </div>
+
+        <Skeleton height={8} radius="xl" />
+        <Skeleton height={8} mt={6} radius="xl" />
+        <Skeleton height={8} my={6}  width="70%" radius="xl" /> */}
+        <Skeleton visible={true} height={230} width={260} className="mb-2" />
+          
+        {/* </Skeleton> */}
       </div>
     </>
-  )
+  );
 }
 
-Test.GetLayout = function GetLayout(Test) {
+Home.GetLayout = function GetLayout(Page) {
   return (
-    <>
     <AuthLayout>
-      <Header />
-      {Test}
-      {/* <Main>{Test}</Main> */}
+      <Main>{Page}</Main>
     </AuthLayout>
-    </>
   );
 };
 
-export default Test;
+export default Home;
