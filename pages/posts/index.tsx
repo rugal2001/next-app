@@ -64,6 +64,7 @@ function Home() {
               post={post}
               onClick={() => router.push(`/posts/${post._id}`)}
               onUpdate={undefined}
+              
             />
           ))}
 
