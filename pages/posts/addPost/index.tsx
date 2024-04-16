@@ -9,6 +9,7 @@ import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import AuthLayout from "../../../layouts/auth-layout";
 import httpClientReq from "@/lib/http-client-req";
+import EventListener from "../../../components/event-listener";
 
 function Home() {
   const { data, isLoading, error } = useSWR("/me", fetcher);
@@ -19,6 +20,7 @@ function Home() {
   const [previewImage, setPreviewImage] = useState(
     "https://www.shutterstock.com/image-vector/no-image-available-icon-template-600nw-1036735678.jpg"
   );
+
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -44,6 +46,7 @@ function Home() {
       formData.append("image", image);
       const response = await httpClientReq.post("/upload-img", formData);
       setImage(response.data.filePath);
+      console.log("=>", response.data.filePath);
     } catch (error) {
       console.error(error);
     }
@@ -52,17 +55,21 @@ function Home() {
   const handleSubmit = async () => {
     try {
       const insertedData = {
+        numberOfComments: 0,
         name: " ",
         image,
         contenue,
         user: data._id,
       };
       const response = await httpClientReq.post("/posts", insertedData);
+  
+      EventListener(data,response.data.data._id,'Add Post');
       router.push("/posts");
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   return (
     <div className="flex justify-center w-[100%] bg-gray-300 h-screen">
@@ -89,9 +96,10 @@ function Home() {
                   <div className="w-10 my-2">
                     <CiImageOn className="w-full h-full text-lime-600" />
                   </div>
-                  <div className="w-full font-semibold text-black">Upload Image</div>
+                  <div className="w-full font-semibold text-black">
+                    Upload Image
+                  </div>
                   <input
-                 
                     id="fileInput"
                     type="file"
                     accept="image/*"
@@ -114,7 +122,10 @@ function Home() {
                     <IoSend
                       name="submit"
                       className="w-full h-full text-blue-600 cursor-pointer"
-                      onClick={handleSubmit}
+                      onClick={() => {
+                        handleSubmit();
+                        
+                      }}
                     />
                   </div>
                 </div>
