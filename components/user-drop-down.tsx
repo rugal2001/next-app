@@ -1,6 +1,7 @@
 import fetcher from "@/lib/fetcher";
 import { Menu, Button, Text, rem, Avatar } from "@mantine/core";
 import { BiLogOut } from "react-icons/bi";
+import { RxActivityLog } from "react-icons/rx";
 import {
   IconSettings,
   IconSearch,
@@ -44,9 +45,12 @@ function UserDropDownMenu() {
         //     <IconSettings style={{ width: rem(14), height: rem(14) }} />
         //   }
         >
-          <div className="flex items-center gap-3" onClick={()=>{
-            router.push('/profile')
-          }}>
+          <div
+            className="flex items-center gap-3"
+            onClick={() => {
+              router.push("/profile");
+            }}
+          >
             <div className="">
               <Avatar
                 src={data?.image}
@@ -62,6 +66,20 @@ function UserDropDownMenu() {
             <div className="font-bold">
               {data?.firstName} {data?.lastName}
             </div>
+          </div>
+        </Menu.Item>
+        <Menu.Divider />
+        <Menu.Item>
+          <div
+            className="flex items-center gap-3 "
+            onClick={() => {
+              router.push("/activities");
+            }}
+          >
+            <div className="p-2 bg-gray-100 rounded-full">
+              <RxActivityLog className="w-5 h-5 " />
+            </div>
+            <div className="font-bold">My Activities</div>
           </div>
         </Menu.Item>
         {/* <Menu.Item
@@ -103,9 +121,7 @@ function UserDropDownMenu() {
         </Menu.Item> */}
         <Menu.Item
           color="red"
-          leftSection={
-            <BiLogOut  style={{ width: rem(14), height: rem(14) }} />
-          }
+          leftSection={<BiLogOut style={{ width: rem(14), height: rem(14) }} />}
           onClick={() => {
             localStorage.removeItem("access_token");
             router.push("/auth");
