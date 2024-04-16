@@ -7,6 +7,7 @@ import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import axios from "axios";
 import AuthLayout from "@/layouts/auth-layout";
+import EventListener from "@/components/event-listener";
 
 function Profile() {
   const router = useRouter();
@@ -88,7 +89,7 @@ function Profile() {
           },
         }
       );
-
+        EventListener(data,data._id,'Update User Profile')
       console.log("User profile updated successfully!");
       router.push("/profile");
     } catch (error) {
