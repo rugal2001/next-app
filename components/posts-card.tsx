@@ -8,6 +8,7 @@ import fetcher from "../lib/fetcher";
 import axios from "axios";
 import { IoIosClose } from "react-icons/io";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import { FaRegCommentDots } from "react-icons/fa";
 interface PostsCardI {
   post: any;
   onClick?: () => any;
@@ -25,6 +26,8 @@ const PostNewCard = ({ onUpdate, post, onClick = () => {} }: PostsCardI) => {
   const [like, setLike] = useState(post.like);
   const [addLike,setAddLike] = useState(false);
 
+  // const {data:comments,isLoading:commentsLoading,error:commentsError} = useSWR(`/posts/${post._id}/comments`,fetcher); ///posts/:postId/comments
+
   const contenue = post?.contenue;
   const words = contenue?.split(" ");
 
@@ -39,11 +42,15 @@ const PostNewCard = ({ onUpdate, post, onClick = () => {} }: PostsCardI) => {
     return null;
   }
 
+  // if(commentsLoading){
+  //   return <div className="">Loading ...</div>
+  // }
+  // if(commentsError){
+  //   return <div className="">Error in bringing comments ...</div>
+  // }
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
 
-
-  
 
 
   /////////////////////////////////////////////////////
@@ -103,7 +110,7 @@ const PostNewCard = ({ onUpdate, post, onClick = () => {} }: PostsCardI) => {
             translateZ="50"
             className="w-full text-xl font-bold text-neutral-600 dark:text-white"
           >
-            <div className="flex items-center gap-3 m-2 mt-4 cursor-pointer">
+            <div className="flex items-center justify-between gap-3 m-2 mt-4 cursor-pointer">
               <div
                 className=""
                 onClick={() => {
@@ -120,7 +127,8 @@ const PostNewCard = ({ onUpdate, post, onClick = () => {} }: PostsCardI) => {
                 {addLike ? <FcLike />: <FcLikePlaceholder />}
                 
               </div>
-              <div className="text-sm font-semibold">{like}</div>
+              <div className="text-sm font-semibold">{like} </div>
+              <div className="flex items-center gap-2 text-sm font-semibold"><FaRegCommentDots className="text-xl"/>{post.numberOfComments}</div>
             </div>
           </CardItem>
         </CardBody>
