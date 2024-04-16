@@ -27,7 +27,7 @@
     "@tiptap/react": "^2.2.3",
     "@tiptap/starter-kit": "^2.2.3",
     "@types/react-query": "^1.2.9",
-    "axios": "^1.6.7",
+    "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.0",
