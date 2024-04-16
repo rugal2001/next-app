@@ -14,6 +14,7 @@ import { IoIosClose } from "react-icons/io";
 import fetcher from "../lib/fetcher";
 // import { NastedCommentCard } from "./nasted-comment-card";
 import { FaReply } from "react-icons/fa";
+import EventListener from "./event-listener";
 
 interface CommentCardI {
   comment: {
@@ -49,11 +50,12 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
       const updatedData = {
         contenue: uContenue,
       };
-      await axios.put(
+      const result =await axios.put(
         `http://localhost:4000/comments/${comment._id}`,
         updatedData,
         config
       );
+      EventListener(myData,result.data.data._id,'Edit Comment');
       onUpdate();
       console.log("updated successfully");
     } catch (error) {
@@ -69,11 +71,15 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      await axios.delete(
+      const result= await axios.delete(
         `http://localhost:4000/comments/${comment._id}`,
         config
       );
+      
       onUpdate();
+      console.log('result.data.data._id => ',result.data.data._id)
+      EventListener(myData,result.data.data._id,'Delete Comment');
+
       console.log("deleted successfully");
     } catch (error) {
       console.log("there is an error in delete ");
@@ -89,11 +95,13 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
         contenue: reply,
         user: myData._id,
       };
-      await axios.post(
+      const result= await axios.post(
         `http://localhost:4000/${comment._id}/reply/${post.data._id}`,
         insertedComment,
         config
       );
+      EventListener(myData,result.data.data._id,'Add Comment');
+
       onUpdate();
     } catch (error) {
       console.log("there is an error in inserted nested comment ");
