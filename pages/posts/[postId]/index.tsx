@@ -20,6 +20,7 @@ import {
 } from "../../../components/action-popup";
 import { IoIosClose } from "react-icons/io";
 import { FcLike } from "react-icons/fc";
+import EventListener from "@/components/event-listener";
 
 function Post() {
   const [comment, setComment] = useState("");
@@ -28,6 +29,7 @@ function Post() {
   const [uContenue, setUContenue] = useState("");
   const [like, setLike] = useState(0);
   const [openedd, { open, close }] = useDisclosure(false);
+  
 
   const {
     data: myData,
@@ -69,11 +71,13 @@ function Post() {
         user: myData._id,
         post: post.data._id,
       };
-      await axios.post(
+      const response = await axios.post(
         `http://localhost:4000/comments`,
         insertedComment,
         config
       );
+      // console.log(response.data.data._id)
+      EventListener(myData,response.data.data._id,'Add Comment');
       commentMutate();
       setComment("");
     } catch (error) {
@@ -95,6 +99,7 @@ function Post() {
         `http://localhost:4000/posts/${post.data._id}`,
         config
       );
+      EventListener(myData,post.data._id,'Delete Post')
       console.log("Post deleted successfully !!");
       router.push("/posts");
     } catch (error) {
@@ -114,8 +119,27 @@ function Post() {
         updatedData,
         config
       );
+      EventListener(myData,post.data._id,'Update Post')
       console.log("Post updated successfully !!");
       setOpened(false);
+    } catch (error) {
+      console.error("handle Update post ", error);
+    }
+    postMutate();
+  };
+
+  //////////////////////////////////////////////
+  const updateNumberOfComments = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const updatedData = { numberOfComments: post.data.numberOfComments + 1 };
+      await axios.put(
+        `http://localhost:4000/posts/${post.data._id}`,
+        updatedData,
+        config
+      );
+      console.log("number of comments updated successfully !!");
     } catch (error) {
       console.error("handle Update post ", error);
     }
@@ -139,6 +163,7 @@ function Post() {
 
   /////////////////////////////////////////////////////
 
+  console.log("postsComments =>", postComments.data.length);
   return (
     <>
       {opened && (
@@ -188,7 +213,10 @@ function Post() {
             <div className="flex justify-center w-full ">
               <div
                 className="grid items-center justify-center w-[20%] h-12 mt-3 text-xl text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-500"
-                onClick={handleUpdatePost}
+                onClick={ ()=>{
+                  handleUpdatePost();
+                  
+                }}
               >
                 Modifier
               </div>
@@ -205,10 +233,11 @@ function Post() {
           }}
           withCloseButton={false}
           size="lg"
+          centered
         >
           <div className="grid justify-center w-full ">
             <div className="flex items-center justify-between gap-40">
-              <div className="mb-3 text-xl">
+              <div className="mb-3 text-sm">
                 Are you sure you want to delete this post
               </div>
               <div className="">
@@ -223,13 +252,16 @@ function Post() {
 
             <div className="flex items-center justify-center w-full gap-3">
               <div
-                className="grid items-center justify-center w-40 h-10 mt-2 text-xl font-semibold text-red-500 bg-white border-2 border-red-500 rounded-md cursor-pointer hover:bg-red-500 hover:text-white"
-                onClick={handleDeletePost}
+                className="grid items-center justify-center w-40 h-10 mt-2 text-sm font-semibold text-red-500 bg-white border-2 border-red-500 rounded-md cursor-pointer hover:bg-red-500 hover:text-white"
+                onClick={ ()=>{
+                  handleDeletePost();
+                  
+                }}
               >
                 Confirm delete
               </div>
               <div
-                className="grid items-center justify-center w-40 h-10 mt-2 text-xl font-semibold text-blue-600 bg-white border-2 border-blue-600 rounded-md cursor-pointer hover:bg-blue-600 hover:text-white"
+                className="grid items-center justify-center w-40 h-10 mt-2 text-sm font-semibold text-blue-600 bg-white border-2 border-blue-600 rounded-md cursor-pointer hover:bg-blue-600 hover:text-white"
                 onClick={() => {
                   setShowConfirmation(false);
                 }}
@@ -245,12 +277,12 @@ function Post() {
         <div className="flex w-full bg-black">
           <div className="relative w-full md:w-4/6">
             <div className="sticky top-0 pt-20 bg-black">
-            <img
-                  src={post.data?.image}
-                  alt="Post Image"
-                  className="w-full max-h-[80vh] object-contain max-w-[90vw] mx-auto"
-                />
-             
+              <img
+                src={post.data?.image}
+                alt="Post Image"
+                className="w-full max-h-[80vh] object-contain max-w-[90vw] mx-auto"
+              />
+
               <div
                 className="absolute top-0 m-3 text-6xl text-white rounded-full cursor-pointer"
                 onClick={() => {
@@ -311,7 +343,7 @@ function Post() {
                 {/* <ScrollArea className="" h={230}>{post.data.contenue}</ScrollArea> */}
               </div>
 
-              <div className="flex items-center w-full gap-2 p-2 text-xl bg-white">
+              <div className="flex items-center justify-between w-full p-2 px-3 text-xl ">
                 <div className="">
                   <FcLike
                     className="cursor-pointer"
@@ -320,7 +352,10 @@ function Post() {
                     }}
                   />
                 </div>
-                <div className="">{post.data?.like}</div>
+                <div className="text-sm font-semibold">
+                  {postComments.data.length} comments
+                </div>
+                {/* <div className="">{post.data?.like}</div> */}
               </div>
 
               <div className="p-2 ">
@@ -348,7 +383,10 @@ function Post() {
                     <div className="h-20 text-white">h</div>
                     <IoSend
                       className="text-3xl text-white "
-                      onClick={handleAddComment}
+                      // onClick={() => {
+                      //   updateNumberOfComments();
+                      //   handleAddComment();
+                      // }}
                     />
                   </div>
                 </div>
@@ -370,7 +408,11 @@ function Post() {
                     />
                     <IoSend
                       className="text-3xl text-blue-600 cursor-pointer"
-                      onClick={handleAddComment}
+                      onClick={() => {
+                        updateNumberOfComments();
+                        handleAddComment();
+                        
+                      }}
                     />
                   </div>
                 </div>
