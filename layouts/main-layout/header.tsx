@@ -69,9 +69,9 @@ const Header = ({ hideAddButton = false }) => {
                 </div>
               </li>
               <li>
-                <a
-                  href="#"
-                  className={`hover:text-blue-600 ${
+                <div
+                  
+                  className={`flex items-center justify-center cursor-pointer hover:text-blue-600 ${
                     activeLink === "/posts" ? "text-blue-600" : ""
                   }`}
                   onClick={() => handleLinkClick("/posts")}
@@ -82,12 +82,12 @@ const Header = ({ hideAddButton = false }) => {
                     </div>
                     <div className="">Posts</div>
                   </div>
-                </a>
+                </div>
               </li>
               <li>
-                <a
-                  href="#"
-                  className={`hover:text-blue-600 ${
+                <div
+                  
+                  className={`flex items-center justify-center cursor-pointer hover:text-blue-600 ${
                     activeLink === "/comments" ? "text-blue-600" : ""
                   }`}
                   onClick={() => handleLinkClick("/test")}
@@ -98,12 +98,12 @@ const Header = ({ hideAddButton = false }) => {
                     </div>
                     <div className="">Comments</div>
                   </div>
-                </a>
+                </div>
               </li>
               <li>
-                <a
-                  href="#"
-                  className={`hover:text-blue-600 ${
+                <div
+                 
+                  className={`flex items-center justify-center cursor-pointer hover:text-blue-600 ${
                     activeLink === "/about" ? "text-blue-600" : ""
                   }`}
                   onClick={() => handleLinkClick("/about")}
@@ -114,7 +114,7 @@ const Header = ({ hideAddButton = false }) => {
                     </div>
                     <div className="">About</div>
                   </div>
-                </a>
+                </div>
               </li>
             </ul>
           </div>
