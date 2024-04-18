@@ -76,14 +76,14 @@ function Home() {
     <>
       <div className="flex justify-center w-96">
         <div className="grid col-span-3 my-10">
-          {items.map((item,index) => (
-            <div className="shadow-xl rounded-xl p-3">
+          {/* {items.map((item,index) => (
+            <div className="p-3 shadow-xl rounded-xl">
               <div className="grid gap-3">
-                <div className="text-md font-semibold" key={item.id}>{item.title}</div>
+                <div className="font-semibold text-md" key={item.id}>{item.title}</div>
                 <div className="text-sm">{item.body}</div>
               </div>
             </div>
-          ))}
+          ))} */}
         </div>
         <div ref={loaderRef}>{isLoading && <Loader />}</div>
       </div>
