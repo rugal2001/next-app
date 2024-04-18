@@ -217,7 +217,7 @@ function Post() {
           >
             {activityData?.data.map((activity) => (
               <div className="grid gap-5 text-sm text-gray-700">
-                <ActivityCard activity={activity} />
+                <ActivityCard activity={activity} key={activity._id}/>
               </div>
             ))}
           </ScrollArea>
