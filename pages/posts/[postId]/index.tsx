@@ -21,15 +21,25 @@ import {
 import { IoIosClose } from "react-icons/io";
 import { FcLike } from "react-icons/fc";
 import EventListener from "@/components/event-listener";
+import ActivityCard from "@/components/activity-card";
+import AuthLayout from "@/layouts/auth-layout";
+
+enum EventTypes {
+  PostCreated = "post_created",
+  PostUpdated = "post_updated",
+  CommentCreated = "comment_created",
+  CommentUpdated = "comment_updated",
+  CommentDeleted = "comment_deleted",
+}
 
 function Post() {
   const [comment, setComment] = useState("");
-  const [opened, setOpened] = useState(false);
+  // const [opened, setOpened] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [uContenue, setUContenue] = useState("");
   const [like, setLike] = useState(0);
-  const [openedd, { open, close }] = useDisclosure(false);
-  
+  // const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const {
     data: myData,
@@ -45,6 +55,12 @@ function Post() {
     error: commentError,
     mutate: commentMutate,
   } = useSWR(`/posts/${postId}/comments`, fetcher);
+
+  const {
+    data: activityData,
+    isLoading: activityLoading,
+    error: activityError,
+  } = useSWR(`/activity/${postId}`, fetcher);
 
   const {
     data: post,
@@ -77,7 +93,7 @@ function Post() {
         config
       );
       // console.log(response.data.data._id)
-      EventListener(myData,response.data.data._id,'Add Comment');
+      EventListener(myData, post.data, EventTypes.CommentCreated);
       commentMutate();
       setComment("");
     } catch (error) {
@@ -99,7 +115,7 @@ function Post() {
         `http://localhost:4000/posts/${post.data._id}`,
         config
       );
-      EventListener(myData,post.data._id,'Delete Post')
+      EventListener(myData, post.data._id, "Delete Post");
       console.log("Post deleted successfully !!");
       router.push("/posts");
     } catch (error) {
@@ -119,9 +135,9 @@ function Post() {
         updatedData,
         config
       );
-      EventListener(myData,post.data._id,'Update Post')
+      EventListener(myData, post.data, EventTypes.PostUpdated);
       console.log("Post updated successfully !!");
-      setOpened(false);
+      // setOpened(false);
     } catch (error) {
       console.error("handle Update post ", error);
     }
@@ -163,17 +179,63 @@ function Post() {
 
   /////////////////////////////////////////////////////
 
-  console.log("postsComments =>", postComments.data.length);
+  // console.log("postsComments =>", postComments.data.length);
+  if (activityLoading) {
+    return (
+      <div className="">
+        <Loader />
+      </div>
+    );
+  }
+  if (activityError) {
+    return <div className="">Error</div>;
+  }
+  console.log({ activityData });
+
   return (
     <>
-      {opened && (
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Activities"
+        // style={{ height: '400px' }}
+        // className="min-w-96"
+        size={"auto"}
+        overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}
+        centered
+      >
+        <div className="">
+          <ScrollArea
+            h={500}
+            w={500}
+            offsetScrollbars
+            scrollbarSize={12}
+            scrollHideDelay={2500}
+          >
+            {activityData?.data.map((activity) => (
+              <div className="grid gap-5 text-sm text-gray-700">
+                <ActivityCard activity={activity} />
+              </div>
+            ))}
+          </ScrollArea>
+        </div>
+      </Modal>
+      {/* {opened && (
         <Modal
           opened={true}
-          onClose={() => {
-            setOpened(false);
-          }}
+          // onClose={() => {
+          //   setOpened(false);
+          // }}
+          onClose={close}
           withCloseButton={false}
           size="lg"
+          overlayProps={{
+            backgroundOpacity: 0.55,
+            blur: 3,
+          }}
         >
           <div className="grid items-center justify-center ">
             <div className="flex items-center justify-between ">
@@ -190,9 +252,7 @@ function Post() {
               <div className="">
                 <IoIosClose
                   className="w-10 h-10 cursor-pointer"
-                  onClick={() => {
-                    setOpened(false);
-                  }}
+                  onClick={close}
                 />
               </div>
             </div>
@@ -213,9 +273,9 @@ function Post() {
             <div className="flex justify-center w-full ">
               <div
                 className="grid items-center justify-center w-[20%] h-12 mt-3 text-xl text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-500"
-                onClick={ ()=>{
+                onClick={() => {
                   handleUpdatePost();
-                  
+                  close();
                 }}
               >
                 Modifier
@@ -223,7 +283,7 @@ function Post() {
             </div>
           </div>
         </Modal>
-      )}
+      )} */}
 
       {showConfirmation && (
         <Modal
@@ -253,9 +313,8 @@ function Post() {
             <div className="flex items-center justify-center w-full gap-3">
               <div
                 className="grid items-center justify-center w-40 h-10 mt-2 text-sm font-semibold text-red-500 bg-white border-2 border-red-500 rounded-md cursor-pointer hover:bg-red-500 hover:text-white"
-                onClick={ ()=>{
+                onClick={() => {
                   handleDeletePost();
-                  
                 }}
               >
                 Confirm delete
@@ -311,7 +370,7 @@ function Post() {
                       myData.role === "admin" ? (
                         <DropdownMenuItem
                           className="font-bold cursor-pointer hover:bg-gray-100"
-                          onClick={() => setOpened(true)}
+                          onClick={open}
                         >
                           Edit
                         </DropdownMenuItem>
@@ -328,11 +387,12 @@ function Post() {
                       ) : null}
                       <DropdownMenuItem
                         className="font-bold cursor-pointer hover:bg-gray-100"
-                        onClick={() =>
-                          console.log("this is the post id => ", post.data._id)
-                        }
+                        onClick={() => {
+                          console.log("this is the post id => ", post.data._id);
+                          open();
+                        }}
                       >
-                        Info
+                        Activities
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -411,7 +471,6 @@ function Post() {
                       onClick={() => {
                         updateNumberOfComments();
                         handleAddComment();
-                        
                       }}
                     />
                   </div>
@@ -426,15 +485,11 @@ function Post() {
 }
 
 Post.GetLayout = function GetLayout(Home) {
-  const router = useRouter();
-  useEffect(() => {
-    const token = process.browser && localStorage.getItem("access_token");
-    if (!token) {
-      router.push("/auth");
-    }
-  }, [router]);
-
-  return <>{Home}</>;
+  return (
+    <>
+      <AuthLayout>{Home}</AuthLayout>
+    </>
+  );
 };
 
 export default Post;
