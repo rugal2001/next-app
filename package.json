@@ -33,6 +33,7 @@
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.14",
     "maintain": "^0.0.0",
+    "moment": "^2.30.1",
     "next": "12.2.5",
     "paginate": "^0.2.0",
     "react": "18.2.0",
