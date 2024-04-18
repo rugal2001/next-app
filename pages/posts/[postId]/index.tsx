@@ -216,9 +216,9 @@ function Post() {
             scrollHideDelay={2500}
           >
             {activityData?.data.map((activity) => (
-              <div className="grid gap-5 text-sm text-gray-700">
+              // <div className="grid gap-5 text-sm text-gray-700">
                 <ActivityCard activity={activity} key={activity._id}/>
-              </div>
+              // </div>
             ))}
           </ScrollArea>
         </div>
