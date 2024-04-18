@@ -2,19 +2,20 @@ import httpClientReq from "@/lib/http-client-req";
 
 const EventListener = (
   myData,
-  responseId,
+  post,
   eventType,
 ) => {
+  console.log('create event =>',Date.now())
+  console.log('==================================')
   const submitActivity = async () => {
-    const currentUrl = window.location.href;
+    // const currentUrl = window.location.href;
     // console.log({ currentUrl });
     try {
       const insertedData = {
-        functionId: responseId,
+        post:post,
         submitTime: Date.now(),
-        user: myData,
         eventType,
-        pageUrl: currentUrl,
+        user: myData,
       };
       const response = await httpClientReq.post("/activity", insertedData);
     } catch (error) {
