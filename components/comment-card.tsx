@@ -16,6 +16,13 @@ import fetcher from "../lib/fetcher";
 import { FaReply } from "react-icons/fa";
 import EventListener from "./event-listener";
 
+enum EventTypes {
+  PostCreated = 'post_created',
+  PostUpdated = 'post_updated',
+  CommentCreated = 'comment_created',
+  CommentUpdated = 'comment_updated',
+  CommentDeleted = 'comment_deleted',
+}
 interface CommentCardI {
   comment: {
     replies: any;
@@ -55,7 +62,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
         updatedData,
         config
       );
-      EventListener(myData,result.data.data._id,'Edit Comment');
+      EventListener(myData,post.data,EventTypes.CommentUpdated);
       onUpdate();
       console.log("updated successfully");
     } catch (error) {
@@ -78,7 +85,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
       
       onUpdate();
       console.log('result.data.data._id => ',result.data.data._id)
-      EventListener(myData,result.data.data._id,'Delete Comment');
+      EventListener(myData,post.data,EventTypes.CommentDeleted);
 
       console.log("deleted successfully");
     } catch (error) {
@@ -100,9 +107,11 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
         insertedComment,
         config
       );
-      EventListener(myData,result.data.data._id,'Add Comment');
-
+      console.log(myData)
+      console.log("post.data => ",post.data)
+      console.log("EventTypes.CommentCreated => ",EventTypes.CommentCreated)
       onUpdate();
+      await EventListener(myData,post.data,EventTypes.CommentCreated);
     } catch (error) {
       console.log("there is an error in inserted nested comment ");
     }
