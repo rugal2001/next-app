@@ -11,6 +11,14 @@ import AuthLayout from "../../../layouts/auth-layout";
 import httpClientReq from "@/lib/http-client-req";
 import EventListener from "../../../components/event-listener";
 
+enum EventTypes {
+  PostCreated = 'post_created',
+  PostUpdated = 'post_updated',
+  CommentCreated = 'comment_created',
+  CommentUpdated = 'comment_updated',
+  CommentDeleted = 'comment_deleted',
+}
+
 function Home() {
   const { data, isLoading, error } = useSWR("/me", fetcher);
   const router = useRouter();
@@ -62,9 +70,10 @@ function Home() {
         user: data._id,
       };
       const response = await httpClientReq.post("/posts", insertedData);
-  
-      EventListener(data,response.data.data._id,'Add Post');
-      router.push("/posts");
+      console.log('data =>',data)
+      console.log('response.data => ',response.data.data)
+      EventListener(data,response.data.data,EventTypes.PostCreated);
+      // router.push("/posts");
     } catch (error) {
       console.error(error);
     }
