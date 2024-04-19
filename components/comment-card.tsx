@@ -33,9 +33,10 @@ interface CommentCardI {
 
   onUpdate: any;
   post: any;
+  onUpdateActivity:any;
 }
 
-const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
+const CommentCard = ({ onUpdate, comment, post,onUpdateActivity }: CommentCardI) => {
   const [showAddComment, setShowAddComment] = useState(false);
 
   const { data: myData, isLoading, error } = useSWR("/me", fetcher);
@@ -46,7 +47,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
   const [showOldComment, setShowOldComment] = useState<boolean>(true);
   const [showNewComment, setShowNewComment] = useState<boolean>(false);
 
-  const handleUpdate = async () => {
+  const handleUpdateComment = async () => {
     try {
       const token = localStorage.getItem("access_token");
       const config = {
@@ -62,7 +63,8 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
         updatedData,
         config
       );
-      EventListener(myData,post.data,EventTypes.CommentUpdated);
+      EventListener(myData,post.data,EventTypes.CommentUpdated,onUpdateActivity());
+      
       onUpdate();
       console.log("updated successfully");
     } catch (error) {
@@ -70,7 +72,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteComment = async () => {
     try {
       const token = localStorage.getItem("access_token");
       const config = {
@@ -85,8 +87,8 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
       
       onUpdate();
       console.log('result.data.data._id => ',result.data.data._id)
-      EventListener(myData,post.data,EventTypes.CommentDeleted);
-
+      EventListener(myData,post.data,EventTypes.CommentDeleted,onUpdateActivity);
+console.log({onUpdateActivity})
       console.log("deleted successfully");
     } catch (error) {
       console.log("there is an error in delete ");
@@ -111,7 +113,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
       console.log("post.data => ",post.data)
       console.log("EventTypes.CommentCreated => ",EventTypes.CommentCreated)
       onUpdate();
-      await EventListener(myData,post.data,EventTypes.CommentCreated);
+      await EventListener(myData,post.data,EventTypes.CommentCreated,onUpdateActivity);
     } catch (error) {
       console.log("there is an error in inserted nested comment ");
     }
@@ -147,7 +149,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
             <div className="flex items-center justify-center w-full gap-3">
               <div
                 className="grid items-center justify-center w-40 h-10 mt-2 text-xl font-semibold text-red-500 bg-white border-2 border-red-500 rounded-md cursor-pointer hover:bg-red-500 hover:text-white"
-                onClick={handleDelete}
+                onClick={handleDeleteComment}
               >
                 Confirm delete
               </div>
@@ -202,7 +204,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
                         onClick={() => {
                           setShowOldComment(true);
                           setShowNewComment(false);
-                          handleUpdate();
+                          handleUpdateComment();
                         }}
                       >
                         <IoSend className="text-blue-600 cursor-pointer" />
@@ -281,6 +283,7 @@ const CommentCard = ({ onUpdate, comment, post }: CommentCardI) => {
                 comment={replyComment}
                 onUpdate={onUpdate}
                 post={post}
+                onUpdateActivity={onUpdateActivity}
               />
             );
           })}
