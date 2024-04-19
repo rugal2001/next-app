@@ -44,16 +44,16 @@ function Home() {
     <div>
       <button
         className="w-32 p-3 m-10 font-semibold text-white bg-blue-500 rounded-md"
-        onClick={() => {
-          EventListener(
-            myData,
-            "addPost",
-            "a"
-            // "Add post with the id (651245456)",
-            // "https://chat.openai.com/c/a23b267b-fd72-4ad1-b1d0-d92ef495ef86",
-            // submitTime
-          );
-        }}
+        // onClick={() => {
+        //   EventListener(
+        //     myData,
+        //     "addPost",
+        //     "a"
+        //     // "Add post with the id (651245456)",
+        //     // "https://chat.openai.com/c/a23b267b-fd72-4ad1-b1d0-d92ef495ef86",
+        //     // submitTime
+        //   );
+        // }}
       >
         Start
       </button>
