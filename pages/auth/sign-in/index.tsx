@@ -33,7 +33,7 @@ console.log({response})
         const user=data.user;
         console.log({user})
         setToken(accessToken);
-        EventListener(user,user._id,'User Login');
+        // EventListener(user,user._id,'User Login');
         if (accessToken) {
           localStorage.setItem("access_token", accessToken);
 
