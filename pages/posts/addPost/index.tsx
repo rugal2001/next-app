@@ -72,7 +72,7 @@ function Home() {
       const response = await httpClientReq.post("/posts", insertedData);
       console.log('data =>',data)
       console.log('response.data => ',response.data.data)
-      EventListener(data,response.data.data,EventTypes.PostCreated);
+      // EventListener(data,response.data.data,EventTypes.PostCreated);
       // router.push("/posts");
     } catch (error) {
       console.error(error);
