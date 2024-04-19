@@ -60,6 +60,7 @@ function Post() {
     data: activityData,
     isLoading: activityLoading,
     error: activityError,
+    mutate : activityMutation,
   } = useSWR(`/activity/${postId}`, fetcher);
 
   const {
@@ -93,7 +94,7 @@ function Post() {
         config
       );
       // console.log(response.data.data._id)
-      EventListener(myData, post.data, EventTypes.CommentCreated);
+      EventListener(myData, post.data, EventTypes.CommentCreated,()=>{activityMutation()});
       commentMutate();
       setComment("");
     } catch (error) {
@@ -115,7 +116,7 @@ function Post() {
         `http://localhost:4000/posts/${post.data._id}`,
         config
       );
-      EventListener(myData, post.data._id, "Delete Post");
+      // EventListener(myData, post.data._id, "Delete Post");
       console.log("Post deleted successfully !!");
       router.push("/posts");
     } catch (error) {
@@ -135,7 +136,7 @@ function Post() {
         updatedData,
         config
       );
-      EventListener(myData, post.data, EventTypes.PostUpdated);
+      EventListener(myData, post.data, EventTypes.PostUpdated,activityMutation);
       console.log("Post updated successfully !!");
       // setOpened(false);
     } catch (error) {
@@ -428,6 +429,7 @@ function Post() {
                       }}
                       comment={comment}
                       post={post}
+                      onUpdateActivity={()=>{activityMutation()}}
                     />
                   ))}
                 </div>
