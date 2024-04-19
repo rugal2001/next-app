@@ -4,6 +4,7 @@ const EventListener = (
   myData,
   post,
   eventType,
+  onUpdateEvent
 ) => {
   console.log('create event =>',Date.now())
   console.log('==================================')
@@ -18,6 +19,7 @@ const EventListener = (
         user: myData,
       };
       const response = await httpClientReq.post("/activity", insertedData);
+      onUpdateEvent();
     } catch (error) {
       console.error(error);
     }
