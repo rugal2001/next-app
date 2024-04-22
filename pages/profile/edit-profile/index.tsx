@@ -89,7 +89,7 @@ function Profile() {
           },
         }
       );
-        EventListener(data,data._id,'Update User Profile')
+        // EventListener(data,data._id,'Update User Profile')
       console.log("User profile updated successfully!");
       router.push("/profile");
     } catch (error) {
