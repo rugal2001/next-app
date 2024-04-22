@@ -3,6 +3,7 @@ import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import Header from "../../../layouts/main-layout/header";
 import Main from "../../../layouts/main-layout";
+import moment from "moment";
 import { Avatar, Loader, Modal, ScrollArea } from "@mantine/core";
 import CommentCard from "../../../components/comment-card";
 import { useEffect, useState } from "react";
@@ -24,6 +25,7 @@ import EventListener from "@/components/event-listener";
 import ActivityCard from "@/components/activity-card";
 import AuthLayout from "@/layouts/auth-layout";
 
+import { Stepper } from '@mantine/core';
 enum EventTypes {
   PostCreated = "post_created",
   PostUpdated = "post_updated",
@@ -39,7 +41,12 @@ function Post() {
   const [uContenue, setUContenue] = useState("");
   const [like, setLike] = useState(0);
   // const [opened, { open, close }] = useDisclosure(false);
-  const [opened, { open, close }] = useDisclosure(false);
+  const [
+    openActivityModal,
+    { open: activityModal, close: closeActivityModal },
+  ] = useDisclosure(false);
+  const [openEditModal, { open: editModal, close: closeEditModal }] =
+    useDisclosure(false);
 
   const {
     data: myData,
@@ -60,7 +67,7 @@ function Post() {
     data: activityData,
     isLoading: activityLoading,
     error: activityError,
-    mutate : activityMutation,
+    mutate: activityMutation,
   } = useSWR(`/activity/${postId}`, fetcher);
 
   const {
@@ -94,7 +101,9 @@ function Post() {
         config
       );
       // console.log(response.data.data._id)
-      EventListener(myData, post.data, EventTypes.CommentCreated,()=>{activityMutation()});
+      EventListener(myData, post.data, EventTypes.CommentCreated, () => {
+        activityMutation();
+      });
       commentMutate();
       setComment("");
     } catch (error) {
@@ -136,7 +145,12 @@ function Post() {
         updatedData,
         config
       );
-      EventListener(myData, post.data, EventTypes.PostUpdated,activityMutation);
+      EventListener(
+        myData,
+        post.data,
+        EventTypes.PostUpdated,
+        activityMutation
+      );
       console.log("Post updated successfully !!");
       // setOpened(false);
     } catch (error) {
@@ -196,8 +210,8 @@ function Post() {
   return (
     <>
       <Modal
-        opened={opened}
-        onClose={close}
+        opened={openActivityModal}
+        onClose={closeActivityModal}
         title="Activities"
         // style={{ height: '400px' }}
         // className="min-w-96"
@@ -216,75 +230,91 @@ function Post() {
             scrollbarSize={12}
             scrollHideDelay={2500}
           >
+            <div className="ligne">
+              {/* <div className="h-full">|</div> */}
+              
+            </div>
+            <div className="grid gap-5">
             {activityData?.data.map((activity) => (
-              // <div className="grid gap-5 text-sm text-gray-700">
-                <ActivityCard activity={activity} key={activity._id}/>
-              // </div>
+             <div className="step-item">
+               <ActivityCard activity={activity} key={activity._id} />
+
+             </div>
+              
             ))}
+
+            </div>
           </ScrollArea>
         </div>
       </Modal>
-      {/* {opened && (
-        <Modal
-          opened={true}
-          // onClose={() => {
-          //   setOpened(false);
-          // }}
-          onClose={close}
-          withCloseButton={false}
-          size="lg"
-          overlayProps={{
-            backgroundOpacity: 0.55,
-            blur: 3,
-          }}
-        >
-          <div className="grid items-center justify-center ">
-            <div className="flex items-center justify-between ">
-              <div className="flex gap-3">
-                <div className="flex items-center gap-3 p-2 text-xl font-semibold  w-[100%]  mb-3">
+
+      <Modal
+        opened={openEditModal}
+        onClose={closeEditModal}
+        withCloseButton={false}
+        size="lg"
+        overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}
+        centered
+      >
+        <div className="grid gap-4 -m-4 ">
+          <div className="w-full h-auto">
+            <div className="flex items-start justify-between w-full p-2">
+              <div className="flex w-full gap-3 ">
+                <div className="flex items-center gap-3 p-2 text-sm font-semibold  w-[100%]  mb-3">
                   <Avatar
                     src={post?.data.user?.image}
                     alt="it's me"
                     className="cursor-pointer"
                   />
-                  {post?.data.user?.firstName} {post?.data.user?.lastName}
+                  <div className="grid gap-1">
+                    <div className="">
+                      {post?.data.user?.firstName} {post?.data.user?.lastName}
+                    </div>
+                    <div className="text-xs font-normal text-slate-600">
+                      {moment(post.data.createdAt).format("DD MMMM YYYY")}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="">
                 <IoIosClose
-                  className="w-10 h-10 cursor-pointer"
-                  onClick={close}
+                  className="pr-1 text-xs cursor-pointer w-7 h-7 text-slate-700"
+                  onClick={closeEditModal}
                 />
               </div>
             </div>
-            <textarea
-              style={{
-                outline: "none",
-                overflowY: "scroll",
-                scrollbarWidth: "none",
-              }}
-              className="w-full h-24 px-2 mb-3 rounded-lg scrollbar-none"
-              defaultValue={post.data.contenue}
-              onChange={(e) => setUContenue(e.target.value)}
-            />
-
-            <div>
-              <img src={post.data.image}></img>
-            </div>
-            <div className="flex justify-center w-full ">
-              <div
-                className="grid items-center justify-center w-[20%] h-12 mt-3 text-xl text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-500"
-                onClick={() => {
-                  handleUpdatePost();
-                  close();
+            <div className="px-2">
+              <textarea
+                style={{
+                  outline: "none",
+                  overflowY: "scroll",
+                  scrollbarWidth: "none",
                 }}
-              >
-                Modifier
+                className="w-full h-56 p-2 mb-3 text-sm font-medium bg-gray-300 rounded-sm scrollbar-none text-slate-700"
+                defaultValue={post.data.contenue}
+                onChange={(e) => setUContenue(e.target.value)}
+              />
+              {/* <div className="grid justify-center ">
+              <img className="rounded-md" src={post.data.image}></img>
+            </div> */}
+              <div className="flex justify-end mb-3">
+                <div
+                  className="grid items-center justify-center w-auto px-4 text-sm font-semibold text-white rounded-sm cursor-pointer bg-violet-700 h-9 hover:bg-violet-600"
+                  onClick={() => {
+                    handleUpdatePost();
+                    closeEditModal();
+                  }}
+                >
+                  Modifier
+                </div>
               </div>
             </div>
           </div>
-        </Modal>
-      )} */}
+        </div>
+      </Modal>
 
       {showConfirmation && (
         <Modal
@@ -371,7 +401,7 @@ function Post() {
                       myData.role === "admin" ? (
                         <DropdownMenuItem
                           className="font-bold cursor-pointer hover:bg-gray-100"
-                          onClick={open}
+                          onClick={editModal}
                         >
                           Edit
                         </DropdownMenuItem>
@@ -390,7 +420,7 @@ function Post() {
                         className="font-bold cursor-pointer hover:bg-gray-100"
                         onClick={() => {
                           console.log("this is the post id => ", post.data._id);
-                          open();
+                          activityModal();
                         }}
                       >
                         Activities
@@ -429,7 +459,9 @@ function Post() {
                       }}
                       comment={comment}
                       post={post}
-                      onUpdateActivity={()=>{activityMutation()}}
+                      onUpdateActivity={() => {
+                        activityMutation();
+                      }}
                     />
                   ))}
                 </div>
