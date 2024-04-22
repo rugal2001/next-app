@@ -235,8 +235,8 @@ function Post() {
               
             </div>
             <div className="grid gap-5">
-            {activityData?.data.map((activity) => (
-             <div className="step-item">
+            {activityData?.data.map((activity,i) => (
+             <div className="step-item" key={i}>
                <ActivityCard activity={activity} key={activity._id} />
 
              </div>
