@@ -38,10 +38,10 @@ const ActivityCard = ({ activity }: ActivityCardI) => {
           <div className="text-lg step text-slate-500">
             
             
-              {action === "created" && entity!=="post" && <IoMdAddCircleOutline />}
-              {action === "updated" && entity === 'post' && <TbEdit />}
-              {action === "updated" && entity!=='post' && <MdOutlineEdit />}
-              {action === "deleted" && <MdDeleteForever />}
+              {action === "created" && entity!=="post" && <IoMdAddCircleOutline className="text-blue-500"/>}
+              {action === "updated" && entity === 'post' && <TbEdit className="text-yellow-500"/>}
+              {action === "updated" && entity!=='post' && <MdOutlineEdit className="text-yellow-500"/>}
+              {action === "deleted" && <MdDeleteForever className="text-red-500"/>}
               {action === "created" && entity === "post" && (
                 <img src={activity.user.image} alt="" className="w-5 h-5 rounded-full" />
               )}
