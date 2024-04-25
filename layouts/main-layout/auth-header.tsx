@@ -1,17 +1,27 @@
+import { Avatar } from "@mantine/core";
 import { useRouter } from "next/router";
+import { IoIosSearch } from "react-icons/io";
 
 export const AuthHeader = () => {
   const router = useRouter();
   return (
     <>
-      <header className="sticky top-0 flex items-center w-full h-auto p-3 text-sm bg-white shadow-md">
+      <header className="sticky flex items-center w-[97%] h-auto p-3 text-sm bg-white border-[1px] border-slate-300  top-5 left-6 rounded-xl monospace bg-opacity-80 backdrop-blur-sm">
         <div className="flex justify-between w-full">
-          <div className="p-3 pl-12 font-bold">Next js</div>
-          <div className="flex items-center gap-3 pr-10">
+          <div className="flex items-center justify-center gap-3 font-extrabold sm:pl-2 md:pl-12 text-slate-700">
+            <div className="">
+              <Avatar src="https://www.drupal.org/files/project-images/nextjs-icon-dark-background.png"></Avatar>
+            </div>
+            <div className="">Next js</div>
+          </div>
+          {/* <div className="bg-slate-200 rounded-full border-[1px] border-slate-500 px-3 py-1 w-1/4 flex gap-4 items-center justify-center text-slate-600">
+            <div className="w-[5%] text-xl"><IoIosSearch /></div>
+            <div className="w-[95%] ">Search</div>
+          </div> */}
+          <div className="flex items-center gap-3 pr-10 max-sm:pr-1">
             <div className="">
               <button
-             // className="p-2 text-blue-600 bg-white border-[1px] border-blue-600 rounded-lg cursor-pointer hover:text-white hover:bg-blue-600 w-[40%] text-sm text-center "
-                className="w-32 h-auto p-2 text-green-500 border-[1px] border-green-500 rounded-md hover:bg-green-500 hover:text-white"
+                className="w-32 max-sm:w-24 h-auto p-2 font-semibold text-green-800 rounded-full bg-lime-50  border-[1px] border-green-800 cursor-pointer hover:bg-lime-100  max-sm:hidden"
                 onClick={() => {
                   router.push("/auth/sign-up");
                 }}
@@ -21,7 +31,7 @@ export const AuthHeader = () => {
             </div>
             <div className="">
               <button
-                className="w-32 h-auto p-2 text-blue-600 border-[1px] border-blue-600 rounded-md hover:bg-blue-600 hover:text-white"
+                className="w-32 h-auto p-2 font-semibold rounded-full text-blue-950 bg-blue-50 hover:bg-blue-100 border-[1px] border-blue-950 cursor-pointer"
                 onClick={() => {
                   router.push("/auth/sign-in");
                 }}
