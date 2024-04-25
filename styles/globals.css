@@ -13,7 +13,7 @@
   @apply content-[''] bg-slate-400 absolute w-[1px] h-3 left-3 top-0 -translate-y-4 ;
 }
 .step{
-  @apply w-6 h-6 rounded-full flex items-center justify-center z-10 relative bg-slate-400 font-semibold text-white
+  @apply w-6 h-6 rounded-full flex items-center justify-center z-10 relative bg-white font-semibold text-white
 }
 /* .stepper {
   @apply w-6 h-6 border-2 rounded-full border-bop bg-bop ;
@@ -30,6 +30,20 @@
   left: -1.7rem;
 } */
 
+.gradientText {
+  background: linear-gradient(to left ,#FFEC9E,#FFBB70,#ED9455);
+  
+  -webkit-background-clip: text;
+  -webkit-text-fill-color:transparent;
+}
+.background {
+  background: #FFEBB2;
+  color: #FFEBB2 ;
+}
+
+.monospace {
+  font-family: Arial, Helvetica, sans-serif;
+}
 html,
 body {
   padding: 0;
