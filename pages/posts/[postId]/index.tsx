@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { RxActivityLog } from "react-icons/rx";
 import useSWR from "swr";
 import fetcher from "../../../lib/fetcher";
 import Header from "../../../layouts/main-layout/header";
@@ -9,9 +10,10 @@ import CommentCard from "../../../components/comment-card";
 import { useEffect, useState } from "react";
 import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import { IoCloseOutline, IoSend } from "react-icons/io5";
-
+import { CgMenuGridO } from "react-icons/cg";
 import { useDisclosure } from "@mantine/hooks";
 import { Drawer, Button } from "@mantine/core";
+import { SiGooglemessages } from "react-icons/si";
 import axios from "axios";
 import {
   DropdownMenu,
@@ -19,22 +21,35 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../../components/action-popup";
-import { IoIosClose } from "react-icons/io";
+import { IoIosClose, IoIosMore, IoMdNotifications } from "react-icons/io";
 import { FcLike } from "react-icons/fc";
 import EventListener from "@/components/event-listener";
 import ActivityCard from "@/components/activity-card";
 import AuthLayout from "@/layouts/auth-layout";
 
-import { Stepper } from '@mantine/core';
+import { Stepper } from "@mantine/core";
+import { FiMoreHorizontal } from "react-icons/fi";
+import UserDropDownMenu from "@/components/user-drop-down";
+import {
+  BiMessageSquareDetail,
+  BiSolidMessageSquareDetail,
+} from "react-icons/bi";
+import { MdDeleteForever } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import { LuActivitySquare } from "react-icons/lu";
+
 enum EventTypes {
   PostCreated = "post_created",
   PostUpdated = "post_updated",
+  PostDeleted = "post_deleted",
   CommentCreated = "comment_created",
   CommentUpdated = "comment_updated",
   CommentDeleted = "comment_deleted",
 }
 
 function Post() {
+  const [show, setShow] = useState({});
+  const [event, setEvent] = useState("empty");
   const [comment, setComment] = useState("");
   // const [opened, setOpened] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -100,10 +115,16 @@ function Post() {
         insertedComment,
         config
       );
-      // console.log(response.data.data._id)
-      EventListener(myData, post.data, EventTypes.CommentCreated, () => {
-        activityMutation();
-      });
+      console.log({ response });
+      console.log(response.data.data._id);
+      EventListener(
+        EventTypes.CommentCreated,
+        myData,
+        post.data,
+        activityMutation,
+        null,
+        response.data.data
+      );
       commentMutate();
       setComment("");
     } catch (error) {
@@ -131,6 +152,13 @@ function Post() {
     } catch (error) {
       console.error("Error deleting Post ", error);
     }
+    EventListener(
+      EventTypes.PostDeleted,
+      myData,
+      post.data,
+      activityMutation,
+      post
+    );
     postMutate();
     setShowConfirmation(false);
   };
@@ -146,10 +174,11 @@ function Post() {
         config
       );
       EventListener(
+        EventTypes.PostUpdated,
         myData,
         post.data,
-        EventTypes.PostUpdated,
-        activityMutation
+        activityMutation,
+        post
       );
       console.log("Post updated successfully !!");
       // setOpened(false);
@@ -205,13 +234,15 @@ function Post() {
   if (activityError) {
     return <div className="">Error</div>;
   }
-  console.log({ activityData });
 
   return (
     <>
       <Modal
         opened={openActivityModal}
-        onClose={closeActivityModal}
+        onClose={ ()=>{
+          closeActivityModal();
+          setEvent('empty')
+        }}
         title="Activities"
         // style={{ height: '400px' }}
         // className="min-w-96"
@@ -222,29 +253,165 @@ function Post() {
         }}
         centered
       >
-        <div className="">
+        <div className="flex gap-1">
           <ScrollArea
-            h={500}
-            w={500}
+            h={550}
+            w={450}
             offsetScrollbars
             scrollbarSize={12}
             scrollHideDelay={2500}
           >
-            <div className="ligne">
-              {/* <div className="h-full">|</div> */}
-              
-            </div>
+            <div className="ligne">{/* <div className="h-full">|</div> */}</div>
             <div className="grid gap-5">
-            {activityData?.data.map((activity,i) => (
-             <div className="step-item" key={i}>
-               <ActivityCard activity={activity} key={activity._id} />
-
-             </div>
-              
-            ))}
-
+              {activityData?.data.map((activity, i) => (
+                <div className="step-item" key={i}>
+                  <ActivityCard
+                    activity={activity}
+                    key={activity._id}
+                    setShow={setShow}
+                    setEvent={setEvent}
+                  />
+                </div>
+              ))}
+              {console.log(show)}
             </div>
           </ScrollArea>
+          <div className="h-auto p-2 bg-gray-50 rounded-md w-96 border-[1px] border-dashed border-gray-200">
+            <ScrollArea
+              h={550}
+              w={380}
+              offsetScrollbars
+              scrollbarSize={12}
+              scrollHideDelay={2500}
+            >
+              {event === "empty" && (
+                <div className="relative text-gray-300 text-9xl py-52 px-28">
+                  <RxActivityLog />
+                </div>
+              )}
+              {event === EventTypes.PostUpdated && (
+                <div className="grid gap-2 text-sm text-slate-800">
+                  <div className="grid gap-2">
+                    <div className="p-2 rounded-md bg-slate-100 border-[1px] border-slate-400 text-black border-dashed">
+                      <div className="pb-1 font-semibold text-center text-black">
+                        <div className="flex gap-2 border-b-[1px] border-slate-200 ">
+                          <div className="w-1 h-auto bg-gray-300"></div>
+                          <div className="py-1">NEW POST</div>
+                        </div>
+                      </div>
+                      
+                      {show.activity.post.contenue}
+                    </div>
+                  </div>
+                  <div className="grid gap-2">
+                    <div className="p-2 rounded-md text-gray-400 bg-white border-[1px] border-slate-400  border-dashed">
+                      <div className="pb-1 font-semibold text-center text-black">
+                        <div className="flex gap-2 border-b-[1px] border-slate-200 ">
+                          <div className="w-1 h-auto bg-gray-300"></div>
+                          <div className="py-1">OLD POST</div>
+                        </div>
+                      </div>
+                      {show.activity.oldData?.data?.contenue}
+                    </div>
+                  </div>
+                </div>
+              )}
+              {event === EventTypes.CommentUpdated && (
+                <>
+                  <div className="grid gap-2  rounded-md">
+                    <div className="flex gap-2 border-b-[1px] border-slate-200 ">
+                      <div className="w-1 h-auto bg-gray-300"></div>
+                      <div className="py-1 text-xs font-semibold">
+                        NEW COMMENT
+                      </div>
+                    </div>
+                    <div className="">
+                      <CommentCard
+                        comment={{
+                          replies: undefined,
+                          _id: "",
+                          contenue: show.activity.comment?.contenue,
+                          user: show.activity.user,
+                        }}
+                        onUpdate={undefined}
+                        post={undefined}
+                        onUpdateActivity={undefined}
+                        showExtra={"No"}
+                      />
+                    </div>
+                    <div className="flex gap-2 border-b-[1px] border-slate-200 ">
+                      <div className="w-1 h-auto bg-gray-300"></div>
+                      <div className="py-1 text-xs font-semibold">
+                        OLD COMMENT
+                      </div>
+                    </div>
+                    <div className="">
+                      <CommentCard
+                        comment={{
+                          replies: undefined,
+                          _id: "",
+                          contenue: show.activity.oldData?.contenue,
+                          user: show.activity.user,
+                        }}
+                        onUpdate={undefined}
+                        post={undefined}
+                        onUpdateActivity={undefined}
+                        showExtra={"No"}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+              {event === EventTypes.CommentDeleted && (
+                <>
+                  <div className="grid gap-3">
+                    <div className="flex gap-2 border-b-[1px] border-slate-200 ">
+                      <div className="w-1 h-auto bg-gray-300"></div>
+                      <div className="py-1 text-xs font-semibold">
+                        DELETED COMMENT
+                      </div>
+                    </div>
+                    <CommentCard
+                      comment={{
+                        replies: undefined,
+                        _id: "",
+                        contenue: show.activity.oldData?.contenue,
+                        user: show.activity.user,
+                      }}
+                      onUpdate={undefined}
+                      post={undefined}
+                      onUpdateActivity={undefined}
+                      showExtra={"No"}
+                    />
+                  </div>
+                </>
+              )}
+              {event === EventTypes.CommentCreated && (
+                <>
+                  <div className="grid gap-3">
+                    <div className="flex gap-2 border-b-[1px] border-slate-200 ">
+                      <div className="w-1 h-auto bg-gray-300"></div>
+                      <div className="py-1 text-xs font-semibold">
+                        ADDED COMMENT
+                      </div>
+                    </div>
+                    <CommentCard
+                      comment={{
+                        replies: undefined,
+                        _id: "",
+                        contenue: show.activity.comment?.contenue,
+                        user: show.activity.user,
+                      }}
+                      onUpdate={undefined}
+                      post={undefined}
+                      onUpdateActivity={undefined}
+                      showExtra={"No"}
+                    />
+                  </div>
+                </>
+              )}
+            </ScrollArea>
+          </div>
         </div>
       </Modal>
 
@@ -325,6 +492,7 @@ function Post() {
           withCloseButton={false}
           size="lg"
           centered
+          // closeOnClickOutside={false}
         >
           <div className="grid justify-center w-full ">
             <div className="flex items-center justify-between gap-40">
@@ -363,78 +531,121 @@ function Post() {
         </Modal>
       )}
 
-      <div className="flex justify-center w-full">
+      <div className="flex justify-center w-full bg-black">
         <div className="flex w-full bg-black">
           <div className="relative w-full md:w-4/6">
-            <div className="sticky top-0 pt-20 bg-black">
-              <img
-                src={post.data?.image}
-                alt="Post Image"
-                className="w-full max-h-[80vh] object-contain max-w-[90vw] mx-auto"
-              />
-
+            <div className="sticky top-0 bg-black ">
               <div
-                className="absolute top-0 m-3 text-6xl text-white rounded-full cursor-pointer"
+                className="absolute z-50 text-4xl text-white rounded-full cursor-pointer top-3 left-3"
                 onClick={() => {
                   router.back();
                 }}
               >
                 <IoCloseOutline />
               </div>
+              <img
+                src={post.data?.image}
+                alt="Post Image"
+                className="w-full max-h-[100vh] object-contain max-w-[100vw] "
+              />
             </div>
           </div>
 
           <div className="flex justify-center w-full md:w-2/6">
             <div className="w-full bg-white">
-              <div className="fixed top-0 z-50 flex items-center justify-between w-2/6 p-3 text-xl font-semibold bg-white rounded-t-lg">
-                <div className="flex items-center gap-3">
-                  <Avatar src={post.data?.user?.image} alt="it's me" />
-                  {post.data?.user.firstName} {post.data?.user.lastName}
-                </div>
-                <div className="flex items-center">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <HiMiniEllipsisVertical className="text-3xl rounded-full cursor-pointer hover:bg-gray-100" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-48 h-auto bg-white">
-                      {post?.data?.user._id === myData?._id ||
-                      myData.role === "admin" ? (
-                        <DropdownMenuItem
-                          className="font-bold cursor-pointer hover:bg-gray-100"
-                          onClick={editModal}
-                        >
-                          Edit
-                        </DropdownMenuItem>
-                      ) : null}
-
-                      {post?.data?.user._id === myData?._id ||
-                      myData.role === "admin" ? (
-                        <DropdownMenuItem
-                          className="font-bold cursor-pointer hover:bg-gray-100"
-                          onClick={() => setShowConfirmation(true)}
-                        >
-                          Delete
-                        </DropdownMenuItem>
-                      ) : null}
-                      <DropdownMenuItem
-                        className="font-bold cursor-pointer hover:bg-gray-100"
-                        onClick={() => {
-                          console.log("this is the post id => ", post.data._id);
-                          activityModal();
-                        }}
-                      >
-                        Activities
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+              <div className="fixed top-0 z-50 flex items-center justify-end w-2/6 p-3 text-xl font-semibold bg-white border-b-[1px] border-slate-300 ">
+                <div className="flex items-center justify-end gap-3 text-sm text-slate-800">
+                  {/* <Avatar src={myData?.image} alt="it's me" /> */}
+                  <div className="p-2 rounded-full cursor-pointer bg-slate-200 hover:bg-slate-300">
+                    <CgMenuGridO className="text-2xl" />
+                  </div>
+                  <div className="p-2 rounded-full cursor-pointer bg-slate-200 hover:bg-slate-300">
+                    <BiMessageSquareDetail className="text-2xl" />
+                  </div>
+                  <div className="p-2 rounded-full cursor-pointer bg-slate-200 hover:bg-slate-300">
+                    <IoMdNotifications className="text-2xl" />
+                  </div>
+                  <UserDropDownMenu />
                 </div>
               </div>
-              <div className="p-2 mt-16 text-sm font-semibold bg-gray-200">
+              <div className="h-auto mt-16 ">
+                <div className="flex justify-between p-3">
+                  <div className="flex gap-3">
+                    <div className="">
+                      <Avatar src={post.data?.user?.image} alt="it's me" />
+                    </div>
+                    <div className="grid gap-1">
+                      <div className="text-sm font-semibold text-slate-900">
+                        {post.data?.user.firstName} {post.data?.user.lastName}
+                      </div>
+                      <div className="text-xs font-normal text-slate-600">
+                        {moment(post.data.createdAt).format("DD MMMM YYYY")}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <FiMoreHorizontal className="text-2xl cursor-pointer " />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-48 h-auto bg-white">
+                        {post?.data?.user._id === myData?._id ||
+                        myData.role === "admin" ? (
+                          <DropdownMenuItem
+                            className="font-semibold cursor-pointer hover:bg-gray-100"
+                            onClick={editModal}
+                          >
+                            <div className="flex items-center gap-2 text-lg h-7">
+                              <div className="">
+                                <FaRegEdit className="text-yellow-500" />
+                              </div>
+                              <div className="text-sm">Edit Post</div>
+                            </div>
+                          </DropdownMenuItem>
+                        ) : null}
+
+                        {post?.data?.user._id === myData?._id ||
+                        myData.role === "admin" ? (
+                          <DropdownMenuItem
+                            className="font-semibold cursor-pointer hover:bg-gray-100"
+                            onClick={() => setShowConfirmation(true)}
+                          >
+                            <div className="flex items-center gap-2 text-lg h-7">
+                              <div className="">
+                                <MdDeleteForever className="text-red-500" />
+                              </div>
+                              <div className="text-sm">Delete Post</div>
+                            </div>
+                          </DropdownMenuItem>
+                        ) : null}
+                        <DropdownMenuItem
+                          className="font-semibold cursor-pointer hover:bg-gray-100"
+                          onClick={() => {
+                            console.log(
+                              "this is the post id => ",
+                              post.data._id
+                            );
+                            activityModal();
+                          }}
+                        >
+                          <div className="flex items-center gap-2 text-lg h-7">
+                            <div className="">
+                              <LuActivitySquare className="text-green-500" />
+                            </div>
+                            <div className="text-sm">Activities</div>
+                          </div>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              </div>
+              <div className="p-2 mx-4  text-sm font-semibold  border-b-[1px] border-slate-300">
                 {post?.data?.contenue}
                 {/* <ScrollArea className="" h={230}>{post.data.contenue}</ScrollArea> */}
               </div>
 
-              <div className="flex items-center justify-between w-full p-2 px-3 text-xl ">
+              <div className="flex items-center justify-between  p-2 px-3 text-xl border-b-[1px] border-slate-300 mx-4">
                 <div className="">
                   <FcLike
                     className="cursor-pointer"
