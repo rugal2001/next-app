@@ -48,7 +48,13 @@ enum EventTypes {
 }
 
 function Post() {
-  const [show, setShow] = useState({});
+  const [show, setShow] = useState({
+    activity: { post: { contenue: "" } } || {
+        comment: { contenue: "" },
+      } || { oldData: { data: { contenue: "" } } || { contenue: "" } } || {
+        user: {},
+      },
+  });
   const [event, setEvent] = useState("empty");
   const [comment, setComment] = useState("");
   // const [opened, setOpened] = useState(false);
@@ -239,9 +245,9 @@ function Post() {
     <>
       <Modal
         opened={openActivityModal}
-        onClose={ ()=>{
+        onClose={() => {
           closeActivityModal();
-          setEvent('empty')
+          setEvent("empty");
         }}
         title="Activities"
         // style={{ height: '400px' }}
@@ -299,7 +305,7 @@ function Post() {
                           <div className="py-1">NEW POST</div>
                         </div>
                       </div>
-                      
+
                       {show.activity.post.contenue}
                     </div>
                   </div>
@@ -673,6 +679,7 @@ function Post() {
                       onUpdateActivity={() => {
                         activityMutation();
                       }}
+                      showExtra={undefined}
                     />
                   ))}
                 </div>
