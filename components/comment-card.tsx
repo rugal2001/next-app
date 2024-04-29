@@ -344,8 +344,8 @@ const CommentCard = ({
         </div>
 
         {showAddComment ? (
-          <div className="flex justify-end w-full">
-            <div className="bg-gray-200 w-[100%] h-auto rounded-lg mx-2 mt-2 flex gap-3  p-3">
+          <div className="w-[87%] ml-9">
+            <div className="bg-slate-100 w-[100%] h-auto rounded-xl mx-2 mt-2 flex gap-3  p-3">
               <div className="">
                 <Avatar
                   src={myData.image}
