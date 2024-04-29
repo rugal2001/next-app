@@ -66,7 +66,7 @@ function UserDropDownMenu() {
         </div>
         <ScrollArea h={560}>
         {users.data.map((user) => (
-          <UserCard user={user} onUpdate={userMutation} />
+          <UserCard key={user._id} user={user} onUpdate={userMutation} />
         ))}
         </ScrollArea>
         <div className="fixed bottom-0 w-[97%] h-16 border-t-[1px] border-slate-200 flex items-center justify-between bg-white">
