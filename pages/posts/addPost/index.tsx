@@ -10,6 +10,8 @@ import fetcher from "../../../lib/fetcher";
 import AuthLayout from "../../../layouts/auth-layout";
 import httpClientReq from "@/lib/http-client-req";
 import EventListener from "../../../components/event-listener";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS
 
 enum EventTypes {
   PostCreated = 'post_created',
@@ -62,6 +64,7 @@ function Home() {
 
   const handleSubmit = async () => {
     try {
+      toast.loading("Creating post..."); 
       const insertedData = {
         numberOfComments: 0,
         name: " ",
@@ -72,8 +75,13 @@ function Home() {
       const response = await httpClientReq.post("/posts", insertedData);
       console.log('data =>',data)
       console.log('response.data => ',response.data.data)
-      // EventListener(data,response.data.data,EventTypes.PostCreated,'');
+      EventListener(EventTypes.PostCreated,data,response.data.data,'');
       // router.push("/posts");
+      toast.update("Post created successfully!", {
+        type: "success", 
+        isLoading: false, 
+        position: "bottom-right", 
+      });
     } catch (error) {
       console.error(error);
     }
