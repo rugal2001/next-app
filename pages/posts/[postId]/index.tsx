@@ -48,6 +48,9 @@ enum EventTypes {
 }
 
 function Post() {
+  
+  const [deletedPost, { open: openDeletePost, close: closeDeletePost }] =
+    useDisclosure(false);
   const [show, setShow] = useState({
     activity: { post: { contenue: "" } } || {
         comment: { contenue: "" },
@@ -106,7 +109,8 @@ function Post() {
     );
   if (postError) return <div>Error Loading Post</div>;
   if (!post) return <div>Post not found</div>;
-
+  
+    console.log({activityData})
   const handleAddComment = async () => {
     try {
       const token = localStorage.getItem("access_token");
@@ -186,6 +190,7 @@ function Post() {
         activityMutation,
         post
       );
+      closeEditModal();
       console.log("Post updated successfully !!");
       // setOpened(false);
     } catch (error) {
@@ -243,6 +248,8 @@ function Post() {
 
   return (
     <>
+
+
       <Modal
         opened={openActivityModal}
         onClose={() => {
@@ -279,7 +286,7 @@ function Post() {
                   />
                 </div>
               ))}
-              {console.log(show)}
+              {console.log({activityData})}
             </div>
           </ScrollArea>
           <div className="h-auto p-2 bg-gray-50 rounded-md w-96 border-[1px] border-dashed border-gray-200">
@@ -295,7 +302,8 @@ function Post() {
                   <RxActivityLog />
                 </div>
               )}
-              {event === EventTypes.PostUpdated && (
+              
+              {event === EventTypes.PostUpdated ? (
                 <div className="grid gap-2 text-sm text-slate-800">
                   <div className="grid gap-2">
                     <div className="p-2 rounded-md bg-slate-100 border-[1px] border-slate-400 text-black border-dashed">
@@ -321,10 +329,10 @@ function Post() {
                     </div>
                   </div>
                 </div>
-              )}
+              ) :null}
               {event === EventTypes.CommentUpdated && (
                 <>
-                  <div className="grid gap-2  rounded-md">
+                  <div className="grid gap-2 rounded-md">
                     <div className="flex gap-2 border-b-[1px] border-slate-200 ">
                       <div className="w-1 h-auto bg-gray-300"></div>
                       <div className="py-1 text-xs font-semibold">
@@ -370,6 +378,7 @@ function Post() {
               )}
               {event === EventTypes.CommentDeleted && (
                 <>
+                
                   <div className="grid gap-3">
                     <div className="flex gap-2 border-b-[1px] border-slate-200 ">
                       <div className="w-1 h-auto bg-gray-300"></div>
@@ -421,6 +430,7 @@ function Post() {
         </div>
       </Modal>
 
+
       <Modal
         opened={openEditModal}
         onClose={closeEditModal}
@@ -432,13 +442,13 @@ function Post() {
         }}
         centered
       >
-        <div className="grid gap-4 -m-4 ">
+        <div className="grid gap-4 pb-3 -m-4">
           <div className="w-full h-auto">
             <div className="flex items-start justify-between w-full p-2">
               <div className="flex w-full gap-3 ">
                 <div className="flex items-center gap-3 p-2 text-sm font-semibold  w-[100%]  mb-3">
                   <Avatar
-                    src={post?.data.user?.image}
+                    src={post?.data?.user?.image}
                     alt="it's me"
                     className="cursor-pointer"
                   />
@@ -452,12 +462,12 @@ function Post() {
                   </div>
                 </div>
               </div>
-              <div className="">
+              {/* <div className="">
                 <IoIosClose
                   className="pr-1 text-xs cursor-pointer w-7 h-7 text-slate-700"
                   onClick={closeEditModal}
                 />
-              </div>
+              </div> */}
             </div>
             <div className="px-2">
               <textarea
@@ -466,30 +476,72 @@ function Post() {
                   overflowY: "scroll",
                   scrollbarWidth: "none",
                 }}
-                className="w-full h-56 p-2 mb-3 text-sm font-medium bg-gray-300 rounded-sm scrollbar-none text-slate-700"
+                className="w-full h-56 p-2 mb-3 text-sm font-medium bg-white rounded-sm scrollbar-none text-slate-700 border-y-[1px] border-slate-300"
                 defaultValue={post.data.contenue}
                 onChange={(e) => setUContenue(e.target.value)}
               />
-              {/* <div className="grid justify-center ">
-              <img className="rounded-md" src={post.data.image}></img>
-            </div> */}
-              <div className="flex justify-end mb-3">
-                <div
-                  className="grid items-center justify-center w-auto px-4 text-sm font-semibold text-white rounded-sm cursor-pointer bg-violet-700 h-9 hover:bg-violet-600"
-                  onClick={() => {
-                    handleUpdatePost();
-                    closeEditModal();
-                  }}
-                >
-                  Modifier
-                </div>
-              </div>
+              
+              <div className="flex items-center justify-end gap-2">
+            <div
+              className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-black transition-colors bg-white rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-50 h-9"
+              onClick={() => {
+                closeEditModal();
+              }}
+            >
+              Cancel
+            </div>
+            <div
+              className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-white transition-colors bg-black rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-800 h-9"
+              onClick={()=>{
+                handleUpdatePost();
+                // closeEditModal();
+              }}
+            >
+              Confirm
+            </div>
+          </div>
             </div>
           </div>
         </div>
       </Modal>
 
-      {showConfirmation && (
+      <Modal
+        opened={deletedPost}
+        radius={"md"}
+        size={"40%"}
+        onClose={closeDeletePost}
+        withCloseButton={false}
+        className=""
+        centered
+      >
+        {/* <div onClick={handleUpdateUser}>Hello</div> */}
+
+        {/* {userRole === 'admin' ?  setUserRole('user'):setUserRole('admin') } */}
+        <div className="grid w-full gap-3 p-2">
+          <div className="text-lg font-semibold">Are you absolutely sure?</div>
+          <div className="text-sm text-muted-foreground">
+          Are you sure you want to delete this post? Once deleted, it cannot be recovered.
+          </div>
+          <div className="flex items-center justify-end gap-2">
+            <div
+              className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-black transition-colors bg-white rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-50 h-9"
+              onClick={() => {
+                closeDeletePost();
+              }}
+            >
+              Cancel
+            </div>
+            <div
+              className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-white transition-colors bg-red-500 rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-red-400 h-9"
+              onClick={handleDeletePost}
+            >
+              Delete
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* {showConfirmation && (
         <Modal
           opened={true}
           onClose={() => {
@@ -535,7 +587,7 @@ function Post() {
             </div>
           </div>
         </Modal>
-      )}
+      )} */}
 
       <div className="flex justify-center w-full bg-black">
         <div className="flex w-full bg-black">
@@ -614,7 +666,7 @@ function Post() {
                         myData.role === "admin" ? (
                           <DropdownMenuItem
                             className="font-semibold cursor-pointer hover:bg-gray-100"
-                            onClick={() => setShowConfirmation(true)}
+                            onClick={() => openDeletePost()}
                           >
                             <div className="flex items-center gap-2 text-lg h-7">
                               <div className="">
