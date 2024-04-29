@@ -1,6 +1,12 @@
 import Header from './header'
 
-const MainL = ({children})=>{
+// interface Types {
+//     setIsOpen:any;
+//     children:any;
+
+//   }
+
+const MainL = ({children} )=>{
     return (
         <>
         <Header/>
