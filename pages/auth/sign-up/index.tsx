@@ -6,7 +6,7 @@ function SignUp() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+  
   const router = useRouter();
 
   async function handleSubmitSignin(event: FormEvent<HTMLFormElement>) {
@@ -18,11 +18,11 @@ function SignUp() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ firstName, lastName, email, password, role }),
+        body: JSON.stringify({ firstName, lastName, email, password }),
       });
       const data = await response.json();
       if (response.ok) {
-        router.push("/auth/logIn");
+        router.push("/auth");
       }
     } catch (error) {
       console.error({ message: "ERRROR", error });
@@ -93,7 +93,7 @@ function SignUp() {
                   onChange={(e) => setPassword(e.target.value)}
                 ></input>
               </div>
-              <div className="relative mb-4">
+              {/* <div className="relative mb-4">
                 <label className="leading-7 text-gray-600 ">Role</label>
                 <input
                   type="role"
@@ -103,7 +103,7 @@ function SignUp() {
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                 ></input>
-              </div>
+              </div> */}
               <p className="mt-3 mb-8 text-xs text-gray-500">
                 Literally you probably haven t heard of them jean shorts.
               </p>
