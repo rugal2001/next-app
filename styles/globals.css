@@ -2,8 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
-.btn {
+/* .btn {
   @apply flex items-center justify-center w-32 h-16 p-2 mx-5 mt-2 text-lg text-center text-gray-700 border-2 border-gray-500 rounded-md cursor-pointer hover:shadow-lg hover:bg-gray-500 hover:text-white;
+} */
+
+#header_nav .btn {
+  margin-top: 13px;
+}
+.btn--primary {
+  background: #0066ff;
+  color: white;
+  box-shadow: rgba(255, 255, 255, 0) 0 0 0 3px, rgba(0, 102, 255, 0) 0 0 0 4px;
+}
+.btn--s {
+  border-radius: 8px;
+  font-size: 14px;
+  padding: 0 12px;
+  height: 36px;
+  line-height: 36px;
+}
+.btn {
+  display: block;
+  position: relative;
+  transition: box-shadow .1s, color .1s, background .1s;
+  cursor: pointer;
+  width: 100%;
+  font-variation-settings: "wght" 600;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+  text-decoration: none;
+}
+
+.header_signin-btn {
+  margin-right: 10px;
+}
+.link--black {
+  color: black;
+}
+.link {
+  display: inline-block;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer !important;
+  position: relative;
+  transition: color 0.1s;
 }
 
 .step-item {
@@ -31,7 +75,7 @@
 } */
 
 .gradientText {
-  background: linear-gradient(to left ,#FFEC9E,#FFBB70,#ED9455);
+  background: linear-gradient(to right ,#AF4BA9,#DD2EA9,#FF51A9);
   
   -webkit-background-clip: text;
   -webkit-text-fill-color:transparent;
