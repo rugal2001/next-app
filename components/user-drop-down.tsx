@@ -1,5 +1,5 @@
 import fetcher from "@/lib/fetcher";
-import { Menu, Button, Text, rem, Avatar, Loader } from "@mantine/core";
+import { Menu, Button, Text, rem, Avatar, Loader, Skeleton } from "@mantine/core";
 import { BiLogOut } from "react-icons/bi";
 import { RxActivityLog } from "react-icons/rx";
 import { useDisclosure } from "@mantine/hooks";
@@ -30,7 +30,7 @@ function UserDropDownMenu() {
     return <Loader />;
   }
   if (usersError) {
-    return <div>Error in loading Users</div>;
+    return <div><Skeleton height={35} circle mr={10} className="cursor-pointer" /></div>;
   }
 
   return (
