@@ -2,14 +2,14 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 
 function SignUp() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [signUpFirstName, setsignUpFirstName] = useState("");
+  const [signUpLastName, setsignUpLastName] = useState("");
+  const [signUpEmail, setsignUpEmail] = useState("");
+  const [SignUpPassword, setSignUpPassword] = useState("");
   
   const router = useRouter();
 
-  async function handleSubmitSignin(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmitSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     try {
@@ -18,7 +18,7 @@ function SignUp() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ firstName, lastName, email, password }),
+        body: JSON.stringify({ firstName:signUpFirstName, lastName:signUpLastName , email:signUpEmail, password:SignUpPassword }),
       });
       const data = await response.json();
       if (response.ok) {
@@ -45,7 +45,7 @@ function SignUp() {
             </p>
           </div>
           <div className="flex flex-col w-full p-8 mt-10 text-sm bg-gray-100 rounded-lg lg:w-2/6 md:w-1/2 md:ml-auto md:mt-0">
-            <form onSubmit={handleSubmitSignin}>
+            <form onSubmit={handleSubmitSignUp}>
               <h2 className="mb-5 text-lg font-medium text-gray-900 title-font">
                 Sign Up
               </h2>
@@ -56,8 +56,8 @@ function SignUp() {
                   id="first-name"
                   name="first-name"
                   className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={signUpFirstName}
+                  onChange={(e) => setsignUpFirstName(e.target.value)}
                 ></input>
               </div>
               <div className="relative mb-4">
@@ -67,30 +67,30 @@ function SignUp() {
                   id="last-name"
                   name="last-name"
                   className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={signUpLastName}
+                  onChange={(e) => setsignUpLastName(e.target.value)}
                 ></input>
               </div>
               <div className="relative mb-4">
-                <label className="leading-7 text-gray-600 ">Email</label>
+                <label className="leading-7 text-gray-600 ">signUpEmail</label>
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
+                  type="signUpEmail"
+                  id="signUpEmail"
+                  name="signUpEmail"
                   className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={signUpEmail}
+                  onChange={(e) => setsignUpEmail(e.target.value)}
                 ></input>
               </div>
               <div className="relative mb-4">
-                <label className="leading-7 text-gray-600 ">Password</label>
+                <label className="leading-7 text-gray-600 ">SignUpPassword</label>
                 <input
-                  type="password"
-                  id="password"
-                  name="password"
+                  type="SignUpPassword"
+                  id="SignUpPassword"
+                  name="SignUpPassword"
                   className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={SignUpPassword}
+                  onChange={(e) => setSignUpPassword(e.target.value)}
                 ></input>
               </div>
               {/* <div className="relative mb-4">
