@@ -169,11 +169,13 @@ function Profile() {
                         Role
                       </label>
                       <input
+                      hidden
                         type="text"
                         value={role}
                         onChange={(e) => setRole(e.target.value)}
                         className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-indigo-200 focus:bg-transparent focus:border-indigo-500"
                       ></input>
+                      <div className="px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white bg-opacity-50 border border-gray-300 rounded-lg shadow-md outline-none w-36 focus:ring-2 focus:ring-indigo-200 focus:bg-transparent focus:border-indigo-500 ">{role}</div>
                     </div>
                   </div>
                 </div>
