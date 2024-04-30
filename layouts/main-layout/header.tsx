@@ -106,6 +106,7 @@ const Header = ({ hideAddButton = false }) => {
         setImage(file);
       };
       reader.readAsDataURL(file);
+      
     }
   };
 
@@ -123,6 +124,7 @@ const Header = ({ hideAddButton = false }) => {
       setImage(response.data.filePath);
       console.log("=>", response.data.filePath);
       setStep(2);
+      toast.success('Image uploaded successfully!');
     } catch (error) {
       console.error(error);
     }
@@ -266,7 +268,7 @@ const Header = ({ hideAddButton = false }) => {
                 <DialogContent
                   className={` md:max-w-[95%] ${
                     big ? "lg:max-w-[70%]" : "lg:max-w-[600px]"
-                  } p-0 max-h-[90%] sm:rounded-[1px] border-0 lg:rounded-lg`}
+                  } p-0 max-h-[90%] sm:rounded-[1px] border-0 lg:rounded-lg overflow-hidden`}
                   withCloseButton={false}
                 >
                   <div className="flex items-center justify-between w-full px-3 text-slate-900 border-b-[1px] border-slate-300">
@@ -339,11 +341,13 @@ const Header = ({ hideAddButton = false }) => {
                             accept="image/*"
                             style={{ display: "none" }}
                             onChange={handleImageUpload}
+                            
                           />
                         </div>
+                        <ToastContainer />
                       </div>
 
-                      <div className={` flex-grow ${big ? "flex" : "hidden"}`}>
+                      <div className={` flex-grow ${big ? "flex" : "hidden"} shrink-0`}>
                         {big && (
                           <div className="w-full p-2 ">
                             <div className="flex items-center gap-3 p-6">
@@ -425,7 +429,7 @@ const Header = ({ hideAddButton = false }) => {
                                 <div className="">
                                   <Avatar src={myData.image} />
                                 </div>
-                                <div className="text-sm">
+                                <div className="text-sm font-semibold">
                                   {myData.firstName} {myData.lastName}
                                 </div>
                               </div>
