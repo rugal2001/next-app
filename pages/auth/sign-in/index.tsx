@@ -16,31 +16,29 @@ function SignIn() {
 
   async function handleSubmitSignin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
+  
     try {
       const response = await fetch("http://localhost:4000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
         body: JSON.stringify({ email, password }),
       });
-console.log({response})
+  
       if (response.ok) {
         const data = await response.json();
         const accessToken = data.access_token;
-        const user=data.user;
-        console.log({user})
+        const user = data.user; // Assuming you want user data
+  
         setToken(accessToken);
-        // EventListener(user,user._id,'User Login');
-        if (accessToken) {
-          localStorage.setItem("access_token", accessToken);
-
-        }
+        localStorage.setItem("access_token", accessToken);
+      } else {
+        // Handle login errors (e.g., display error message)
+        console.error("Login failed:", response.statusText);
       }
     } catch (error) {
-      console.error({ message: "ERRROR" });
+      console.error("Error during login:", error);
     }
   }
 
@@ -49,20 +47,20 @@ console.log({response})
   }
 
 
-  const handleLogin = async () => {
-    console.log('im in Login function ')
-    try {
-      const insertedData = {
-        email,
-        password
-      }
-      const response = await httpClientReq.post("/login",insertedData);
-      console.log({response});
-      // router.push('/');
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const handleLogin = async () => {
+  //   console.log('im in Login function ')
+  //   try {
+  //     const insertedData = {
+  //       email,
+  //       password
+  //     }
+  //     const response = await httpClientReq.post("/login",insertedData);
+  //     console.log({response});
+  //     // router.push('/');
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   return (
     <>
