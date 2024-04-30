@@ -13,7 +13,11 @@ export default function AuthLayout({ children }) {
   } = useSWR(`http://localhost:4000/me`, fetcher);
 
   if (isLoading) {
-    return <div className="grid justify-center mt-80"><Loader color="blue" />;</div>;
+    return (
+      <div className="grid justify-center mt-80">
+        <Loader color="blue" />;
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
