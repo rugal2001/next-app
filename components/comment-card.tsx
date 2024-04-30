@@ -18,6 +18,7 @@ import { FaRegEdit, FaReply } from "react-icons/fa";
 import EventListener from "./event-listener";
 import { MdDeleteForever } from "react-icons/md";
 import { LuActivitySquare } from "react-icons/lu";
+import { useDisclosure } from "@mantine/hooks";
 
 enum EventTypes {
   PostCreated = "post_created",
@@ -48,6 +49,8 @@ const CommentCard = ({
   showExtra,
 }: CommentCardI) => {
   const [showAddComment, setShowAddComment] = useState(false);
+  const [deletedPost, { open: openDeletePost, close: closeDeletePost }] =
+    useDisclosure(false);
 
   const { data: myData, isLoading, error } = useSWR("/me", fetcher);
   // const Comment = comment.comment;
@@ -154,7 +157,7 @@ const CommentCard = ({
   // console.log("comment =<> ", comment);
   return (
     <>
-      {showConfirmation && (
+      {/* {showConfirmation && (
         <Modal
           opened={true}
           onClose={() => {
@@ -196,7 +199,43 @@ const CommentCard = ({
             </div>
           </div>
         </Modal>
-      )}
+      )} */}
+      <Modal
+        opened={deletedPost}
+        radius={"md"}
+        size={"40%"}
+        onClose={closeDeletePost}
+        withCloseButton={false}
+        className=""
+        centered
+      >
+        {/* <div onClick={handleUpdateUser}>Hello</div> */}
+
+        {/* {userRole === 'admin' ?  setUserRole('user'):setUserRole('admin') } */}
+        <div className="grid w-full gap-3 p-2">
+          <div className="text-lg font-semibold">Are you absolutely sure?</div>
+          <div className="text-sm text-muted-foreground">
+            Are you sure you want to delete this comment? Once deleted, it cannot
+            be recovered.
+          </div>
+          <div className="flex items-center justify-end gap-2">
+            <div
+              className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-black transition-colors bg-white rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-50 h-9"
+              onClick={() => {
+                closeDeletePost();
+              }}
+            >
+              Cancel
+            </div>
+            <div
+              className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-white transition-colors bg-red-500 rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-red-400 h-9"
+              onClick={handleDeleteComment}
+            >
+              Delete
+            </div>
+          </div>
+        </div>
+      </Modal>
       <div className="w-full mb-3">
         <div className="grid w-full">
           <div className="flex items-start gap-2">
@@ -278,6 +317,7 @@ const CommentCard = ({
                         onClick={() => {
                           setShowOldComment(false);
                           setShowNewComment(true);
+                          
                         }}
                       >
                         <div className="flex items-center gap-2 text-lg h-7">
@@ -295,7 +335,8 @@ const CommentCard = ({
                       <DropdownMenuItem
                         className="font-semibold cursor-pointer hover:bg-gray-100"
                         onClick={() => {
-                          setShowConfirmation(true);
+                          // setShowConfirmation(true);
+                          openDeletePost();
                         }}
                       >
                         <div className="flex items-center gap-2 text-lg h-7">
