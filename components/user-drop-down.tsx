@@ -32,6 +32,7 @@ function UserDropDownMenu() {
   if (usersError) {
     return <div><Skeleton height={35} circle mr={10} className="cursor-pointer" /></div>;
   }
+  console.log(myData.role);
 
   return (
     <>
@@ -136,6 +137,7 @@ function UserDropDownMenu() {
             </div>
           </Menu.Item>
           <Menu.Divider />
+          {myData.role==='admin' &&
           <Menu.Item>
             <div className="flex items-center gap-3 " onClick={open}>
               <div className="p-2 bg-gray-100 rounded-full">
@@ -144,6 +146,8 @@ function UserDropDownMenu() {
               <div className="font-bold">Users</div>
             </div>
           </Menu.Item>
+             
+          }
           <Menu.Item>
             <div
               className="flex items-center gap-3 "
