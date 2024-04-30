@@ -47,22 +47,22 @@ console.log({response})
   if(token ){
     router.push('/');
   }
-  // router.push("/");
 
-  // const handleLogin = async () => {
-  //   console.log('im in Login function ')
-  //   try {
-  //     const insertedData = {
-  //       email,
-  //       password
-  //     }
-  //     const response = await httpClientReq.post("/login",insertedData);
-  //     console.log({response});
-  //     // router.push('/');
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+
+  const handleLogin = async () => {
+    console.log('im in Login function ')
+    try {
+      const insertedData = {
+        email,
+        password
+      }
+      const response = await httpClientReq.post("/login",insertedData);
+      console.log({response});
+      // router.push('/');
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <>
