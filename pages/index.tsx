@@ -27,9 +27,9 @@ Home.GetLayout = function GetLayout(Home) {
 
   return (
     <>
-      <AuthLayout>
+      {/* <AuthLayout> */}
         <Main>{Home}</Main>
-      </AuthLayout>
+      {/* </AuthLayout> */}
     </>
   );
 };
