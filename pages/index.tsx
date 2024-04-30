@@ -16,20 +16,12 @@ function Home() {
   );
 }
 Home.GetLayout = function GetLayout(Home) {
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = process.browser && localStorage.getItem("access_token");
-    if (!token) {
-      router.push("/auth");
-    }
-  }, [router]);
-
+ 
   return (
     <>
-      {/* <AuthLayout> */}
+      <AuthLayout>
         <Main>{Home}</Main>
-      {/* </AuthLayout> */}
+      </AuthLayout>
     </>
   );
 };
