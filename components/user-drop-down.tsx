@@ -9,7 +9,7 @@ import { ScrollArea } from "@mantine/core";
 import router from "next/router";
 import { FaAngleDown, FaUsers } from "react-icons/fa";
 import useSWR from "swr";
-import axios from "axios";
+
 import { useState } from "react";
 import UserCard from "./user-card";
 import { GrNext, GrPrevious } from "react-icons/gr";
@@ -17,7 +17,7 @@ import { MdSearch } from "react-icons/md";
 
 function UserDropDownMenu() {
   const { data: myData, isLoading, error } = useSWR("/me", fetcher);
-  const [userId, setUserId] = useState();
+  
   const {
     data: users,
     isLoading: usersLoading,
@@ -70,7 +70,7 @@ function UserDropDownMenu() {
         ))}
         </ScrollArea>
         <div className="fixed bottom-0 w-[97%] h-16 border-t-[1px] border-slate-200 flex items-center justify-between bg-white">
-          <div className="text-sm">number of Users</div>
+          <div className="text-sm">10 Users</div>
           <div className="flex items-center gap-2 text-sm text-center">
             <div className="flex items-center gap-2 px-4 py-2 font-semibold rounded-md w-28 bg-slate-100 text-slate-800">
               <div className=""><GrPrevious /></div>
