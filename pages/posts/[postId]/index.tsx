@@ -48,7 +48,6 @@ enum EventTypes {
 }
 
 function Post() {
-  
   const [deletedPost, { open: openDeletePost, close: closeDeletePost }] =
     useDisclosure(false);
   const [show, setShow] = useState({
@@ -109,8 +108,8 @@ function Post() {
     );
   if (postError) return <div>Error Loading Post</div>;
   if (!post) return <div>Post not found</div>;
-  
-    console.log({activityData})
+
+  console.log({ activityData });
   const handleAddComment = async () => {
     try {
       const token = localStorage.getItem("access_token");
@@ -248,8 +247,6 @@ function Post() {
 
   return (
     <>
-
-
       <Modal
         opened={openActivityModal}
         onClose={() => {
@@ -286,7 +283,7 @@ function Post() {
                   />
                 </div>
               ))}
-              {console.log({activityData})}
+              {console.log({ activityData })}
             </div>
           </ScrollArea>
           <div className="h-auto p-2 bg-gray-50 rounded-md w-96 border-[1px] border-dashed border-gray-200">
@@ -302,7 +299,7 @@ function Post() {
                   <RxActivityLog />
                 </div>
               )}
-              
+
               {event === EventTypes.PostUpdated ? (
                 <div className="grid gap-2 text-sm text-slate-800">
                   <div className="grid gap-2">
@@ -329,7 +326,7 @@ function Post() {
                     </div>
                   </div>
                 </div>
-              ) :null}
+              ) : null}
               {event === EventTypes.CommentUpdated && (
                 <>
                   <div className="grid gap-2 rounded-md">
@@ -378,7 +375,6 @@ function Post() {
               )}
               {event === EventTypes.CommentDeleted && (
                 <>
-                
                   <div className="grid gap-3">
                     <div className="flex gap-2 border-b-[1px] border-slate-200 ">
                       <div className="w-1 h-auto bg-gray-300"></div>
@@ -430,11 +426,11 @@ function Post() {
         </div>
       </Modal>
 
-
       <Modal
         opened={openEditModal}
         onClose={closeEditModal}
         withCloseButton={false}
+        radius={'md'}
         size="lg"
         overlayProps={{
           backgroundOpacity: 0.55,
@@ -480,26 +476,26 @@ function Post() {
                 defaultValue={post.data.contenue}
                 onChange={(e) => setUContenue(e.target.value)}
               />
-              
+
               <div className="flex items-center justify-end gap-2">
-            <div
-              className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-black transition-colors bg-white rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-50 h-9"
-              onClick={() => {
-                closeEditModal();
-              }}
-            >
-              Cancel
-            </div>
-            <div
-              className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-white transition-colors bg-black rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-800 h-9"
-              onClick={()=>{
-                handleUpdatePost();
-                // closeEditModal();
-              }}
-            >
-              Confirm
-            </div>
-          </div>
+                <div
+                  className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-black transition-colors bg-white rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-50 h-9"
+                  onClick={() => {
+                    closeEditModal();
+                  }}
+                >
+                  Cancel
+                </div>
+                <div
+                  className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-white transition-colors bg-black rounded-md shadow cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-800 h-9"
+                  onClick={() => {
+                    handleUpdatePost();
+                    // closeEditModal();
+                  }}
+                >
+                  Confirm
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -520,7 +516,8 @@ function Post() {
         <div className="grid w-full gap-3 p-2">
           <div className="text-lg font-semibold">Are you absolutely sure?</div>
           <div className="text-sm text-muted-foreground">
-          Are you sure you want to delete this post? Once deleted, it cannot be recovered.
+            Are you sure you want to delete this post? Once deleted, it cannot
+            be recovered.
           </div>
           <div className="flex items-center justify-end gap-2">
             <div
