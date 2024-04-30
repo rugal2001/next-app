@@ -7,7 +7,7 @@ import httpClientReq from "@/lib/http-client-req";
 
 function Auth() {
   const router = useRouter();
-  const [color,setColor] = useState('white');
+  
 
   const [signUpFirstName, setsignUpFirstName] = useState("");
   const [signUpLastName, setsignUpLastName] = useState("");
@@ -45,7 +45,7 @@ function Auth() {
         localStorage.setItem("access_token", accessToken);
       } else {
         // Handle login errors (e.g., display error message)
-        setColor('red-500')
+        
         console.error("Login failed:", response.statusText);
       }
     } catch (error) {
@@ -86,7 +86,7 @@ function Auth() {
       <Modal
         opened={openedSignIn}
         onClose={()=> {closeSignIn()
-        setColor('white');
+        
         }}
         withCloseButton={false}
         radius={"lg"}
@@ -144,7 +144,7 @@ function Auth() {
                 Cancel
               </div>
             </div>
-              <div className={` flex items-center justify-center text-${color}`} >Your email or password is incorrect !!</div>
+              {/* <div className="flex items-center justify-center  text-" >Your email or password is incorrect !!</div> */}
           </div>
         </form>
       </Modal>
